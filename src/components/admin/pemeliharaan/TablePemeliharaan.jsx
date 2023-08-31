@@ -21,6 +21,8 @@ export default function TablePengeluaran() {
       nama_barang: "Kulkas : Polytron",
       keterangan: "Memperbaiki kulkas kurang dingin",
       lokasi_barang: 112,
+      status: "dalam perbaikan",
+      quantity: 2,
       biaya: 500000,
     },
   ];
@@ -52,8 +54,20 @@ export default function TablePengeluaran() {
       flex: 0.7,
     },
     {
+      field: "qty",
+      headerName: "Quantity",
+      minWidth: 100,
+      flex: 0.7,
+    },
+    {
       field: "biaya",
       headerName: "Biaya",
+      minWidth: 100,
+      flex: 0.7,
+    },
+    {
+      field: "status",
+      headerName: "Status",
       minWidth: 100,
       flex: 0.7,
     },
@@ -66,10 +80,7 @@ export default function TablePengeluaran() {
       renderCell: (params) => {
         return (
           <div className="flex">
-            <button
-              className="mr-4"
-              onClick={() => nav(`/artikel/${params.id}`)}
-            >
+            <button className="mr-4">
               <BiPrinter size={20} />
             </button>
             <button className="mr-4" onClick={() => deleteBarang()}>
@@ -93,7 +104,9 @@ export default function TablePengeluaran() {
       nama_barang: a.nama_barang,
       keterangan: a.keterangan,
       lokasi_barang: a.lokasi_barang,
+      status: a.status,
       biaya: a.biaya,
+      qty: a.quantity,
     });
   });
 

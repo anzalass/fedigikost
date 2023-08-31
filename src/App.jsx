@@ -5,6 +5,7 @@ import PengadaanBarang from "./pages/Admin/PengadaanBarangPage";
 import PengeluaranPage from "./pages/Admin/PemeliharaanPage";
 import DataRuanganPage from "./pages/Admin/DataRuanganPage";
 import DetailBarangRuangan from "./pages/Admin/DetailBarangRuanganPage";
+import HomePageOwner from "./pages/Users/HomepageOwner";
 
 function App() {
   return (
@@ -17,6 +18,8 @@ function App() {
           <Route path="/detail-ruangan/:id" element={<DetailBarangRuangan />} />
           <Route path="/data-ruangan" element={<DataRuanganPage />} />
           <Route path="/pengeluaran" element={<PengeluaranPage />} />
+          {/* Owner Routes */}
+          <Route path="/owner/" element={<HomePageOwner />} />
         </Routes>
       </BrowserRouter>
     </>
