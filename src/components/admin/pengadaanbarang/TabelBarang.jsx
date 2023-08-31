@@ -4,12 +4,11 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
 import { BsTrash3 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
-import EditBarang from "./EditBarang";
-import { GiAutoRepair } from "react-icons/gi";
-import Swal from "sweetalert2";
+
 import axios from "axios";
 import testgambar from "../../../assets/img_car.png";
 import FotoDetail from "./FotoDetail";
+import EditBarang from "./EditBarang";
 
 export default function TabelBarang({ data }) {
   const [editBarang, setEditBarang] = useState(false);
@@ -18,8 +17,6 @@ export default function TabelBarang({ data }) {
   let [styl, setStyl] = useState("");
   const nav = useNavigate();
   const [idBarang, setIdBarang] = useState("");
-  const [detailFoto, setDetailFoto] = useState(false);
-
   const [pengadaan, setPengadaan] = useState({
     namaBarang: "",
     merek: "",
@@ -30,6 +27,7 @@ export default function TabelBarang({ data }) {
     supplier: "",
     buktiNota: "",
   });
+  const [detailFoto, setDetailFoto] = useState(false);
 
   const changePengadaanHandler = (e) => {
     setPengadaan({
@@ -39,25 +37,15 @@ export default function TabelBarang({ data }) {
     console.log(pengadaan);
   };
 
-  const StyleStatus = () => {
-    if (status === "acc") {
-      setStyl("bg-green-500");
-    } else if (status === "pending") {
-      setStyl("bg-yellow-500");
-    } else if (status === "rusak") {
-      setStyl("bg-red-500");
-    } else {
-      setStyl("bg-red-500");
-    }
+  const DeletePengadaan = async (id) => {
+    await axios.delete("http://127.0.0.1:8000/api/pengadaanDelete/" + id);
+    window.location.reload();
   };
-
-  useEffect(() => {
-    StyleStatus();
-  }, [status]);
 
   const editBarangFunc = () => {
     setEditBarang(!editBarang);
   };
+
   const TambahPengadaan = async (e) => {
     e.preventDefault();
     try {
@@ -112,10 +100,6 @@ export default function TabelBarang({ data }) {
   //       }
   //     });
   // };
-  const DeletePengadaan = async (id) => {
-    await axios.delete("http://127.0.0.1:8000/api/pengadaanDelete/" + id);
-    window.location.reload();
-  };
 
   const columns = [
     { field: "id", headerName: "Resi Barang", minWidth: 50, flex: 0.5 },
@@ -202,6 +186,14 @@ export default function TabelBarang({ data }) {
             <button className="mr-4" onClick={() => DeletePengadaan(params.id)}>
               <BsTrash3 color="red" size={20} />
             </button>
+
+            <button
+              className="mr-4"
+              onClick={() => nav(`/artikel/${params.id}`)}
+            >
+              <AiOutlineArrowRight size={20} />
+            </button>
+
             <button
               className=""
               onClick={() => {
@@ -258,7 +250,7 @@ export default function TabelBarang({ data }) {
                   id=""
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 >
-                  <option value="kulkas">kulkas</option>
+                  <option value="kulkas">Pilih Category</option>
                   <option value="kulkas">kulkas</option>
                   <option value="kulkas">kulkas</option>
                   <option value="kulkas">kulkas</option>
@@ -453,7 +445,6 @@ export default function TabelBarang({ data }) {
                   </form>
                 </div>
               </div>
-
               <DataGrid
                 disableRowSelectionOnClick
                 autoHeight
@@ -461,10 +452,8 @@ export default function TabelBarang({ data }) {
                 rows={row}
               />
             </div>
-            .
           </div>
         ) : null}
-
         {editBarang ? (
           <EditBarang
             setClose={setEditBarang}

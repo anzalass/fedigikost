@@ -108,7 +108,13 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
-
+              {/* <div className="w-full mt-4">
+                                <h1 className="font-abc pb-2">Resi Barang</h1>
+                                <input
+                                    type="text"
+                                    className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
+                                />
+                            </div> */}
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Foto Nota Pembelian</h1>
                 <input
@@ -119,6 +125,15 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
+              {/* <div className="w-full mt-4">
+              <h1 className="font-abc pb-2">Alamat</h1>
+              <textarea
+                name=""
+                id=""
+                rows="3"
+                className="w-full p-3 border-2 border-slate-500"
+              ></textarea>
+            </div> */}
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Spesifikasi Barang</h1>
                 <input
@@ -185,6 +200,16 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   disabled
                 />
               </div>
+
+              {/* <div className="w-full mt-4">
+              <label
+                htmlFor="ktp"
+                className="h-[20px] w-[50px] text-[13px] font-abc rounded-lg p-2 bg-[#E3E8EF]"
+              >
+                Upload KTP
+              </label>
+              <input type="file" id="ktp" name="ktp" className="hidden" />
+            </div> */}
               <div className="w-full justify-center mt-12 mb-12 flex items-center">
                 <button
                   onClick={() => UpdatePengadaan()}

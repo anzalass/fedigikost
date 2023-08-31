@@ -18,37 +18,40 @@ export default function TambahBarangPage() {
     namaBarang: "",
   });
 
+  // const TambahKategori = async (e) => {
+  //   try {
+  //     const findCat = await axios.get(
+  //       `http://127.0.0.1:8000/api/findKategori/${kategori.kodeBarang}/${kategori.namaBarang}`
+  //     );
+  //     if (findCat.status === 200) {
+  //       alert("Sudah Ada Bro");
+  //     }
+  //     console.log(tambahCat);
+  //   } catch (error) {
+  //     const tambahCat = await axios.post(
+  //       "http://127.0.0.1:8000/api/tambahKategori",
+  //       kategori
+  //     );
+  //   }
+  // };
   const TambahKategori = async (e) => {
-    e.preventDefault();
-    try {
-      const findKategori = await axios.get(
-        "http://127.0.0.1:8000/api/findKategori/" +
-          kategori.kodeBarang +
-          "/" +
-          kategori.namaBarang
-      );
-
-      if (findKategori.status === 200) {
-        window.alert("dah ada");
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 404) {
-        try {
-          const tambah = await axios.post(
-            "http://127.0.0.1:8000/api/tambahKategori",
-            kategori
-          );
-
-          if (tambah) {
-            window.location.reload();
-          }
-        } catch (error) {
-          console.error("Error while adding:", error);
-        }
-      } else {
-        console.error("Error while searching:", error);
-      }
-    }
+    await axios
+      .post(
+        `http://127.0.0.1:8000/api/tambahKategori/${kategori.kodeBarang}/${kategori.namaBarang}`,
+        kategori
+      )
+      .then((response) => {
+        console.log(response.data.message);
+        window.location.reload();
+        setKategori((prevData) => ({
+          ...prevData,
+          kodeBarang: "",
+          namaBarang: "",
+        }));
+      })
+      .catch((err) => {
+        console.log(err.response.data.message);
+      });
   };
 
   const EditHandler = (kodeBarang, namaBarang) => {
@@ -124,7 +127,6 @@ export default function TambahBarangPage() {
   };
 
   const [addBarang, setAddBarang] = useState(false);
-  const [open, setOpen] = useState(false);
 
   const columns = [
     { field: "id", headerName: "Kode Barang", minWidth: 50, flex: 0.5 },
@@ -146,6 +148,12 @@ export default function TambahBarangPage() {
       renderCell: (params) => {
         return (
           <div className="flex">
+            <button
+              className="mr-4"
+              onClick={() => nav(`/artikel/${params.id}`)}
+            >
+              <AiOutlineArrowRight size={20} />
+            </button>
             <button className="mr-4" onClick={() => DeleteKategori(params.id)}>
               <BsTrash3 color="red" size={20} />
             </button>
@@ -173,10 +181,10 @@ export default function TambahBarangPage() {
 
   return (
     <div className="w-full h-[100vh] flex">
-      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
-        <Sidebar setSidebar={2} width={open} setWidth={setOpen} />
+      <div className="w-[16%]">
+        <Sidebar setSidebar={2} />
       </div>
-      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+      <div className="w-[84%]">
         <TopBar>{"Pengadaan Barang"}</TopBar>
         <div className="w-[95%] h-[80px] justify-between flex mx-auto">
           <div className="">
@@ -187,15 +195,13 @@ export default function TambahBarangPage() {
               Kategori Barang
             </button>
           </div>
-          {addBarang ? null : (
-            <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
-              <input
-                type="text"
-                className="w-full h-full pl-2 rounded-lg"
-                placeholder="Search"
-              />
-            </div>
-          )}
+          <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
+            <input
+              type="text"
+              className="w-full h-full pl-2 rounded-lg"
+              placeholder="Search"
+            />
+          </div>
         </div>
         <div className="w-[95%] opacity-25 mx-auto mt-0 h-[1px] bg-slate-600"></div>
 
