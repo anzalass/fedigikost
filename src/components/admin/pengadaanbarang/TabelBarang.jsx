@@ -1,27 +1,68 @@
 import { DataGrid } from "@mui/x-data-grid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
 import { BsTrash3 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import axios from 'axios';
+import EditBarang from "./EditBarang";
 
-export default function TabelBarang() {
+export default function TabelBarang({ data }) {
+  const [editBarang, setEditBarang] = useState(false);
   const [pengadaanBarang, setPengadaanBarang] = useState(false);
   const nav = useNavigate();
+  const [idBarang, setIdBarang] = useState("");
+  const [pengadaan, setPengadaan] = useState({
+    namaBarang: "",
+    merek: "",
+    hargaBarang: 0,
+    quantity: 0,
+    spesifikasi: "",
+    ruang: "",
+    supplier: "",
+    buktiNota: ""
+  });
 
-  const data = [
-    {
-      id: 1,
-      resi_barang: "23EWS",
-      nama_barang: "Kulkas  : Polytron",
-      tgl_pembelian: "27 Agustus 2023",
-      harga: 2300000,
-      lokasi_barang: "D002",
-      qty_barang: 3,
-      status: "pending",
-      total: 6900000,
-    },
-  ];
+  const changePengadaanHandler = (e) => {
+    setPengadaan({
+      ...pengadaan,
+      [e.target.name]: e.target.value
+    });
+    console.log(pengadaan)
+  }
+
+  const DeletePengadaan = async (id) => {
+    await axios.delete("http://127.0.0.1:8000/api/pengadaanDelete/" + id);
+    window.location.reload();
+  }
+
+  const editBarangFunc = () => {
+    setEditBarang(!editBarang);
+  };
+
+  const TambahPengadaan = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://127.0.0.1:8000/api/tambahPengadaan", pengadaan);
+      console.log("mang eak", response);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  // const data = [
+  //   {
+  //     id: 1,
+  //     resi_barang: "23EWS",
+  //     nama_barang: "Kulkas  : Polytron",
+  //     tgl_pembelian: "27 Agustus 2023",
+  //     harga: 2300000,
+  //     lokasi_barang: "D002",
+  //     qty_barang: 3,
+  //     status: "Pending",
+  //     total: 6900000,
+  //   },
+  // ];
 
   const columns = [
     { field: "id", headerName: "Resi Barang", minWidth: 50, flex: 0.5 },
@@ -92,10 +133,13 @@ export default function TabelBarang() {
             >
               <AiOutlineArrowRight size={20} />
             </button>
-            <button className="mr-4" onClick={() => deleteArtikel(params.id)}>
+            <button className="mr-4" onClick={() => DeletePengadaan(params.id)}>
               <BsTrash3 color="red" size={20} />
             </button>
-            <button className="" onClick={() => edit(1)}>
+            <button className="" onClick={() => {
+              editBarangFunc(params.id);
+              setIdBarang(params.id);
+            }}>
               <BiEditAlt color="blue" size={20} />
             </button>
           </div>
@@ -108,14 +152,14 @@ export default function TabelBarang() {
 
   data.forEach((a) => {
     row.push({
-      id: a.resi_barang,
-      nama_barang: a.nama_barang,
-      tgl: a.tgl_pembelian,
-      harga: a.harga,
-      lokasi_barang: a.lokasi_barang,
-      qty_barang: a.qty_barang,
-      total_harga: a.total,
-      status: a.status,
+      id: a.id,
+      nama_barang: a.namaBarang,
+      tgl: a.tanggalPembelian,
+      harga: a.hargaBarang,
+      lokasi_barang: a.ruang,
+      qty_barang: a.quantity,
+      total_harga: a.hargaBarang * a.quantity,
+      status: a.buktiNota,
     });
   });
 
@@ -126,43 +170,50 @@ export default function TabelBarang() {
           <div className="w-[95%] mx-auto h-[130vh] bg-white rounded-xl">
             <div action="" className="w-[95%] mx-auto mt-2 p-3">
               <div className="w-full mt-4">
-                <h1 className="font-abc pb-2 ">Tanggal Pengadaan</h1>
+                <h1 className="font-abc pb-2">Tanggal Pengadaan</h1>
                 <input
                   type="date"
+                  name="tanggalPembelian"
+                  onChange={e => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2 ">Kategori</h1>
                 <select
-                  name=""
+                  name="namaBarang"
+                  onChange={e => changePengadaanHandler(e)}
                   id=""
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 >
-                  <option value="">kulkas</option>
-                  <option value="">kulkas</option>
-                  <option value="">kulkas</option>
-                  <option value="">kulkas</option>
+                  <option value="kulkas">kulkas</option>
+                  <option value="kulkas">kulkas</option>
+                  <option value="kulkas">kulkas</option>
+                  <option value="kulkas">kulkas</option>
                 </select>
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Merek Barang</h1>
                 <input
                   type="text"
+                  name="merek"
+                  onChange={e => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
-              <div className="w-full mt-4">
+              {/* <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Resi Barang</h1>
                 <input
                   type="text"
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
-              </div>
+              </div> */}
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Foto Nota Pembelian</h1>
                 <input
                   type="text"
+                  name="buktiNota"
+                  onChange={e => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
@@ -179,6 +230,17 @@ export default function TabelBarang() {
                 <h1 className="font-abc pb-2">Spesifikasi Barang</h1>
                 <input
                   type="text"
+                  name="spesifikasi"
+                  onChange={e => changePengadaanHandler(e)}
+                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
+                />
+              </div>
+              <div className="w-full mt-4">
+                <h1 className="font-abc pb-2">Supplier</h1>
+                <input
+                  type="text"
+                  name="supplier"
+                  onChange={e => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
@@ -186,27 +248,33 @@ export default function TabelBarang() {
                 <h1 className="font-abc pb-2">Lokasi Barang</h1>
                 <input
                   type="text"
+                  name="ruang"
+                  onChange={e => changePengadaanHandler(e)}
                   list="cars"
-                  className="w-full border-2 border-slate-500"
+                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
                 <datalist id="cars">
-                  <option>Volvo</option>
-                  <option>Saab</option>
-                  <option>Mercedes</option>
-                  <option>Audi</option>
+                  <option value="101">101</option>
+                  <option value="102">102</option>
+                  <option value="103">103</option>
+                  <option value="104">104</option>
                 </datalist>
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Quantitas Barang</h1>
                 <input
-                  type="text"
+                  type="number"
+                  name="quantity"
+                  onChange={e => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Harga</h1>
                 <input
-                  type="text"
+                  type="number"
+                  name="hargaBarang"
+                  onChange={e => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
@@ -228,7 +296,7 @@ export default function TabelBarang() {
               <input type="file" id="ktp" name="ktp" className="hidden" />
             </div> */}
               <div className="w-full justify-center mt-12 mb-12 flex items-center">
-                <button className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc">
+                <button onClick={e => TambahPengadaan(e)} className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc">
                   Simpan
                 </button>
                 <button
@@ -242,7 +310,7 @@ export default function TabelBarang() {
           </div>
         </div>
       ) : null}
-      {!pengadaanBarang ? (
+      {!pengadaanBarang && !editBarang ? (
         <div className="">
           <div className="bg-white w-[96%] mt-3 mb-[200px]  mx-auto p-3 rounded-lg">
             <div className="flex justify-between">
@@ -271,6 +339,14 @@ export default function TabelBarang() {
             />
           </div>
         </div>
+      ) : null}
+
+      {editBarang ? (
+        <EditBarang
+          setClose={setEditBarang}
+          close={editBarang}
+          idBarang={idBarang}
+        />
       ) : null}
     </>
   );
