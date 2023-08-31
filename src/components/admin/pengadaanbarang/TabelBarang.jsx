@@ -1,13 +1,81 @@
 import { DataGrid } from "@mui/x-data-grid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
 import { BsTrash3 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import EditBarang from "./EditBarang";
+import { GiAutoRepair } from "react-icons/gi";
+import Swal from "sweetalert2";
 
 export default function TabelBarang() {
   const [pengadaanBarang, setPengadaanBarang] = useState(false);
+  let [status, setStatus] = useState("acc");
+  let [styl, setStyl] = useState("");
   const nav = useNavigate();
+  const [idBarang, setIdBarang] = useState("");
+  const [editBarang, setEditBarang] = useState(false);
+
+  const StyleStatus = () => {
+    if (status === "acc") {
+      setStyl("bg-green-500");
+    } else if (status === "pending") {
+      setStyl("bg-yellow-500");
+    } else if (status === "rusak") {
+      setStyl("bg-red-500");
+    } else {
+      setStyl("bg-red-500");
+    }
+  };
+
+  useEffect(() => {
+    StyleStatus();
+  }, [status]);
+
+  const editBarangFunc = () => {
+    setEditBarang(!editBarang);
+  };
+
+  const deleteBarang = () => {
+    const swalWithBootstrapButtons = Swal.mixin({
+      customClass: {
+        confirmButton: "bg-blue-500 p-3 rounded-xl text-white font-abc mr-2",
+        cancelButton: "bg-red-500 p-3 rounded-xl text-white font-abc ml-2 ",
+      },
+      confirmButtonColor: "red",
+      cancelButtonColor: "blue",
+      buttonsStyling: true,
+    });
+
+    swalWithBootstrapButtons
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: "No, cancel!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire(
+            "Deleted!",
+            "Your file has been deleted.",
+            "success"
+          );
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            "Cancelled",
+            "Your imaginary file is safe :)",
+            "error"
+          );
+        }
+      });
+  };
 
   const data = [
     {
@@ -18,7 +86,7 @@ export default function TabelBarang() {
       harga: 2300000,
       lokasi_barang: "D002",
       qty_barang: 3,
-      status: "pending",
+      status: "rusak",
       total: 6900000,
     },
   ];
@@ -67,9 +135,12 @@ export default function TabelBarang() {
       minWidth: 100,
       flex: 0.7,
       renderCell: (params) => {
-        console.log(params);
+        setStatus(params.row.status);
         return (
-          <div className="bg-yellow-500 text-white rounded-lg px-3 py-2">
+          <div
+            id="status"
+            className={`${styl} text-white rounded-lg px-3 py-2`}
+          >
             {params.row.status}
           </div>
         );
@@ -86,16 +157,19 @@ export default function TabelBarang() {
       renderCell: (params) => {
         return (
           <div className="flex">
+            <button className="mr-4">
+              <BsTrash3 color="red" size={20} onClick={deleteBarang} />
+            </button>
+            <button className="mr-4">
+              <GiAutoRepair size={20} />
+            </button>
             <button
-              className="mr-4"
-              onClick={() => nav(`/artikel/${params.id}`)}
+              className=""
+              onClick={() => {
+                editBarangFunc(params.id);
+                setEditBarang(params.id);
+              }}
             >
-              <AiOutlineArrowRight size={20} />
-            </button>
-            <button className="mr-4" onClick={() => deleteArtikel(params.id)}>
-              <BsTrash3 color="red" size={20} />
-            </button>
-            <button className="" onClick={() => edit(1)}>
               <BiEditAlt color="blue" size={20} />
             </button>
           </div>
@@ -153,7 +227,7 @@ export default function TabelBarang() {
                 />
               </div>
               <div className="w-full mt-4">
-                <h1 className="font-abc pb-2">Resi Barang</h1>
+                <h1 className="font-abc pb-2">Suplier</h1>
                 <input
                   type="text"
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
@@ -210,13 +284,13 @@ export default function TabelBarang() {
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
-              <div className="w-full mt-4">
+              {/* <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Total Harga</h1>
                 <input
                   type="text"
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
-              </div>
+              </div> */}
 
               {/* <div className="w-full mt-4">
               <label
@@ -242,7 +316,7 @@ export default function TabelBarang() {
           </div>
         </div>
       ) : null}
-      {!pengadaanBarang ? (
+      {!pengadaanBarang && !editBarang ? (
         <div className="">
           <div className="bg-white w-[96%] mt-3 mb-[200px]  mx-auto p-3 rounded-lg">
             <div className="flex justify-between">
@@ -251,14 +325,14 @@ export default function TabelBarang() {
                   onClick={() => setPengadaanBarang(!pengadaanBarang)}
                   className="bg-[#7B2CBF] mt-1 mb-3 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
                 >
-                  Tambah Barang
+                  Tambah Barang +
                 </button>
               </div>
               <div className="flex">
-                <button className="px-2 h-[30px] rounded-lg bg-yellow-500 mr-2">
+                <button className="px-2 h-[30px] text-white font-abc rounded-lg bg-yellow-500 mr-2">
                   Pending
                 </button>
-                <button className="px-2  h-[30px]  rounded-lg  bg-green-500">
+                <button className="px-2  h-[30px]  text-white font-abc  rounded-lg  bg-green-500">
                   Active
                 </button>
               </div>
@@ -271,6 +345,14 @@ export default function TabelBarang() {
             />
           </div>
         </div>
+      ) : null}
+
+      {editBarang ? (
+        <EditBarang
+          setClose={setEditBarang}
+          close={editBarang}
+          idBarang={idBarang}
+        />
       ) : null}
     </>
   );

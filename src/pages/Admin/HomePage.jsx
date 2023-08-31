@@ -7,15 +7,16 @@ import Aktivitas from "../../components/admin/home/Aktivitas";
 import AdminDetailCard from "../../components/admin/home/AdminDetailCard";
 
 export default function HomePage() {
-  const [open, setOpen] = useState(1);
+  const [open, setOpen] = useState(false);
 
   return (
     <div className="w-full h-[160vh] flex">
-      <div className="w-[16%]">
+      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
         {/* <button onClick={(e) => setOpen(1)}>buka</button> */}
-        {open === 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null}
+        {/* {open === 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null} */}
+        <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
       </div>
-      <div className="w-[84%]">
+      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
         <TopBar>{"Dashboard Admin"}</TopBar>
         <div className="w-full mt-2 h-[50px] mx-auto ">
           <h1 className="text-[20px] font-abc ml-6">

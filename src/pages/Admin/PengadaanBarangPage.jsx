@@ -9,6 +9,7 @@ import { BiEditAlt } from "react-icons/bi";
 
 export default function TambahBarangPage() {
   const [addBarang, setAddBarang] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const data = [
     {
@@ -49,12 +50,6 @@ export default function TambahBarangPage() {
       renderCell: (params) => {
         return (
           <div className="flex">
-            <button
-              className="mr-4"
-              onClick={() => nav(`/artikel/${params.id}`)}
-            >
-              <AiOutlineArrowRight size={20} />
-            </button>
             <button className="mr-4" onClick={() => deleteArtikel(params.id)}>
               <BsTrash3 color="red" size={20} />
             </button>
@@ -72,17 +67,16 @@ export default function TambahBarangPage() {
   data.forEach((a) => {
     row.push({
       id: a.id,
-
       nama_barang: a.nama_barang,
     });
   });
 
   return (
     <div className="w-full h-[100vh] flex">
-      <div className="w-[16%]">
-        <Sidebar setSidebar={2} />
+      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+        <Sidebar setSidebar={2} width={open} setWidth={setOpen} />
       </div>
-      <div className="w-[84%]">
+      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
         <TopBar>{"Pengadaan Barang"}</TopBar>
         <div className="w-[95%] h-[80px] justify-between flex mx-auto">
           <div className="">
@@ -93,13 +87,15 @@ export default function TambahBarangPage() {
               Kategori Barang
             </button>
           </div>
-          <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
-            <input
-              type="text"
-              className="w-full h-full pl-2 rounded-lg"
-              placeholder="Search"
-            />
-          </div>
+          {addBarang ? null : (
+            <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
+              <input
+                type="text"
+                className="w-full h-full pl-2 rounded-lg"
+                placeholder="Search"
+              />
+            </div>
+          )}
         </div>
         <div className="w-[95%] opacity-25 mx-auto mt-0 h-[1px] bg-slate-600"></div>
 
@@ -136,7 +132,6 @@ export default function TambahBarangPage() {
               </div>
             </form>
             <div className="w-[95%] mx-auto mt-6 p-3 bg-white">
-              <h1>Test</h1>
               <DataGrid
                 className="w-full"
                 disableRowSelectionOnClick

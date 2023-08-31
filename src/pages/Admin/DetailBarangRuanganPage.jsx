@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import TopBar from "../../components/layout/TopBar";
 import { DataGrid } from "@mui/x-data-grid";
@@ -7,6 +7,8 @@ import { BsTrash3 } from "react-icons/bs";
 import { BiEditAlt } from "react-icons/bi";
 
 export default function DetailBarangRuangan() {
+  const [open, setOpen] = useState(false);
+
   const dataBarangRuangan = [
     {
       id: 1,
@@ -49,12 +51,12 @@ export default function DetailBarangRuangan() {
       renderCell: (params) => {
         return (
           <div className="flex">
-            <button
+            {/* <button
               className="mr-4"
               onClick={() => nav(`/artikel/${params.id}`)}
             >
               <AiOutlineArrowRight size={20} />
-            </button>
+            </button> */}
             <button className="mr-4" onClick={() => deleteArtikel(params.id)}>
               <BsTrash3 color="red" size={20} />
             </button>
@@ -77,11 +79,11 @@ export default function DetailBarangRuangan() {
 
   return (
     <div className="w-full h-[160vh] flex">
-      <div className="w-[16%]">
+      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
         {/* <button onClick={(e) => setOpen(1)}>buka</button> */}
-        <Sidebar />
+        <Sidebar width={open} setWidth={setOpen} setSidebar={4} />
       </div>
-      <div className="w-[84%]">
+      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
         <TopBar>{"Detail Ruangan D002"}</TopBar>
         <div className="w-full mt-2 h-[50px] mx-auto "></div>
         <div className="w-[95%] mx-auto">
