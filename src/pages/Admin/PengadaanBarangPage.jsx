@@ -19,14 +19,20 @@ export default function TambahBarangPage() {
   })
 
   const TambahKategori = async (e) => {
-    e.preventDefault();
-    const findKategori = await axios.get("http://127.0.0.1:8000/api/findKategori/" + kategori.kodeBarang + "/" + kategori.namaBarang);
-    if (findKategori) {
-      window.alert("dah ada");
-    } else {
-      const tambah = await axios.post("http://127.0.0.1:8000/api/tambahKategori", kategori);
-      if (tambah) {
-        window.location.reload();
+    try {
+      const findKategoriResponse = await axios.get("http://127.0.0.1:8000/api/findKategori/" + kategori.kodeBarang + "/" + kategori.namaBarang);
+
+      if (findKategoriResponse.status === 200) {
+        window.alert("Category already exists");
+      }
+    } catch (error) {
+      try {
+        const tambahResponse = await axios.post("http://127.0.0.1:8000/api/tambahKategori", kategori);
+        if (tambahResponse.status === 200) {
+          window.location.reload();
+        }
+      } catch (error) {
+        console.error("Error adding category:", error);
       }
     }
   }
