@@ -6,7 +6,7 @@ import Tagihan from "../../components/admin/pengadaanbarang/TabelBarang";
 import Aktivitas from "../../components/admin/home/Aktivitas";
 import AdminDetailCard from "../../components/admin/home/AdminDetailCard";
 
-export default function HomePage() {
+export default function HomePageOwner() {
   const [open, setOpen] = useState(false);
 
   return (

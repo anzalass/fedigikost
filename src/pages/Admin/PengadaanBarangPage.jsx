@@ -1,7 +1,7 @@
 import Sidebar from "../../components/layout/Sidebar.jsx";
 import TopBar from "../../components/layout/TopBar.jsx";
 import TableTambahBarang from "../../components/admin/pengadaanbarang/TabelBarang.jsx";
-import axios, { all } from 'axios';
+import axios, { all } from "axios";
 import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { AiOutlineArrowRight } from "react-icons/ai";
@@ -15,97 +15,116 @@ export default function TambahBarangPage() {
   const [allKategori, setallKategori] = useState([]);
   const [kategori, setKategori] = useState({
     kodeBarang: "",
-    namaBarang: ""
-  })
+    namaBarang: "",
+  });
 
   const TambahKategori = async (e) => {
+    e.preventDefault();
     try {
-      const findKategoriResponse = await axios.get("http://127.0.0.1:8000/api/findKategori/" + kategori.kodeBarang + "/" + kategori.namaBarang);
+      const findKategori = await axios.get(
+        "http://127.0.0.1:8000/api/findKategori/" +
+        kategori.kodeBarang +
+        "/" +
+        kategori.namaBarang
+      );
 
-      if (findKategoriResponse.status === 200) {
-        window.alert("Category already exists");
+      if (findKategori.status === 200) {
+        window.alert("dah ada");
       }
     } catch (error) {
-      try {
-        const tambahResponse = await axios.post("http://127.0.0.1:8000/api/tambahKategori", kategori);
-        if (tambahResponse.status === 200) {
-          window.location.reload();
+      if (error.response && error.response.status === 404) {
+        try {
+          const tambah = await axios.post(
+            "http://127.0.0.1:8000/api/tambahKategori",
+            kategori
+          );
+
+          if (tambah) {
+            window.location.reload();
+          }
+        } catch (error) {
+          console.error("Error while adding:", error);
         }
-      } catch (error) {
-        console.error("Error adding category:", error);
+      } else {
+        console.error("Error while searching:", error);
       }
     }
-  }
+  };
 
   const EditHandler = (kodeBarang, namaBarang) => {
-    setKategori(prevData => ({
+    setKategori((prevData) => ({
       ...prevData,
       kodeBarang: kodeBarang,
-      namaBarang: namaBarang
-    })
-    )
+      namaBarang: namaBarang,
+    }));
 
     setIsEdit(true);
-  }
+  };
 
   const TambahHandler = () => {
-    setKategori(prevData => ({
+    setKategori((prevData) => ({
       ...prevData,
       kodeBarang: "",
-      namaBarang: ""
-    })
-    )
+      namaBarang: "",
+    }));
 
     setIsEdit(false);
-  }
+  };
 
   const UpdateKategori = async (id) => {
-    const result = await axios.put("http://127.0.0.1:8000/api/updateKategori/" + id, kategori);
+    const result = await axios.put(
+      "http://127.0.0.1:8000/api/updateKategori/" + id,
+      kategori
+    );
     if (result) {
       window.location.reload();
     }
-  }
+  };
 
   const DeleteKategori = async (id) => {
     console.log("ini id nya : ", id);
-    const result = await axios.delete("http://127.0.0.1:8000/api/kategoriDelete/" + id);
+    const result = await axios.delete(
+      "http://127.0.0.1:8000/api/kategoriDelete/" + id
+    );
     if (result) {
       window.location.reload();
     }
-  }
+  };
 
   const changeKategoriHandler = (e) => {
     setKategori({
       ...kategori,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
     console.log(kategori);
-  }
+  };
 
   useEffect(() => {
     fetchData();
-  }, [])
+  }, []);
 
   const fetchData = async () => {
     try {
       const queryParams = {
-        quantity: 1
-      }
+        quantity: 1,
+      };
       const result = await axios.get("http://127.0.0.1:8000/api/pengadaan");
       setBarang(result.data.results);
 
-      const resultKategori = await axios.get("http://127.0.0.1:8000/api/getKategori");
+      const resultKategori = await axios.get(
+        "http://127.0.0.1:8000/api/getKategori"
+      );
       setallKategori(resultKategori.data.results);
 
       // Add a delay before making the next request
-      await new Promise(resolve => setTimeout(resolve, 1000)); // 1000 milliseconds
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 milliseconds
     } catch (err) {
       console.log("something went wrong");
     }
-  }
-
+  };
 
   const [addBarang, setAddBarang] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const columns = [
     { field: "id", headerName: "Kode Barang", minWidth: 50, flex: 0.5 },
@@ -127,16 +146,13 @@ export default function TambahBarangPage() {
       renderCell: (params) => {
         return (
           <div className="flex">
-            <button
-              className="mr-4"
-              onClick={() => nav(`/artikel/${params.id}`)}
-            >
-              <AiOutlineArrowRight size={20} />
-            </button>
             <button className="mr-4" onClick={() => DeleteKategori(params.id)}>
               <BsTrash3 color="red" size={20} />
             </button>
-            <button className="" onClick={() => EditHandler(params.id, params.row.nama_barang)}>
+            <button
+              className=""
+              onClick={() => EditHandler(params.id, params.row.nama_barang)}
+            >
               <BiEditAlt color="blue" size={20} />
             </button>
           </div>
@@ -157,10 +173,10 @@ export default function TambahBarangPage() {
 
   return (
     <div className="w-full h-[100vh] flex">
-      <div className="w-[16%]">
-        <Sidebar setSidebar={2} />
+      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+        <Sidebar setSidebar={2} width={open} setWidth={setOpen} />
       </div>
-      <div className="w-[84%]">
+      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
         <TopBar>{"Pengadaan Barang"}</TopBar>
         <div className="w-[95%] h-[80px] justify-between flex mx-auto">
           <div className="">
@@ -171,13 +187,15 @@ export default function TambahBarangPage() {
               Kategori Barang
             </button>
           </div>
-          <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
-            <input
-              type="text"
-              className="w-full h-full pl-2 rounded-lg"
-              placeholder="Search"
-            />
-          </div>
+          {addBarang ? null : (
+            <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
+              <input
+                type="text"
+                className="w-full h-full pl-2 rounded-lg"
+                placeholder="Search"
+              />
+            </div>
+          )}
         </div>
         <div className="w-[95%] opacity-25 mx-auto mt-0 h-[1px] bg-slate-600"></div>
 
@@ -193,7 +211,7 @@ export default function TambahBarangPage() {
                     type="text"
                     value={kategori.kodeBarang}
                     name="kodeBarang"
-                    onChange={e => changeKategoriHandler(e)}
+                    onChange={(e) => changeKategoriHandler(e)}
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
                 </div>
@@ -203,13 +221,16 @@ export default function TambahBarangPage() {
                     type="text"
                     value={kategori.namaBarang}
                     name="namaBarang"
-                    onChange={e => changeKategoriHandler(e)}
+                    onChange={(e) => changeKategoriHandler(e)}
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
                 </div>
 
                 <div className="w-full justify-center mt-12 flex items-center">
-                  <button onClick={e => UpdateKategori(kategori.kodeBarang)} className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc">
+                  <button
+                    onClick={(e) => UpdateKategori(kategori.kodeBarang)}
+                    className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc"
+                  >
                     Simpan
                   </button>
                   <button
@@ -219,14 +240,16 @@ export default function TambahBarangPage() {
                     Batal
                   </button>
                 </div>
-              </div>) : (<div className="w-[95%] mx-auto mt-6 p-3">
+              </div>
+            ) : (
+              <div className="w-[95%] mx-auto mt-6 p-3">
                 <div className="w-full mt-4">
                   <h1 className="font-abc pb-2 ">Kode Barang</h1>
                   <input
                     type="text"
                     value={kategori.kodeBarang}
                     name="kodeBarang"
-                    onChange={e => changeKategoriHandler(e)}
+                    onChange={(e) => changeKategoriHandler(e)}
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
                 </div>
@@ -236,13 +259,16 @@ export default function TambahBarangPage() {
                     type="text"
                     value={kategori.namaBarang}
                     name="namaBarang"
-                    onChange={e => changeKategoriHandler(e)}
+                    onChange={(e) => changeKategoriHandler(e)}
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
                 </div>
 
                 <div className="w-full justify-center mt-12 flex items-center">
-                  <button onClick={e => TambahKategori(e)} className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc">
+                  <button
+                    onClick={(e) => TambahKategori(e)}
+                    className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc"
+                  >
                     Simpan
                   </button>
                   <button
@@ -252,7 +278,8 @@ export default function TambahBarangPage() {
                     Batal
                   </button>
                 </div>
-              </div>)}
+              </div>
+            )}
             <div className="w-[95%] mx-auto mt-6 p-3 bg-white">
               <DataGrid
                 className="w-full"

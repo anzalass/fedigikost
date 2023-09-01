@@ -11,7 +11,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { HiMiniClipboardDocumentList } from "react-icons/hi2";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function Sidebar({ open, setSidebar, width, setWidth }) {
+export default function SidebarOwner({ open, setSidebar, width, setWidth }) {
   const sidebarMenu = [
     {
       title: "Beranda",
