@@ -1,12 +1,50 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import TabelDataRuangan from "../../components/admin/dataruangan/TabelDataRuangan";
 import Sidebar from "../../components/layout/Sidebar";
 import TopBar from "../../components/layout/TopBar";
+import axios from "axios";
 
 export default function DataRuanganPage() {
   const [addRuangan, setaddRuangan] = useState(0);
   const [editRuangan, setEditRuangan] = useState(0);
   const [open, setOpen] = useState(false);
+  const [dataRuangan, setDataRuangan] = useState([]);
+
+  useEffect(() => {
+    getAllRuangan();
+  }, [])
+
+  const getAllRuangan = async () => {
+    try {
+      const ruang = await axios.get("http://127.0.0.1:8000/api/getRuang");
+      console.log(ruang);
+      setDataRuangan(ruang.data.results);
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 milliseconds
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  const [dataRuang, setDataRuang] = useState({
+    kodeRuang: "",
+    ruang: ""
+  })
+
+  const changeRuangHandler = (e) => {
+    setDataRuang({
+      ...dataRuang,
+      [e.target.name]: e.target.value,
+    });
+  }
+
+  const tambahRuang = async () => {
+    const add = await axios.post("http://127.0.0.1:8000/api/tambahRuang", dataRuang);
+
+    if (add.status === 200) {
+      window.alert("nambah");
+      // window.location.reload();
+    }
+  }
 
   return (
     <div className="w-full h-[160vh] flex">
@@ -34,15 +72,17 @@ export default function DataRuanganPage() {
             </div>
           </div>
           {addRuangan === 0 && editRuangan === 0 ? (
-            <TabelDataRuangan edit={setEditRuangan} />
+            <TabelDataRuangan edit={setEditRuangan} data={dataRuangan} />
           ) : null}
           {addRuangan === 1 ? (
             <div className="w-[95%] mx-auto h-[90vh] bg-white rounded-xl">
-              <form action="" className="w-[95%] mx-auto mt-6 p-3">
+              <div action="" className="w-[95%] mx-auto mt-6 p-3">
                 <div className="w-full mt-4">
                   <h1 className="font-abc pb-2 ">Kode</h1>
                   <input
                     type="text"
+                    name="idRuang"
+                    onChange={e => changeRuangHandler(e)}
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
                 </div>
@@ -50,6 +90,8 @@ export default function DataRuanganPage() {
                   <h1 className="font-abc pb-2">Nama Ruangan</h1>
                   <input
                     type="text"
+                    name="namaRuang"
+                    onChange={e => changeRuangHandler(e)}
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
                 </div>
@@ -69,7 +111,7 @@ export default function DataRuanganPage() {
                   />
                 </div>
                 <div className="w-full justify-center mt-12 flex items-center">
-                  <button className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc">
+                  <button onClick={() => tambahRuang()} className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc">
                     Simpan
                   </button>
                   <button
@@ -79,7 +121,7 @@ export default function DataRuanganPage() {
                     Batal
                   </button>
                 </div>
-              </form>
+              </div>
             </div>
           ) : null}
           {editRuangan === 1 ? (
@@ -90,6 +132,9 @@ export default function DataRuanganPage() {
                   <h1 className="font-abc pb-2 ">Kode</h1>
                   <input
                     type="text"
+                    name="idRuang"
+                    onChange={e => changeRuangHandler(e)}
+                    disabled
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
                 </div>
@@ -97,6 +142,8 @@ export default function DataRuanganPage() {
                   <h1 className="font-abc pb-2">Nama Ruangan</h1>
                   <input
                     type="text"
+                    name="namaRuang"
+                    onChange={e => changeRuangHandler(e)}
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
                 </div>

@@ -211,6 +211,7 @@ export default function TambahBarangPage() {
                     type="text"
                     value={kategori.kodeBarang}
                     name="kodeBarang"
+                    disabled
                     onChange={(e) => changeKategoriHandler(e)}
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
