@@ -1,31 +1,30 @@
 import { DataGrid } from "@mui/x-data-grid";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import TambahPemeliharaan from "./TambahPemeliharaan";
 import { BiEditAlt, BiPrinter } from "react-icons/bi";
 import { BsTrash3 } from "react-icons/bs";
 import Swal from "sweetalert2";
+import axios from "axios";
 
 // import "sweetalert2/src/sweetalert2.scss";
 
 export default function TablePengeluaran() {
   const [addPemeliharaan, setAddPemeliharaan] = useState(false);
+  const [dataPemeliharaan, setDataPemeliharaan] = useState([]);
+
+  useEffect(()=>{
+      fetchPemeliharaan();
+  },[])
+
+  const fetchPemeliharaan = async()=>{
+    const response = await axios.get("http://127.0.0.1:8000/api/getPemeliharaan");
+
+    setDataPemeliharaan(response.data.results);
+  }
 
   const deleteBarang = () => {
     Swal.fire("Any fool can use a computer");
   };
-
-  const data = [
-    {
-      id: 1,
-      tgl: "27 Agustus 2023",
-      nama_barang: "Kulkas : Polytron",
-      keterangan: "Memperbaiki kulkas kurang dingin",
-      lokasi_barang: 112,
-      status: "dalam perbaikan",
-      quantity: 2,
-      biaya: 500000,
-    },
-  ];
 
   const columns = [
     { field: "id", headerName: "ID ", minWidth: 50, flex: 0.5 },
@@ -54,8 +53,8 @@ export default function TablePengeluaran() {
       flex: 0.7,
     },
     {
-      field: "qty",
-      headerName: "Quantity",
+      field: "jumlah",
+      headerName: "Jumlah",
       minWidth: 100,
       flex: 0.7,
     },
@@ -97,16 +96,16 @@ export default function TablePengeluaran() {
 
   const row = [];
 
-  data.forEach((a) => {
+  dataPemeliharaan.forEach((a) => {
     row.push({
-      id: a.id,
-      tgl: a.tgl,
-      nama_barang: a.nama_barang,
-      keterangan: a.keterangan,
-      lokasi_barang: a.lokasi_barang,
+      id: a.kodePemeliharaan,
+      tgl: a.created_at,
+      nama_barang: a.kodeBarang,
+      jumlah:a.jumlah,
+      keterangan: "wkwk",
+      lokasi_barang: a.kodeRuang,
       status: a.status,
-      biaya: a.biaya,
-      qty: a.quantity,
+      biaya: a.harga,
     });
   });
 
