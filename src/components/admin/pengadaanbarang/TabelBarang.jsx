@@ -17,6 +17,7 @@ export default function TabelBarang({ data }) {
   let [styl, setStyl] = useState("");
   const nav = useNavigate();
   const [idBarang, setIdBarang] = useState("");
+  const [kategori, setKategori] = useState([]);
   const [pengadaan, setPengadaan] = useState({
     namaBarang: "",
     merek: "",
@@ -27,6 +28,18 @@ export default function TabelBarang({ data }) {
     supplier: "",
     buktiNota: "",
   });
+
+  useEffect(()=>{
+    getKategori();
+  },[])
+
+  const getKategori = async()=>{
+    const data = await axios.get("http://127.0.0.1:8000/api/getKategori");
+
+    setKategori(data.data.results);
+
+  }
+
   const [detailFoto, setDetailFoto] = useState(false);
 
   const changePengadaanHandler = (e) => {
@@ -251,9 +264,11 @@ export default function TabelBarang({ data }) {
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 >
                   <option value="kulkas">Pilih Category</option>
-                  <option value="kulkas">kulkas</option>
-                  <option value="kulkas">kulkas</option>
-                  <option value="kulkas">kulkas</option>
+                  {kategori.map((item, index)=>{
+                    return(
+                      <option value={`${item.kodeBarang}`}>{item.namaBarang}:{item.kategori}</option>
+                    )
+                  })}
                 </select>
               </div>
               <div className="w-full mt-4">

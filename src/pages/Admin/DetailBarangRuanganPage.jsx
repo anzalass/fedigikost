@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import TopBar from "../../components/layout/TopBar";
 import { DataGrid } from "@mui/x-data-grid";
@@ -8,29 +8,79 @@ import { BiEditAlt, BiPrinter } from "react-icons/bi";
 import { GiAutoRepair } from "react-icons/gi";
 import ModalMaintenence from "../../components/admin/detailbarangruangan/ModalMaintenence";
 import ModalChangeStatus from "../../components/admin/detailbarangruangan/ModalChangeStatus";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
 export default function DetailBarangRuangan() {
   const [open, setOpen] = useState(false);
   const [maintenence, setMaintenence] = useState(false);
   const [changeStatus, setChangeStatus] = useState(false);
+  const [data, setData] = useState([]);
 
-  const dataBarangRuangan = [
-    {
-      id: 1,
-      nama_barang: "Kipas",
-      qtybarang: 2,
-    },
-    {
-      id: 2,
-      nama_barang: "TV",
-      qtybarang: 2,
-    },
-    {
-      id: 3,
-      nama_barang: "Kulkas",
-      qtybarang: 2,
-    },
-  ];
+  const [pengadaan, setPengadaan] = useState([])
+
+  // const [asetBarang, setAsetBarang] = useState([]);
+  const [barang, setBarang] = useState([]);
+  const [pemeliharaanBarang, setPemeliharaanBarang] = useState([]);
+  const rowBarangRuangan = [];
+
+  const {id} = useParams();
+
+  useEffect(()=>{
+    fetchData();
+  },[id])
+
+  barang.forEach(async(a) => {
+    let jumlahBarang = 0;
+    // const getPengadaan = await axios.get("http://127.0.0.1:8000/api/findByKategori/"+a.kodeBarang);
+    console.log(a.kodeBarang);
+    const filterPengadaan = pengadaan.filter(item=> item.kodeBarang == a.kodeBarang && item.kodeRuang == id);
+    const filterPemeliharaan = pemeliharaanBarang.filter(item=> item.kodeBarang == a.kodeBarang && item.kodeRuang == id);
+
+    filterPengadaan.forEach((bi)=>{
+      jumlahBarang += bi.quantity;
+    })
+
+    filterPemeliharaan.forEach((bi)=>{
+      jumlahBarang -= bi.jumlah;
+    })
+    console.log(a.kodeBarang);
+
+    rowBarangRuangan.push({
+      id: a.kodeBarang,
+      nama_barang: a.namaBarang,
+      qtybarang: jumlahBarang,
+    });
+  });
+
+  const hapusPemeliharaan = async(id)=>{
+    try{
+      const response = await axios.delete(`http://127.0.0.1:8000/api/deletePemeliharaan/${id}`);
+
+      if(response){
+        window.location.reload();
+      }
+    }catch(err){
+      alert(err);
+    }
+  }
+
+
+  const fetchData = async() =>{
+    try{
+      // const data = await axios.get("http://127.0.0.1:8000/api/getBarangRuangan/"+id);
+      const getBarang = await axios.get("http://127.0.0.1:8000/api/getKategori");
+      const getPengadaan = await axios.get("http://127.0.0.1:8000/api/pengadaan");
+      const getPemeliharan = await axios.get("http://127.0.0.1:8000/api/getPemeliharaan");
+      // setAsetBarang(data.data.results);
+      setBarang(getBarang.data.results);
+      setPengadaan(getPengadaan.data.results);
+      setPemeliharaanBarang(getPemeliharan.data.results);
+    }catch(err){
+      alert(err);
+    }
+  }
+
   const columnsRuangan = [
     { field: "id", headerName: "ID", minWidth: 50, flex: 0.2 },
     {
@@ -58,7 +108,7 @@ export default function DetailBarangRuangan() {
           <div className="flex">
             <button
               className="mr-4 "
-              onClick={() => setMaintenence(!maintenence)}
+              onClick={() => {setMaintenence(!maintenence); setData(params.row)}}
             >
               <GiAutoRepair size={20} />
             </button>
@@ -73,45 +123,16 @@ export default function DetailBarangRuangan() {
       },
     },
   ];
-  const rowBarangRuangan = [];
 
-  dataBarangRuangan.forEach((a) => {
-    rowBarangRuangan.push({
-      id: a.id,
-      nama_barang: a.nama_barang,
-      qtybarang: a.qtybarang,
-    });
-  });
-
-  const dataMaintenenceRuangan = [
-    {
-      id: 1,
-      tgl: "27 Agustus 2023",
-      nama_barang: "Kulkas : Polytron",
-      keterangan: "Memperbaiki kulkas kurang dingin",
-      lokasi_barang: 112,
-      status: "dalam perbaikan",
-      biaya: 500000,
-    },
-    {
-      id: 2,
-      tgl: "27 Agustus 2023",
-      nama_barang: "Kulkas : Polytron",
-      keterangan: "Memperbaiki kulkas kurang dingin",
-      lokasi_barang: 112,
-      status: "dalam perbaikan",
-      biaya: 500000,
-    },
-    {
-      id: 3,
-      tgl: "27 Agustus 2023",
-      nama_barang: "Kulkas : Polytron",
-      keterangan: "Memperbaiki kulkas kurang dingin",
-      lokasi_barang: 112,
-      status: "dalam perbaikan",
-      biaya: 500000,
-    },
-  ];
+  const getPengadaanByKodeBarang = async (kodeBarang) => {
+    try {
+      const response = await axios.get(`http://127.0.0.1:8000/api/findByKategori/${kodeBarang}`);
+      return response.data.results;
+    } catch (error) {
+      console.error('Error fetching pengadaan data:', error);
+      return [];
+    }
+  };
 
   const columnsRuanganPemeliharaan = [
     { field: "id", headerName: "ID ", minWidth: 50, flex: 0.5 },
@@ -124,6 +145,12 @@ export default function DetailBarangRuangan() {
     {
       field: "nama_barang",
       headerName: "Nama Barang",
+      minWidth: 100,
+      flex: 0.7,
+    },
+    {
+      field: "jumlah",
+      headerName: "Jumlah",
       minWidth: 100,
       flex: 0.7,
     },
@@ -158,18 +185,36 @@ export default function DetailBarangRuangan() {
         );
       },
     },
+    {
+      field: "aksi",
+      headerName: "Aksi",
+      flex: 1,
+      minWidth: 150,
+
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <div className="flex">
+            <button onClick={()=>hapusPemeliharaan(params.id)} className="mr-4">
+              <BsTrash3 color="red" size={20} />
+            </button>
+          </div>
+        );
+      },
+    },
   ];
 
   const rowBarangRuanganPemeliharaan = [];
-  dataMaintenenceRuangan.forEach((a) => {
+  pemeliharaanBarang.forEach((a) => {
     rowBarangRuanganPemeliharaan.push({
-      id: a.id,
-      tgl: a.tgl,
-      nama_barang: a.nama_barang,
-      keterangan: a.keterangan,
-      lokasi_barang: a.lokasi_barang,
+      id: a.kodePemeliharaan,
+      tgl: a.created_at,
+      nama_barang: a.kodeBarang,
+      jumlah:a.jumlah,
+      keterangan: "wkwk",
+      lokasi_barang: a.kodeRuang,
       status: a.status,
-      biaya: a.biaya,
+      biaya: a.harga,
     });
   });
 
@@ -179,7 +224,7 @@ export default function DetailBarangRuangan() {
         <ModalChangeStatus open={changeStatus} setOpen={setChangeStatus} />
       ) : null}
       {maintenence ? (
-        <ModalMaintenence open={maintenence} setOpen={setMaintenence} />
+        <ModalMaintenence open={maintenence} setOpen={setMaintenence} data={data} ruang={id}/>
       ) : null}
       <div className="w-full h-[160vh] flex">
         <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
@@ -194,7 +239,7 @@ export default function DetailBarangRuangan() {
               disableRowSelectionOnClick
               autoHeight
               columns={columnsRuangan}
-              rows={rowBarangRuangan}
+              rows={rowBarangRuangan.filter(item=> item.qtybarang)}
             />
           </div>
           <div className="w-[95%] mx-auto mt-[100px]">

@@ -1,12 +1,29 @@
-import React from "react";
+import React,{useEffect, useState} from "react";
 import Frame from "../../../assets/Frame.png";
 import Frame1 from "../../../assets/Frame(1).png";
 import Frame2 from "../../../assets/Frame(2).png";
 import Frame3 from "../../../assets/Frame(3).png";
 import Frame4 from "../../../assets/Frame(4).png";
 import Frame5 from "../../../assets/Frame(5).png";
+import axios from "axios";
 
 export default function Indikator() {
+  const [allRuang, setAllRuang] = useState([]);
+  useEffect(()=>{
+    fetchData();
+  },[])
+
+  const fetchData = async()=>{
+    try {
+      const ruang = await axios.get("http://127.0.0.1:8000/api/getRuang");
+      console.log(ruang.data.results);
+      setAllRuang(ruang.data.results);
+      // setDataRuangan(ruang.data.results);
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 milliseconds
+    } catch (err) {
+      console.log(err);
+    }
+  }
   return (
     <div className="mt-3 p-3 w-[95%] mx-auto bg-white rounded-lg h-[40vh]">
       <div className=" grid grid-cols-2 gap-4 ml-2 md:grid-cols-3 lg:grid-cols-4">
@@ -29,7 +46,7 @@ export default function Indikator() {
           />
         </div>
         <div className="h-[100px] pl-3 pt-6 relative rounded-md w-[240px] bg-[#07BEB8]">
-          <h1 className=" text-white font-[500] text-[20px]">5</h1>
+          <h1 className=" text-white font-[500] text-[20px]">{allRuang.length}</h1>
           <h1 className=" text-white font-[500] text-[16px]">
             Kategori Barang
           </h1>

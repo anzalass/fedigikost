@@ -47,7 +47,7 @@ export default function TabelDataRuangan({ edit, data }) {
           <div className="flex">
             <button
               className="mr-4"
-              onClick={() => nav(`/detail-ruangan/asdasd`)}
+              onClick={() => nav(`/detail-ruangan/${params.id}`)}
             >
               <AiOutlineArrowRight size={20} />
             </button>
