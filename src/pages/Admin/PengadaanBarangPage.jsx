@@ -23,9 +23,9 @@ export default function TambahBarangPage() {
     try {
       const findKategori = await axios.get(
         "http://127.0.0.1:8000/api/findKategori/" +
-        kategori.kodeBarang +
-        "/" +
-        kategori.namaBarang
+          kategori.kodeBarang +
+          "/" +
+          kategori.namaBarang
       );
 
       if (findKategori.status === 200) {

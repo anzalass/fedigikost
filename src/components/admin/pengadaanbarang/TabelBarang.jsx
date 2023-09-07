@@ -13,8 +13,6 @@ import EditBarang from "./EditBarang";
 export default function TabelBarang({ data }) {
   const [editBarang, setEditBarang] = useState(false);
   const [pengadaanBarang, setPengadaanBarang] = useState(false);
-  let [status, setStatus] = useState("acc");
-  let [styl, setStyl] = useState("");
   const nav = useNavigate();
   const [idBarang, setIdBarang] = useState("");
   const [kategori, setKategori] = useState([]);
@@ -29,16 +27,13 @@ export default function TabelBarang({ data }) {
     buktiNota: "",
   });
 
-  useEffect(()=>{
+  useEffect(() => {
     getKategori();
-  },[])
+  }, []);
 
-  const getKategori = async()=>{
+  const getKategori = async () => {
     const data = await axios.get("http://127.0.0.1:8000/api/getKategori");
-
-    setKategori(data.data.results);
-
-  }
+  };
 
   const [detailFoto, setDetailFoto] = useState(false);
 
@@ -115,50 +110,62 @@ export default function TabelBarang({ data }) {
   // };
 
   const columns = [
-    { field: "id", headerName: "Resi Barang", minWidth: 50, flex: 0.5 },
+    {
+      field: "id",
+      headerName: "Resi Barang",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      minWidth: 50,
+      flex: 0.5,
+    },
     {
       field: "nama_barang",
       headerName: "Nama Barang",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "tgl",
       headerName: "Tanggal Pembelian",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 150,
       flex: 0.7,
     },
     {
       field: "harga",
       headerName: "Harga Barang",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "qty_barang",
       headerName: "Qty Barang",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "lokasi_barang",
       headerName: "Lokasi Barang",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "total_harga",
       headerName: "Total Harga",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "foto",
       headerName: "Foto",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
       renderCell: (params) => {
-        setStatus(params.row.status);
         return (
           <img
             onClick={() => setDetailFoto(!detailFoto)}
@@ -171,14 +178,20 @@ export default function TabelBarang({ data }) {
     {
       field: "status",
       headerName: "Status",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
+      sortable: false,
       renderCell: (params) => {
-        setStatus(params.row.status);
         return (
           <div
-            id="status"
-            className={`${styl} text-white rounded-lg px-3 py-2`}
+            className={`${
+              params.row.status === "pending"
+                ? "bg-yellow-400"
+                : params.row.status === "acc"
+                ? "bg-green-500"
+                : "bg-red-600"
+            } h-full text-center pt-3 text-white font-abc w-full `}
           >
             {params.row.status}
           </div>
@@ -189,6 +202,7 @@ export default function TabelBarang({ data }) {
     {
       field: "aksi",
       headerName: "Aksi",
+      headerClassName: "bg-slate-200 text-center font-abc",
       flex: 0.7,
       minWidth: 150,
 
@@ -233,7 +247,7 @@ export default function TabelBarang({ data }) {
       lokasi_barang: a.ruang,
       qty_barang: a.quantity,
       total_harga: a.hargaBarang * a.quantity,
-      status: a.buktiNota,
+      status: a?.status,
     });
   });
 
@@ -264,10 +278,12 @@ export default function TabelBarang({ data }) {
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 >
                   <option value="kulkas">Pilih Category</option>
-                  {kategori.map((item, index)=>{
-                    return(
-                      <option value={`${item.kodeBarang}`}>{item.namaBarang}:{item.kategori}</option>
-                    )
+                  {kategori.map((item, index) => {
+                    return (
+                      <option key={index} value={`${item.kodeBarang}`}>
+                        {item.namaBarang}:{item.kategori}
+                      </option>
+                    );
                   })}
                 </select>
               </div>
@@ -445,7 +461,7 @@ export default function TabelBarang({ data }) {
                     <div className="">
                       <select
                         name=""
-                        id="status"
+                        id="statuss"
                         className="border h-[34px] rounded-xl w-[100px] pl-2 "
                       >
                         <option value="">Status</option>
@@ -465,6 +481,7 @@ export default function TabelBarang({ data }) {
                 autoHeight
                 columns={columns}
                 rows={row}
+                data={data}
               />
             </div>
           </div>

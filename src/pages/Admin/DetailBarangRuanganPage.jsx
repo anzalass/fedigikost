@@ -17,33 +17,37 @@ export default function DetailBarangRuangan() {
   const [changeStatus, setChangeStatus] = useState(false);
   const [data, setData] = useState([]);
 
-  const [pengadaan, setPengadaan] = useState([])
+  const [pengadaan, setPengadaan] = useState([]);
 
   // const [asetBarang, setAsetBarang] = useState([]);
   const [barang, setBarang] = useState([]);
   const [pemeliharaanBarang, setPemeliharaanBarang] = useState([]);
   const rowBarangRuangan = [];
 
-  const {id} = useParams();
+  const { id } = useParams();
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  },[id])
+  }, [id]);
 
-  barang.forEach(async(a) => {
+  barang.forEach(async (a) => {
     let jumlahBarang = 0;
     // const getPengadaan = await axios.get("http://127.0.0.1:8000/api/findByKategori/"+a.kodeBarang);
     console.log(a.kodeBarang);
-    const filterPengadaan = pengadaan.filter(item=> item.kodeBarang == a.kodeBarang && item.kodeRuang == id);
-    const filterPemeliharaan = pemeliharaanBarang.filter(item=> item.kodeBarang == a.kodeBarang && item.kodeRuang == id);
+    const filterPengadaan = pengadaan.filter(
+      (item) => item.kodeBarang == a.kodeBarang && item.kodeRuang == id
+    );
+    const filterPemeliharaan = pemeliharaanBarang.filter(
+      (item) => item.kodeBarang == a.kodeBarang && item.kodeRuang == id
+    );
 
-    filterPengadaan.forEach((bi)=>{
+    filterPengadaan.forEach((bi) => {
       jumlahBarang += bi.quantity;
-    })
+    });
 
-    filterPemeliharaan.forEach((bi)=>{
+    filterPemeliharaan.forEach((bi) => {
       jumlahBarang -= bi.jumlah;
-    })
+    });
     console.log(a.kodeBarang);
 
     rowBarangRuangan.push({
@@ -53,33 +57,40 @@ export default function DetailBarangRuangan() {
     });
   });
 
-  const hapusPemeliharaan = async(id)=>{
-    try{
-      const response = await axios.delete(`http://127.0.0.1:8000/api/deletePemeliharaan/${id}`);
+  const hapusPemeliharaan = async (id) => {
+    try {
+      const response = await axios.delete(
+        `http://127.0.0.1:8000/api/deletePemeliharaan/${id}`
+      );
 
-      if(response){
+      if (response) {
         window.location.reload();
       }
-    }catch(err){
+    } catch (err) {
       alert(err);
     }
-  }
+  };
 
-
-  const fetchData = async() =>{
-    try{
+  const fetchData = async () => {
+    try {
       // const data = await axios.get("http://127.0.0.1:8000/api/getBarangRuangan/"+id);
-      const getBarang = await axios.get("http://127.0.0.1:8000/api/getKategori");
-      const getPengadaan = await axios.get("http://127.0.0.1:8000/api/pengadaan");
-      const getPemeliharan = await axios.get("http://127.0.0.1:8000/api/getPemeliharaan");
+      const getBarang = await axios.get(
+        "http://127.0.0.1:8000/api/getKategori"
+      );
+      const getPengadaan = await axios.get(
+        "http://127.0.0.1:8000/api/pengadaan"
+      );
+      const getPemeliharan = await axios.get(
+        "http://127.0.0.1:8000/api/getPemeliharaan"
+      );
       // setAsetBarang(data.data.results);
       setBarang(getBarang.data.results);
       setPengadaan(getPengadaan.data.results);
       setPemeliharaanBarang(getPemeliharan.data.results);
-    }catch(err){
+    } catch (err) {
       alert(err);
     }
-  }
+  };
 
   const columnsRuangan = [
     { field: "id", headerName: "ID", minWidth: 50, flex: 0.2 },
@@ -108,7 +119,10 @@ export default function DetailBarangRuangan() {
           <div className="flex">
             <button
               className="mr-4 "
-              onClick={() => {setMaintenence(!maintenence); setData(params.row)}}
+              onClick={() => {
+                setMaintenence(!maintenence);
+                setData(params.row);
+              }}
             >
               <GiAutoRepair size={20} />
             </button>
@@ -126,10 +140,12 @@ export default function DetailBarangRuangan() {
 
   const getPengadaanByKodeBarang = async (kodeBarang) => {
     try {
-      const response = await axios.get(`http://127.0.0.1:8000/api/findByKategori/${kodeBarang}`);
+      const response = await axios.get(
+        `http://127.0.0.1:8000/api/findByKategori/${kodeBarang}`
+      );
       return response.data.results;
     } catch (error) {
-      console.error('Error fetching pengadaan data:', error);
+      console.error("Error fetching pengadaan data:", error);
       return [];
     }
   };
@@ -195,7 +211,10 @@ export default function DetailBarangRuangan() {
       renderCell: (params) => {
         return (
           <div className="flex">
-            <button onClick={()=>hapusPemeliharaan(params.id)} className="mr-4">
+            <button
+              onClick={() => hapusPemeliharaan(params.id)}
+              className="mr-4"
+            >
               <BsTrash3 color="red" size={20} />
             </button>
           </div>
@@ -210,8 +229,8 @@ export default function DetailBarangRuangan() {
       id: a.kodePemeliharaan,
       tgl: a.created_at,
       nama_barang: a.kodeBarang,
-      jumlah:a.jumlah,
-      keterangan: "wkwk",
+      jumlah: a.jumlah,
+      keterangan: a.keterangan,
       lokasi_barang: a.kodeRuang,
       status: a.status,
       biaya: a.harga,
@@ -224,7 +243,12 @@ export default function DetailBarangRuangan() {
         <ModalChangeStatus open={changeStatus} setOpen={setChangeStatus} />
       ) : null}
       {maintenence ? (
-        <ModalMaintenence open={maintenence} setOpen={setMaintenence} data={data} ruang={id}/>
+        <ModalMaintenence
+          open={maintenence}
+          setOpen={setMaintenence}
+          data={data}
+          ruang={id}
+        />
       ) : null}
       <div className="w-full h-[160vh] flex">
         <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
@@ -238,15 +262,17 @@ export default function DetailBarangRuangan() {
             <DataGrid
               disableRowSelectionOnClick
               autoHeight
+              className="bg-white"
               columns={columnsRuangan}
-              rows={rowBarangRuangan.filter(item=> item.qtybarang)}
+              rows={rowBarangRuangan.filter((item) => item.qtybarang)}
             />
           </div>
-          <div className="w-[95%] mx-auto mt-[100px]">
-            <h1>Daftar Pemeliharaan</h1>
+          <div className="w-[95%] mx-auto mt-[50px]">
+            <h1 className="font-abc">Daftar Pemeliharaan</h1>
             <DataGrid
               disableRowSelectionOnClick
               autoHeight
+              className="bg-white"
               columns={columnsRuanganPemeliharaan}
               rows={rowBarangRuanganPemeliharaan}
             />
