@@ -1,7 +1,6 @@
 import React from "react";
-import testgambar from "../../../assets/img_car.png";
 
-export default function FotoDetail({ open, setOpen }) {
+export default function FotoDetail({ open, setOpen, foto }) {
   return (
     <div className="w-full fixed left-0 top-0 h-screen bg-[#00000030] z-40">
       <div className="h-[500px] relative  mx-auto w-[800px] mt-[80px] bg-white">
@@ -11,7 +10,7 @@ export default function FotoDetail({ open, setOpen }) {
         >
           X
         </button>
-        <img src={testgambar} className="w-full object-fit py-5 px-5" alt="" />
+        <img src={foto} className="w-full object-fit py-5 px-5" alt="" />
       </div>
     </div>
   );

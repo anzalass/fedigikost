@@ -11,12 +11,22 @@ import axios from "axios";
 export default function TablePengeluaran() {
   const [addPemeliharaan, setAddPemeliharaan] = useState(false);
   const [dataPemeliharaan, setDataPemeliharaan] = useState([]);
+  const [filterBulan, setFilterBulan] = useState('');
+  const [filterTahun, setFilterTahun] = useState('');
+  const bulan = ['Januari', 'Febuari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  let tahunSekarang = new Date().getFullYear() + 1;
+  const tahun = [];
 
-  useEffect(()=>{
-      fetchPemeliharaan();
-  },[])
+  for (let i = 0; i < 10; i++) {
+    tahun.push(tahunSekarang - 1);
+    tahunSekarang = tahunSekarang - 1;
+  }
 
-  const fetchPemeliharaan = async()=>{
+  useEffect(() => {
+    fetchPemeliharaan();
+  }, [])
+
+  const fetchPemeliharaan = async () => {
     const response = await axios.get("http://127.0.0.1:8000/api/getPemeliharaan");
 
     setDataPemeliharaan(response.data.results);
@@ -96,13 +106,16 @@ export default function TablePengeluaran() {
 
   const row = [];
 
-  dataPemeliharaan.forEach((a) => {
+  dataPemeliharaan.filter(item => (
+    (filterBulan === '' || new Date(item.created_at).getMonth() === Number(filterBulan)) &&
+    (filterTahun === '' || new Date(item.created_at).getFullYear() === Number(filterTahun))
+  )).forEach((a) => {
     row.push({
       id: a.kodePemeliharaan,
       tgl: a.created_at,
       nama_barang: a.kodeBarang,
-      jumlah:a.jumlah,
-      keterangan: "wkwk",
+      jumlah: a.jumlah,
+      keterangan: a.keterangan,
       lokasi_barang: a.kodeRuang,
       status: a.status,
       biaya: a.harga,
@@ -116,22 +129,28 @@ export default function TablePengeluaran() {
           <select
             name=""
             id=""
+            onChange={e => setFilterBulan(e.target.value)}
             className="border h-[34px] rounded-xl w-[100px] pl-2 "
           >
-            <option value="">Januari</option>
-            <option value="">Februari</option>
-            <option value="">Maret</option>
-            <option value="">April</option>
+            <option value="">Bulan</option>
+            {bulan.map((item, index) => {
+              return (
+                <option value={index}>{item}</option>
+              )
+            })}
           </select>
           <select
             name=""
             id=""
+            onChange={e => setFilterTahun(e.target.value)}
             className="border h-[34px] rounded-xl w-[100px] pl-2 "
           >
-            <option value="">2021</option>
-            <option value="">2022</option>
-            <option value="">2023</option>
-            <option value="">2024</option>
+            <option value="">Tahun</option>
+            {tahun.map((item) => {
+              return (
+                <option value={item}>{item}</option>
+              )
+            })}
           </select>
           <div className="">
             <button className="bg-[#7B2CBF] mb-3 px-3 text-center py-1 w-[130px] rounded-3xl text-[#E5D5F2] font-abc">
