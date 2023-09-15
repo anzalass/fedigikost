@@ -2,22 +2,65 @@ import { DataGrid } from "@mui/x-data-grid";
 import React, { useEffect, useState } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { BiEditAlt } from "react-icons/bi";
-import { BsTrash3 } from "react-icons/bs";
+import { BsEye, BsTrash3 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
-import testgambar from "../../../assets/img_car.png";
+// import testgambar from "../../../assets/img_car.png";
 import FotoDetail from "./FotoDetail";
 import EditBarang from "./EditBarang";
+import DetailPengadaan from "./DetailPengadaan";
 
 export default function TabelBarang({ data }) {
+  const [allBarang, setAllBarang] = useState([data]);
   const [editBarang, setEditBarang] = useState(false);
+  const [valuePengadaan, setValuePengadaan] = useState();
+  const [detailPengadaan, setDetailPengadaan] = useState(false);
   const [pengadaanBarang, setPengadaanBarang] = useState(false);
+  const [foto, setFoto] = useState('');
   const nav = useNavigate();
+  const [img, setImg] = useState();
   const [idBarang, setIdBarang] = useState("");
   const [kategori, setKategori] = useState([]);
+  const [ruang, setRuang] = useState([]);
+  const [filterBulan, setFilterBulan] = useState('');
+  const [filterTahun, setFilterTahun] = useState('');
+  const [status, setStatus] = useState('');
+  const bulan = ['Januari', 'Febuari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  let tahunSekarang = new Date().getFullYear() + 1;
+  const tahun = [];
+  const [gridKey, setGridKey] = useState(0);
+  const [filter, setFilter] = useState('');
+
+
+  for (let i = 0; i < 10; i++) {
+    tahun.push(tahunSekarang - 1);
+    tahunSekarang = tahunSekarang - 1;
+  }
+
+  useEffect(() => {
+    setAllBarang(data);
+  }, [data])
+
+  let row = [];
+
   const [pengadaan, setPengadaan] = useState({
     namaBarang: "",
+    kodeBarang: "",
+    kodeRuang: "",
+    merek: "",
+    hargaBarang: 0,
+    quantity: 0,
+    spesifikasi: "",
+    ruang: "",
+    supplier: "",
+    buktiNota: "",
+  });
+
+  const [errPengadaan, setErrorPengadaan] = useState({
+    namaBarang: "",
+    kodeBarang: "",
+    kodeRuang: "",
     merek: "",
     hargaBarang: 0,
     quantity: 0,
@@ -28,14 +71,22 @@ export default function TabelBarang({ data }) {
   });
 
   useEffect(() => {
-    getKategori();
+    fetchData();
   }, []);
 
-  const getKategori = async () => {
-    const data = await axios.get("http://127.0.0.1:8000/api/getKategori");
+  const fetchData = async () => {
+    const getKategori = await axios.get("http://127.0.0.1:8000/api/getKategori");
+    const getRuang = await axios.get("http://127.0.0.1:8000/api/getRuang");
+
+    // if (getRuang && getKategori) {
+    setKategori(getKategori.data.results);
+    setRuang(getRuang.data.results);
+    // }
   };
 
   const [detailFoto, setDetailFoto] = useState(false);
+
+
 
   const changePengadaanHandler = (e) => {
     setPengadaan({
@@ -55,59 +106,76 @@ export default function TabelBarang({ data }) {
   };
 
   const TambahPengadaan = async (e) => {
-    e.preventDefault();
     try {
       const response = await axios.post(
         "http://127.0.0.1:8000/api/tambahPengadaan",
         pengadaan
       );
-      window.location.reload(true);
-      nav("/tambah-barang");
+
+      const data = new FormData();
+      data.append("file", img);
+      data.append("upload_preset", "digikostDemoApp");
+      data.append("cloud_name", "dkt6ysk5c");
+
+      const res = await axios.post("https://api.cloudinary.com/v1_1/dkt6ysk5c/image/upload", data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
+      pengadaan.buktiNota = res.data.secure_url;
+
+      if (response.status === 200) {
+        window.location.reload(true);
+      }
+
     } catch (err) {
-      console.log(err);
+      console.log(err.response.data.errors);
+      setErrorPengadaan({
+        namaBarang: err.response.data.errors.namaBarang,
+        kodeBarang: err.response.data.errors.kodeBarang,
+        kodeRuang: err.response.data.errors.kodeRuang,
+        merek: err.response.data.errors.merek,
+        hargaBarang: err.response.data.errors.hargaBarang,
+        quantity: err.response.data.errors.quantity,
+        spesifikasi: err.response.data.errors.spesifikasi,
+        ruang: err.response.data.errors.ruang,
+        supplier: err.response.data.errors.supplier,
+        buktiNota: err.response.data.errors.buktiNota,
+      })
     }
   };
 
-  // const deleteBarang = () => {
-  //   const swalWithBootstrapButtons = Swal.mixin({
-  //     customClass: {
-  //       confirmButton: "bg-blue-500 p-3 rounded-xl text-white font-abc mr-2",
-  //       cancelButton: "bg-red-500 p-3 rounded-xl text-white font-abc ml-2 ",
-  //     },
-  //     confirmButtonColor: "red",
-  //     cancelButtonColor: "blue",
-  //     buttonsStyling: true,
-  //   });
+  const showBarang = () => {
+    // data.map(item => {
+    //   if (Number(filterTahun) === new Date(item.created_at).getFullYear()) {
+    //     console.log('Months match');
+    //   } else {
+    //     console.log('Months do not match');
+    //   }
+    // });
+    console.log("test : ", data);
+    data.filter(item => (
+      (filter === '' || item.ruang === filter) &&
+      (filterBulan === '' || new Date(item.created_at).getMonth() === Number(filterBulan)) &&
+      (filterTahun === '' || new Date(item.created_at).getFullYear() === Number(filterTahun)) &&
+      (status === '' || item.status === status)
+    )).forEach((a) => {
+      row.push({
+        id: a.id,
+        nama_barang: `${a.namaBarang}:${a.merek}`,
+        tgl: a.tanggalPembelian,
+        harga: a.hargaBarang,
+        lokasi_barang: a.ruang,
+        foto: a.buktiNota,
+        qty_barang: a.quantity,
+        total_harga: a.hargaBarang * a.quantity,
+        status: a?.status,
+      });
+    });
+  }
 
-  //   swalWithBootstrapButtons
-  //     .fire({
-  //       title: "Are you sure?",
-  //       text: "You won't be able to revert this!",
-  //       icon: "warning",
-  //       showCancelButton: true,
-  //       confirmButtonText: "Yes, delete it!",
-  //       cancelButtonText: "No, cancel!",
-  //       reverseButtons: true,
-  //     })
-  //     .then((result) => {
-  //       if (result.isConfirmed) {
-  //         swalWithBootstrapButtons.fire(
-  //           "Deleted!",
-  //           "Your file has been deleted.",
-  //           "success"
-  //         );
-  //       } else if (
-  //         /* Read more about handling dismissals below */
-  //         result.dismiss === Swal.DismissReason.cancel
-  //       ) {
-  //         swalWithBootstrapButtons.fire(
-  //           "Cancelled",
-  //           "Your imaginary file is safe :)",
-  //           "error"
-  //         );
-  //       }
-  //     });
-  // };
+  showBarang();
 
   const columns = [
     {
@@ -166,10 +234,11 @@ export default function TabelBarang({ data }) {
       minWidth: 100,
       flex: 0.7,
       renderCell: (params) => {
+        console.log(params);
         return (
           <img
-            onClick={() => setDetailFoto(!detailFoto)}
-            src={testgambar}
+            onClick={() => { setFoto(params.row.foto); setDetailFoto(!detailFoto); }}
+            src={params.row.foto}
             alt=""
           />
         );
@@ -185,13 +254,12 @@ export default function TabelBarang({ data }) {
       renderCell: (params) => {
         return (
           <div
-            className={`${
-              params.row.status === "pending"
-                ? "bg-yellow-400"
-                : params.row.status === "acc"
+            className={`${params.row.status === "pending"
+              ? "bg-yellow-400"
+              : params.row.status === "acc"
                 ? "bg-green-500"
                 : "bg-red-600"
-            } h-full text-center pt-3 text-white font-abc w-full `}
+              } h-full text-center pt-3 text-white font-abc w-full `}
           >
             {params.row.status}
           </div>
@@ -216,9 +284,9 @@ export default function TabelBarang({ data }) {
 
             <button
               className="mr-4"
-              onClick={() => nav(`/artikel/${params.id}`)}
+              onClick={() => { setValuePengadaan(params.row.foto); setDetailPengadaan(true); }}
             >
-              <AiOutlineArrowRight size={20} />
+              <BsEye size={20} />
             </button>
 
             <button
@@ -236,25 +304,13 @@ export default function TabelBarang({ data }) {
     },
   ];
 
-  const row = [];
-
-  data.forEach((a) => {
-    row.push({
-      id: a.id,
-      nama_barang: a.namaBarang,
-      tgl: a.tanggalPembelian,
-      harga: a.hargaBarang,
-      lokasi_barang: a.ruang,
-      qty_barang: a.quantity,
-      total_harga: a.hargaBarang * a.quantity,
-      status: a?.status,
-    });
-  });
-
   return (
     <>
+      {detailPengadaan ? (
+        <DetailPengadaan open={detailPengadaan} setOpen={setDetailPengadaan} value={valuePengadaan} />
+      ) : null}
       {detailFoto ? (
-        <FotoDetail open={detailFoto} setOpen={setDetailFoto} />
+        <FotoDetail open={detailFoto} setOpen={setDetailFoto} foto={foto} />
       ) : null}
       <div className="bg-white w-[96%] mt-3  mb-[200px]  mx-auto p-3 rounded-lg">
         {pengadaanBarang ? (
@@ -272,12 +328,24 @@ export default function TabelBarang({ data }) {
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2 ">Kategori</h1>
                 <select
-                  name="namaBarang"
-                  onChange={(e) => changePengadaanHandler(e)}
+                  name="kodeBarang"
+                  onChange={
+                    (e) => {
+                      const selectedBarang = kategori.find((item) => item.kodeBarang === e.target.value);
+
+                      setPengadaan({
+                        ...pengadaan,
+                        kodeBarang: selectedBarang.kodeBarang,
+                        namaBarang: `${selectedBarang.namaBarang}`,
+                        merek: selectedBarang.kategori
+                      });
+                      console.log(pengadaan);
+                    }
+                  }
                   id=""
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 >
-                  <option value="kulkas">Pilih Category</option>
+                  <option value="">Pilih Category</option>
                   {kategori.map((item, index) => {
                     return (
                       <option key={index} value={`${item.kodeBarang}`}>
@@ -286,8 +354,12 @@ export default function TabelBarang({ data }) {
                     );
                   })}
                 </select>
+                {errPengadaan.kodeBarang ?
+                  <p>{errPengadaan.kodeBarang}</p>
+                  : null
+                }
               </div>
-              <div className="w-full mt-4">
+              {/* <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Merek Barang</h1>
                 <input
                   type="text"
@@ -295,7 +367,7 @@ export default function TabelBarang({ data }) {
                   onChange={(e) => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
-              </div>
+              </div> */}
               {/* <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Resi Barang</h1>
                 <input
@@ -306,11 +378,14 @@ export default function TabelBarang({ data }) {
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Foto Nota Pembelian</h1>
                 <input
-                  type="text"
+                  type="file"
                   name="buktiNota"
-                  onChange={(e) => changePengadaanHandler(e)}
+                  onChange={(e) => setImg(e.target.files[0])}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
+                {errPengadaan.buktiNota ?
+                  <p>{errPengadaan.buktiNota}</p> : null
+                }
               </div>
               {/* <div className="w-full mt-4">
               <h1 className="font-abc pb-2">Alamat</h1>
@@ -329,6 +404,9 @@ export default function TabelBarang({ data }) {
                   onChange={(e) => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
+                {errPengadaan.spesifikasi ?
+                  <p>{errPengadaan.spesifikasi}</p> : null
+                }
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Supplier</h1>
@@ -338,22 +416,39 @@ export default function TabelBarang({ data }) {
                   onChange={(e) => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
+                {errPengadaan.supplier ?
+                  <p>{errPengadaan.supplier}</p> : null
+                }
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Lokasi Barang</h1>
-                <input
-                  type="text"
-                  name="ruang"
-                  onChange={(e) => changePengadaanHandler(e)}
-                  list="cars"
+                <select
+                  id="cars"
+                  name="kodeRuang"
+                  onChange={
+                    (e) => {
+                      const selectedRuang = ruang.find((item) => item.kodeRuang === e.target.value);
+
+                      setPengadaan({
+                        ...pengadaan,
+                        kodeRuang: selectedRuang.kodeRuang,
+                        ruang: selectedRuang.ruang
+                      });
+                      console.log(pengadaan);
+                    }
+                  }
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                />
-                <datalist id="cars">
-                  <option value="101">101</option>
-                  <option value="102">102</option>
-                  <option value="103">103</option>
-                  <option value="104">104</option>
-                </datalist>
+                >
+                  <option value="">Pilih Ruang</option>
+                  {ruang.map((item) => {
+                    return (
+                      <option value={item.kodeRuang}>{item.ruang}</option>
+                    )
+                  })}
+                </select>
+                {errPengadaan.ruang ?
+                  <p>{errPengadaan.ruang}</p> : null
+                }
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Quantitas Barang</h1>
@@ -363,6 +458,9 @@ export default function TabelBarang({ data }) {
                   onChange={(e) => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
+                {errPengadaan.quantity ?
+                  <p>{errPengadaan.quantity}</p> : null
+                }
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Harga</h1>
@@ -372,6 +470,9 @@ export default function TabelBarang({ data }) {
                   onChange={(e) => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
+                {errPengadaan.hargaBarang ?
+                  <p>{errPengadaan.hargaBarang}</p> : null
+                }
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Total Harga</h1>
@@ -426,47 +527,57 @@ export default function TabelBarang({ data }) {
                       <select
                         name=""
                         id="ruang"
+                        onChange={e => setFilter(e.target.value)}
                         className="border h-[34px] rounded-xl w-[100px] pl-2 "
                       >
-                        <option value="">Ruang</option>
-                        <option value="">112</option>
-                        <option value="">113</option>
-                        <option value="">114</option>
+                        <option value="" selected>Ruang</option>
+                        {ruang.map((item) => {
+                          return (
+                            <option value={item.ruang}>{item.ruang}</option>
+                          )
+                        })}
                       </select>
                     </div>
                     <div className="">
                       <select
                         name=""
                         id="bulan"
+                        onChange={e => setFilterBulan(e.target.value)}
                         className="border h-[34px] rounded-xl w-[100px] pl-2 "
                       >
                         <option value="">Bulan</option>
-                        <option value="">Januari</option>
-                        <option value="">Februari</option>
-                        <option value="">Maret</option>
+                        {bulan.map((item, index) => {
+                          return (
+                            <option value={index}>{item}</option>
+                          )
+                        })}
                       </select>
                     </div>
                     <div className="">
                       <select
                         name=""
                         id="tahun"
+                        onChange={e => setFilterTahun(e.target.value)}
                         className="border h-[34px] rounded-xl w-[100px] pl-2 "
                       >
                         <option value="">Tahun</option>
-                        <option value="">2023</option>
-                        <option value="">2022</option>
-                        <option value="">2021</option>
+                        {tahun.map((item, index) => {
+                          return (
+                            <option value={item}>{item}</option>
+                          )
+                        })}
                       </select>
                     </div>
                     <div className="">
                       <select
                         name=""
                         id="statuss"
+                        onChange={e => setStatus(e.target.value)}
                         className="border h-[34px] rounded-xl w-[100px] pl-2 "
                       >
                         <option value="">Status</option>
-                        <option value="">Pending</option>
-                        <option value="">Acc</option>
+                        <option value="pending">Pending</option>
+                        <option value="accept">Acc</option>
                         <option value="">All</option>
                       </select>
                     </div>
@@ -477,11 +588,12 @@ export default function TabelBarang({ data }) {
                 </div>
               </div>
               <DataGrid
+                key={gridKey}
                 disableRowSelectionOnClick
                 autoHeight
                 columns={columns}
                 rows={row}
-                data={data}
+                data={row}
               />
             </div>
           </div>

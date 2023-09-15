@@ -10,21 +10,28 @@ import ModalMaintenence from "../../components/admin/detailbarangruangan/ModalMa
 import ModalChangeStatus from "../../components/admin/detailbarangruangan/ModalChangeStatus";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { BACKEND_BASE_URL } from "../../config/base_url";
 
-export default function DetailBarangRuangan() {
+export default function DetailBarangRuangan({ userSession }) {
   const [open, setOpen] = useState(false);
   const [maintenence, setMaintenence] = useState(false);
   const [changeStatus, setChangeStatus] = useState(false);
   const [data, setData] = useState([]);
-
   const [pengadaan, setPengadaan] = useState([]);
-
-  // const [asetBarang, setAsetBarang] = useState([]);
   const [barang, setBarang] = useState([]);
   const [pemeliharaanBarang, setPemeliharaanBarang] = useState([]);
   const rowBarangRuangan = [];
 
+  const [updateData, setUpdateData] = useState({
+    keterangan: null,
+    id: null
+  })
+
   const { id } = useParams();
+
+  const updateStatus = () => {
+
+  }
 
   useEffect(() => {
     fetchData();
@@ -35,7 +42,7 @@ export default function DetailBarangRuangan() {
     // const getPengadaan = await axios.get("http://127.0.0.1:8000/api/findByKategori/"+a.kodeBarang);
     console.log(a.kodeBarang);
     const filterPengadaan = pengadaan.filter(
-      (item) => item.kodeBarang == a.kodeBarang && item.kodeRuang == id
+      (item) => item.kodeBarang == a.kodeBarang && item.kodeRuang == id && item.is_active == 1
     );
     const filterPemeliharaan = pemeliharaanBarang.filter(
       (item) => item.kodeBarang == a.kodeBarang && item.kodeRuang == id
@@ -60,7 +67,7 @@ export default function DetailBarangRuangan() {
   const hapusPemeliharaan = async (id) => {
     try {
       const response = await axios.delete(
-        `http://127.0.0.1:8000/api/deletePemeliharaan/${id}`
+        `${BACKEND_BASE_URL}/api/deletePemeliharaan/${id}`
       );
 
       if (response) {
@@ -74,15 +81,9 @@ export default function DetailBarangRuangan() {
   const fetchData = async () => {
     try {
       // const data = await axios.get("http://127.0.0.1:8000/api/getBarangRuangan/"+id);
-      const getBarang = await axios.get(
-        "http://127.0.0.1:8000/api/getKategori"
-      );
-      const getPengadaan = await axios.get(
-        "http://127.0.0.1:8000/api/pengadaan"
-      );
-      const getPemeliharan = await axios.get(
-        "http://127.0.0.1:8000/api/getPemeliharaan"
-      );
+      const getBarang = await axios.get(`${BACKEND_BASE_URL}/api/getKategori`);
+      const getPengadaan = await axios.get(`${BACKEND_BASE_URL}/api/pengadaan`);
+      const getPemeliharan = await axios.get(`${BACKEND_BASE_URL}/api/getPemeliharaan`);
       // setAsetBarang(data.data.results);
       setBarang(getBarang.data.results);
       setPengadaan(getPengadaan.data.results);
@@ -195,7 +196,7 @@ export default function DetailBarangRuangan() {
       flex: 0.7,
       renderCell: (params) => {
         return (
-          <div className="" onClick={() => setChangeStatus(!changeStatus)}>
+          <div className="" onClick={() => { updateData.id = params.id; setChangeStatus(!changeStatus) }}>
             {params.row.status}
           </div>
         );
@@ -224,7 +225,7 @@ export default function DetailBarangRuangan() {
   ];
 
   const rowBarangRuanganPemeliharaan = [];
-  pemeliharaanBarang.forEach((a) => {
+  pemeliharaanBarang.filter(item => item.kodeRuang == id).forEach((a) => {
     rowBarangRuanganPemeliharaan.push({
       id: a.kodePemeliharaan,
       tgl: a.created_at,
@@ -240,7 +241,7 @@ export default function DetailBarangRuangan() {
   return (
     <>
       {changeStatus ? (
-        <ModalChangeStatus open={changeStatus} setOpen={setChangeStatus} />
+        <ModalChangeStatus id={updateData.id} open={changeStatus} setOpen={setChangeStatus} />
       ) : null}
       {maintenence ? (
         <ModalMaintenence
@@ -256,7 +257,7 @@ export default function DetailBarangRuangan() {
           <Sidebar width={open} setWidth={setOpen} setSidebar={4} />
         </div>
         <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-          <TopBar>{"Detail Ruangan D002"}</TopBar>
+          <TopBar userSession={userSession}>{"Detail Ruangan D002"}</TopBar>
           <div className="w-full mt-2 h-[50px] mx-auto "></div>
           <div className="w-[95%] mx-auto">
             <DataGrid

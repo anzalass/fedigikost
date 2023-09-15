@@ -3,9 +3,13 @@ import React, { useEffect, useState } from "react";
 
 export default function EditBarang({ close, setClose, idBarang }) {
   const [pengadaan, setPengadaan] = useState([]);
+  const [ruang, setRuang] = useState([]);
+  const [barang, setBarang] = useState([]);
 
   const [data, setData] = useState({
     namaBarang: "",
+    kodeBarang: "",
+    kodeRuang: "",
     merek: "",
     buktiNota: "",
     spesifikasi: "",
@@ -42,7 +46,18 @@ export default function EditBarang({ close, setClose, idBarang }) {
 
   useEffect(() => {
     getDataByID();
+    fetchData();
   }, [idBarang]);
+
+  const fetchData = async () => {
+    const getRuang = await axios.get("http://127.0.0.1:8000/api/getRuang");
+    const getBarang = await axios.get("http://127.0.0.1:8000/api/getKategori");
+
+    if (getRuang) {
+      setRuang(getRuang.data.results);
+      setBarang(getBarang.data.results);
+    }
+  }
 
   const getDataByID = async () => {
     const result = await axios.get(
@@ -92,10 +107,17 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   onChange={(e) => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 >
-                  <option value="kulkas">kulkas</option>
-                  <option value="Television">Television</option>
-                  <option value="Kipas Angin">Kipas Angin</option>
-                  <option value="Smartphone">Smartphone</option>
+                  {barang.map((item, index) => {
+                    if (item.namaBarang == data.namaBarang) {
+                      return (
+                        <option value="kodeBarang" selected>{item.namaBarang}</option>
+                      )
+                    } else {
+                      return (
+                        <option value="kodeBarang">{item.namaBarang}</option>
+                      )
+                    }
+                  })}
                 </select>
               </div>
               <div className="w-full mt-4">
@@ -108,13 +130,6 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
-              {/* <div className="w-full mt-4">
-                                <h1 className="font-abc pb-2">Resi Barang</h1>
-                                <input
-                                    type="text"
-                                    className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                                />
-                            </div> */}
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Foto Nota Pembelian</h1>
                 <input
@@ -125,15 +140,6 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
-              {/* <div className="w-full mt-4">
-              <h1 className="font-abc pb-2">Alamat</h1>
-              <textarea
-                name=""
-                id=""
-                rows="3"
-                className="w-full p-3 border-2 border-slate-500"
-              ></textarea>
-            </div> */}
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Spesifikasi Barang</h1>
                 <input
@@ -156,20 +162,24 @@ export default function EditBarang({ close, setClose, idBarang }) {
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Lokasi Barang</h1>
-                <input
-                  type="text"
+                <select
+                  id="cars"
                   name="ruang"
-                  value={data.ruang}
-                  onChange={(e) => changePengadaanHandler(e)}
-                  list="cars"
                   className="w-full border-2 border-slate-500"
-                />
-                <datalist id="cars">
-                  <option value="101">101</option>
-                  <option value="102">102</option>
-                  <option value="103">103</option>
-                  <option value="104">104</option>
-                </datalist>
+                >
+                  {ruang.map((item, index) => {
+                    if (item.ruang == data.ruang) {
+                      console.log("item : ", item.kodeRuang);
+                      return (
+                        <option key={item.kodeBarang} value={item.kodeRuang} selected>{item.ruang}</option>
+                      )
+                    } else {
+                      return (
+                        <option key={item.kodeBarang} value={item.kodeRuang}>{item.ruang}</option>
+                      )
+                    }
+                  })}
+                </select>
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Quantitas Barang</h1>
@@ -200,16 +210,6 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   disabled
                 />
               </div>
-
-              {/* <div className="w-full mt-4">
-              <label
-                htmlFor="ktp"
-                className="h-[20px] w-[50px] text-[13px] font-abc rounded-lg p-2 bg-[#E3E8EF]"
-              >
-                Upload KTP
-              </label>
-              <input type="file" id="ktp" name="ktp" className="hidden" />
-            </div> */}
               <div className="w-full justify-center mt-12 mb-12 flex items-center">
                 <button
                   onClick={() => UpdatePengadaan()}

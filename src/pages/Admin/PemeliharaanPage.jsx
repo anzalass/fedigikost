@@ -4,7 +4,7 @@ import TopBar from "../../components/layout/TopBar";
 import TabelPemeliharaan from "../../components/admin/pemeliharaan/TablePemeliharaan";
 import TambahPemeliharaan from "../../components/admin/pemeliharaan/TambahPemeliharaan";
 
-export default function PengeluaranPage() {
+export default function PengeluaranPage({ userSession }) {
   const [open, setOpen] = useState(false);
 
   return (
@@ -13,7 +13,7 @@ export default function PengeluaranPage() {
         <Sidebar setSidebar={3} width={open} setWidth={setOpen} />
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-        <TopBar>{"Pemeliharaan "}</TopBar>
+        <TopBar userSession={userSession}>{"Pemeliharaan "}</TopBar>
         <TabelPemeliharaan />
         {/* <TambahPemeliharaan /> */}
       </div>
