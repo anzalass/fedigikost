@@ -30,9 +30,11 @@ export default function TabelBarang({ data }) {
   useEffect(() => {
     getKategori();
   }, []);
+  console.log(kategori);
 
   const getKategori = async () => {
     const data = await axios.get("http://127.0.0.1:8000/api/getKategori");
+    setKategori(data.data.results);
   };
 
   const [detailFoto, setDetailFoto] = useState(false);
@@ -277,7 +279,7 @@ export default function TabelBarang({ data }) {
                   id=""
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 >
-                  <option value="kulkas">Pilih Category</option>
+                  <option value="kulkas">Pilih Categori</option>
                   {kategori.map((item, index) => {
                     return (
                       <option key={index} value={`${item.kodeBarang}`}>
