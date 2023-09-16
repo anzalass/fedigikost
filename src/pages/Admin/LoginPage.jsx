@@ -25,7 +25,7 @@ export default function LoginPage({ userSession }) {
   const login = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/forgotPassword', data);
+      const response = await axios.post('http://localhost:8000/api/login', data);
 
       localStorage.setItem('token', response.data.message);
 
