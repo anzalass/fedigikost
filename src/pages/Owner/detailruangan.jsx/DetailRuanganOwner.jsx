@@ -1,91 +1,47 @@
-import React, { useEffect, useState } from "react";
-import Sidebar from "../../components/layout/Sidebar";
-import TopBar from "../../components/layout/TopBar";
-import { DataGrid } from "@mui/x-data-grid";
-import { AiOutlineArrowRight } from "react-icons/ai";
-import { BsTrash3 } from "react-icons/bs";
-import { BiEditAlt, BiPrinter } from "react-icons/bi";
-import { GiAutoRepair } from "react-icons/gi";
-import ModalMaintenence from "../../components/admin/detailbarangruangan/ModalMaintenence";
-import ModalChangeStatus from "../../components/admin/detailbarangruangan/ModalChangeStatus";
-import { useParams } from "react-router-dom";
-import axios from "axios";
-import { BACKEND_BASE_URL } from "../../config/base_url";
+import { useState } from "react";
 
-export default function DetailBarangRuangan({ userSession }) {
+import SidebarOwner from "../../../components/layoutowner/SidebarOwner";
+import TopBarOwner from "../../../components/layoutowner/TopbarOwner";
+
+import { useEffect } from "react";
+import { DataGrid } from "@mui/x-data-grid";
+import { GiAutoRepair } from "react-icons/gi";
+import { BsTrash3 } from "react-icons/bs";
+import { BiEditAlt } from "react-icons/bi";
+import axios from "axios";
+import { useParams } from "react-router-dom";
+import ModalMaintenenceOwner from "./ModalMaintenenceOwner";
+import ModalChangeStatusOwner from "./ModalChangeStatusOwner";
+
+export default function DetailRuanganOwner() {
+  const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [maintenence, setMaintenence] = useState(false);
   const [changeStatus, setChangeStatus] = useState(false);
   const [data, setData] = useState([]);
   const [pengadaan, setPengadaan] = useState([]);
   const [barang, setBarang] = useState([]);
+
   const [pemeliharaanBarang, setPemeliharaanBarang] = useState([]);
-  const rowBarangRuangan = [];
-
-  const [updateData, setUpdateData] = useState({
-    keterangan: null,
-    id: null,
-  });
-
   const { id } = useParams();
-
-  const updateStatus = () => {};
-  // # curl "https://randomuser.me/api/?results=10" | jq '.results[].name.first' >> "$1 at $date_time/my_friends/list_of_my_friends.txt"
+  useEffect(() => {
+    console.log("loading : ", loading);
+  }, [loading]);
   useEffect(() => {
     fetchData();
-  }, [id]);
-
-  barang.forEach(async (a) => {
-    let jumlahBarang = 0;
-    // const getPengadaan = await axios.get("http://127.0.0.1:8000/api/findByKategori/"+a.kodeBarang);
-    console.log(a.kodeBarang);
-    const filterPengadaan = pengadaan.filter(
-      (item) =>
-        item.kodeBarang == a.kodeBarang &&
-        item.kodeRuang == id &&
-        item.is_active == 1
-    );
-    const filterPemeliharaan = pemeliharaanBarang.filter(
-      (item) => item.kodeBarang == a.kodeBarang && item.kodeRuang == id
-    );
-
-    filterPengadaan.forEach((bi) => {
-      jumlahBarang += bi.quantity;
-    });
-
-    filterPemeliharaan.forEach((bi) => {
-      jumlahBarang -= bi.jumlah;
-    });
-    console.log(a.kodeBarang);
-
-    rowBarangRuangan.push({
-      id: a.kodeBarang,
-      nama_barang: a.namaBarang,
-      qtybarang: jumlahBarang,
-    });
-  });
-
-  const hapusPemeliharaan = async (id) => {
-    try {
-      const response = await axios.delete(
-        `${BACKEND_BASE_URL}/api/deletePemeliharaan/${id}`
-      );
-
-      if (response) {
-        window.location.reload();
-      }
-    } catch (err) {
-      alert(err);
-    }
-  };
+  }, []);
 
   const fetchData = async () => {
     try {
       // const data = await axios.get("http://127.0.0.1:8000/api/getBarangRuangan/"+id);
-      const getBarang = await axios.get(`${BACKEND_BASE_URL}/api/getKategori`);
-      const getPengadaan = await axios.get(`${BACKEND_BASE_URL}/api/pengadaan`);
+      const getBarang = await axios.get(
+        `http://localhost:8000/api/getKategori`
+      );
+      const getPengadaan = await axios.get(
+        `http://localhost:8000/api/pengadaan`
+      );
       const getPemeliharan = await axios.get(
-        `${BACKEND_BASE_URL}/api/getPemeliharaan`
+        `http://localhost:8000/api/getPemeliharaan`
       );
       // setAsetBarang(data.data.results);
       setBarang(getBarang.data.results);
@@ -133,7 +89,7 @@ export default function DetailBarangRuangan({ userSession }) {
             <button className="mr-4">
               <BsTrash3 color="red" size={20} />
             </button>
-            <button className="" onClick={() => edit(1)}>
+            <button className="">
               <BiEditAlt color="blue" size={20} />
             </button>
           </div>
@@ -141,18 +97,6 @@ export default function DetailBarangRuangan({ userSession }) {
       },
     },
   ];
-
-  const getPengadaanByKodeBarang = async (kodeBarang) => {
-    try {
-      const response = await axios.get(
-        `http://127.0.0.1:8000/api/findByKategori/${kodeBarang}`
-      );
-      return response.data.results;
-    } catch (error) {
-      console.error("Error fetching pengadaan data:", error);
-      return [];
-    }
-  };
 
   const columnsRuanganPemeliharaan = [
     { field: "id", headerName: "ID ", minWidth: 50, flex: 0.5 },
@@ -202,7 +146,7 @@ export default function DetailBarangRuangan({ userSession }) {
           <div
             className=""
             onClick={() => {
-              updateData.id = params.id;
+              // updateData.id = params.id;
               setChangeStatus(!changeStatus);
             }}
           >
@@ -234,6 +178,8 @@ export default function DetailBarangRuangan({ userSession }) {
   ];
 
   const rowBarangRuanganPemeliharaan = [];
+  const rowBarangRuangan = [];
+
   pemeliharaanBarang
     .filter((item) => item.kodeRuang == id)
     .forEach((a) => {
@@ -249,48 +195,60 @@ export default function DetailBarangRuangan({ userSession }) {
       });
     });
 
+  barang.forEach(async (a) => {
+    let jumlahBarang = 0;
+    // const getPengadaan = await axios.get("http://127.0.0.1:8000/api/findByKategori/"+a.kodeBarang);
+    console.log(a.kodeBarang);
+    const filterPengadaan = pengadaan.filter(
+      (item) =>
+        item.kodeBarang == a.kodeBarang &&
+        item.kodeRuang == id &&
+        item.is_active == 1
+    );
+    const filterPemeliharaan = pemeliharaanBarang.filter(
+      (item) => item.kodeBarang == a.kodeBarang && item.kodeRuang == id
+    );
+
+    filterPengadaan.forEach((bi) => {
+      jumlahBarang += bi.quantity;
+    });
+
+    filterPemeliharaan.forEach((bi) => {
+      jumlahBarang -= bi.jumlah;
+    });
+    console.log(a.kodeBarang);
+
+    rowBarangRuangan.push({
+      id: a.kodeBarang,
+      nama_barang: a.namaBarang,
+      qtybarang: jumlahBarang,
+    });
+  });
+
   return (
     <>
-      {changeStatus ? (
-        <ModalChangeStatus
-          id={updateData.id}
-          open={changeStatus}
-          setOpen={setChangeStatus}
-        />
-      ) : null}
       {maintenence ? (
-        <ModalMaintenence
-          open={maintenence}
-          setOpen={setMaintenence}
-          data={data}
-          ruang={id}
-        />
+        <ModalMaintenenceOwner open={maintenence} setOpen={setMaintenence} />
+      ) : null}
+      {changeStatus ? (
+        <ModalChangeStatusOwner open={changeStatus} setOpen={setChangeStatus} />
       ) : null}
       <div className="w-full h-[160vh] flex">
         <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
-          <Sidebar width={open} setWidth={setOpen} setSidebar={4} />
+          <SidebarOwner setSidebar={4} width={open} setWidth={setOpen} />
         </div>
         <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-          <TopBar userSession={userSession}>{`Detail Ruangan ${id} `}</TopBar>
-          <div className="w-full mt-2 h-[50px] mx-auto "></div>
-          <div className="w-[95%] mx-auto">
-            <DataGrid
-              disableRowSelectionOnClick
-              autoHeight
-              className="bg-white"
-              columns={columnsRuangan}
-              rows={rowBarangRuangan.filter((item) => item.qtybarang)}
-            />
-          </div>
-          <div className="w-[95%] mx-auto mt-[50px]">
-            <h1 className="font-abc">Daftar Pemeliharaan</h1>
-            <DataGrid
-              disableRowSelectionOnClick
-              autoHeight
-              className="bg-white"
-              columns={columnsRuanganPemeliharaan}
-              rows={rowBarangRuanganPemeliharaan}
-            />
+          <TopBarOwner>{"Detail Ruangan Owner"}</TopBarOwner>
+          <div className="w-full">
+            <div className="w-[96%] mx-auto mt-10">
+              <DataGrid columns={columnsRuangan} rows={rowBarangRuangan} />
+            </div>
+            <div className="w-[96%] mx-auto mt-12">
+              <DataGrid
+                columns={columnsRuanganPemeliharaan}
+                rows={rowBarangRuanganPemeliharaan}
+              />
+            </div>
           </div>
         </div>
       </div>

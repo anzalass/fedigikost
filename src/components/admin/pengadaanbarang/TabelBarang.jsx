@@ -6,7 +6,6 @@ import { BsEye, BsTrash3 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
-// import testgambar from "../../../assets/img_car.png";
 import FotoDetail from "./FotoDetail";
 import EditBarang from "./EditBarang";
 import DetailPengadaan from "./DetailPengadaan";
@@ -163,14 +162,6 @@ export default function TabelBarang({ data }) {
   };
 
   const showBarang = () => {
-    // data.map(item => {
-    //   if (Number(filterTahun) === new Date(item.created_at).getFullYear()) {
-    //     console.log('Months match');
-    //   } else {
-    //     console.log('Months do not match');
-    //   }
-    // });
-    console.log("test : ", data);
     data
       .filter(
         (item) =>
@@ -311,6 +302,7 @@ export default function TabelBarang({ data }) {
               className="mr-4"
               onClick={() => {
                 setValuePengadaan(params.row.foto);
+                console.log(params.row.foto, "Adasdasdasdas");
                 setDetailPengadaan(true);
               }}
             >
@@ -331,6 +323,8 @@ export default function TabelBarang({ data }) {
       },
     },
   ];
+
+  console.log();
 
   return (
     <>
@@ -391,43 +385,38 @@ export default function TabelBarang({ data }) {
                   <p>{errPengadaan.kodeBarang}</p>
                 ) : null}
               </div>
-              {/* <div className="w-full mt-4">
-                <h1 className="font-abc pb-2">Merek Barang</h1>
-                <input
-                  type="text"
-                  name="merek"
-                  onChange={(e) => changePengadaanHandler(e)}
-                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                />
-              </div> */}
-              {/* <div className="w-full mt-4">
-                <h1 className="font-abc pb-2">Resi Barang</h1>
-                <input
-                  type="text"
-                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                />
-              </div> */}
+
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Foto Nota Pembelian</h1>
+                <label
+                  htmlFor="buktiNota"
+                  className="border-2 border-slate-500 px-2 py-1 text-sm font-abc rounded-md"
+                >
+                  Pilih Foto
+                </label>
                 <input
                   type="file"
                   name="buktiNota"
+                  id="buktiNota"
                   onChange={(e) => setImg(e.target.files[0])}
-                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
+                  className="hidden border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
                 {errPengadaan.buktiNota ? (
                   <p>{errPengadaan.buktiNota}</p>
                 ) : null}
               </div>
-              {/* <div className="w-full mt-4">
-              <h1 className="font-abc pb-2">Alamat</h1>
-              <textarea
-                name=""
-                id=""
-                rows="3"
-                className="w-full p-3 border-2 border-slate-500"
-              ></textarea>
-            </div> */}
+              <div className="w-full mt-4">
+                {img ? (
+                  <div className="w-full ">
+                    <img
+                      className="w-[50%] mx-auto object-contain"
+                      src={URL.createObjectURL(img)}
+                      alt=""
+                    />
+                  </div>
+                ) : null}
+              </div>
+
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Spesifikasi Barang</h1>
                 <input
@@ -505,16 +494,6 @@ export default function TabelBarang({ data }) {
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
-
-              {/* <div className="w-full mt-4">
-              <label
-                htmlFor="ktp"
-                className="h-[20px] w-[50px] text-[13px] font-abc rounded-lg p-2 bg-[#E3E8EF]"
-              >
-                Upload KTP
-              </label>
-              <input type="file" id="ktp" name="ktp" className="hidden" />
-            </div> */}
               <div className="w-full justify-center mt-12 mb-12 flex items-center">
                 <button
                   onClick={(e) => TambahPengadaan(e)}
@@ -603,9 +582,9 @@ export default function TabelBarang({ data }) {
                         <option value="">All</option>
                       </select>
                     </div>
-                    <button className="bg-[#7B2CBF]  mb-4 px-3 text-center py-1 w-[100px] rounded-xl text-[#E5D5F2] font-abc">
+                    {/* <button className="bg-[#7B2CBF]  mb-4 px-3 text-center py-1 w-[100px] rounded-xl text-[#E5D5F2] font-abc">
                       Filter
-                    </button>
+                    </button> */}
                   </form>
                 </div>
               </div>

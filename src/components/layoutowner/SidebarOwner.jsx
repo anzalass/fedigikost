@@ -89,7 +89,7 @@ export default function SidebarOwner({ open, setSidebar, width, setWidth }) {
               : "hidden sm:hidden  md:hidden lg:hidden xl:hidden "
           } font-abc`}
         >
-          Main Menu
+          Main Menu Owner
         </h1>
         <div className=" ml-2 mt-4">
           {sidebarMenu &&

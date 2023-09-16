@@ -12,12 +12,12 @@ export default function DataRuanganPage({ userSession }) {
   const [dataRuangan, setDataRuangan] = useState([]);
   const [errRuangan, setErrRuangan] = useState({
     kodeRuang: "",
-    ruang: ""
-  })
+    ruang: "",
+  });
 
   useEffect(() => {
     getAllRuangan();
-  }, [])
+  }, []);
 
   const getAllRuangan = async () => {
     try {
@@ -28,23 +28,26 @@ export default function DataRuanganPage({ userSession }) {
     } catch (err) {
       console.log(err);
     }
-  }
+  };
 
   const [dataRuang, setDataRuang] = useState({
     kodeRuang: "",
-    ruang: ""
-  })
+    ruang: "",
+  });
 
   const changeRuangHandler = (e) => {
     setDataRuang({
       ...dataRuang,
       [e.target.name]: e.target.value,
     });
-  }
+  };
 
   const tambahRuang = async () => {
     try {
-      const add = await axios.post(`${BACKEND_BASE_URL}/api/tambahRuang`, dataRuang);
+      const add = await axios.post(
+        `${BACKEND_BASE_URL}/api/tambahRuang`,
+        dataRuang
+      );
 
       if (add.status === 200) {
         window.location.reload();
@@ -53,10 +56,10 @@ export default function DataRuanganPage({ userSession }) {
       console.log(err.response.data.errors);
       setErrRuangan({
         kodeRuang: err.response.data.errors.kodeRuang,
-        ruang: err.response.data.errors.ruang
-      })
+        ruang: err.response.data.errors.ruang,
+      });
     }
-  }
+  };
 
   return (
     <div className="w-full h-[160vh] flex">
@@ -83,10 +86,8 @@ export default function DataRuanganPage({ userSession }) {
               />
             </div>
           </div>
-          {addRuangan === 0 && editRuangan === 0 ? (
-            <TabelDataRuangan edit={setEditRuangan} data={dataRuangan} />
-          ) : null}
-          {addRuangan === 1 ? (
+
+          {addRuangan === 1 && editRuangan === 0 ? (
             <div className="w-[95%] mx-auto h-[90vh] bg-white rounded-xl">
               <div action="" className="w-[95%] mx-auto mt-6 p-3">
                 <div className="w-full mt-4">
@@ -94,29 +95,26 @@ export default function DataRuanganPage({ userSession }) {
                   <input
                     type="text"
                     name="kodeRuang"
-                    onChange={e => changeRuangHandler(e)}
+                    onChange={(e) => changeRuangHandler(e)}
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
-                  {
-                    errRuangan.kodeRuang ?
-                      <p>{errRuangan.kodeRuang}</p> : null
-                  }
+                  {errRuangan.kodeRuang ? <p>{errRuangan.kodeRuang}</p> : null}
                 </div>
                 <div className="w-full mt-4">
                   <h1 className="font-abc pb-2">Nama Ruangan</h1>
                   <input
                     type="text"
                     name="ruang"
-                    onChange={e => changeRuangHandler(e)}
+                    onChange={(e) => changeRuangHandler(e)}
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
-                  {
-                    errRuangan.ruang ?
-                      <p>{errRuangan.ruang}</p> : null
-                  }
+                  {errRuangan.ruang ? <p>{errRuangan.ruang}</p> : null}
                 </div>
                 <div className="w-full justify-center mt-12 flex items-center">
-                  <button onClick={() => tambahRuang()} className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc">
+                  <button
+                    onClick={() => tambahRuang()}
+                    className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc"
+                  >
                     Simpan
                   </button>
                   <button
@@ -129,16 +127,16 @@ export default function DataRuanganPage({ userSession }) {
               </div>
             </div>
           ) : null}
-          {editRuangan === 1 ? (
-            <div className="w-[95%] mx-auto h-[90vh] bg-white rounded-xl">
+          {addRuangan === 0 && editRuangan === 1 ? (
+            <div className="w-[95%] mx-auto h-[50vh] bg-white rounded-xl">
               <form action="" className="w-[95%] mx-auto mt-6 p-3">
-                <h1>Edit Ruangan</h1>
+                <h1 className="font-abc">Edit Ruangan</h1>
                 <div className="w-full mt-4">
                   <h1 className="font-abc pb-2 ">Kode</h1>
                   <input
                     type="text"
                     name="kodeRuang"
-                    onChange={e => changeRuangHandler(e)}
+                    onChange={(e) => changeRuangHandler(e)}
                     disabled
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
@@ -148,7 +146,7 @@ export default function DataRuanganPage({ userSession }) {
                   <input
                     type="text"
                     name="ruang"
-                    onChange={e => changeRuangHandler(e)}
+                    onChange={(e) => changeRuangHandler(e)}
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
                 </div>
@@ -165,6 +163,13 @@ export default function DataRuanganPage({ userSession }) {
                 </div>
               </form>
             </div>
+          ) : null}
+          {addRuangan === 0 || editRuangan === 1 ? (
+            <TabelDataRuangan
+              setEdit={setEditRuangan}
+              edit={editRuangan}
+              data={dataRuangan}
+            />
           ) : null}
         </div>
       </div>

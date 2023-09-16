@@ -7,9 +7,11 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import { BsTrash3 } from "react-icons/bs";
 import { DataGrid } from "@mui/x-data-grid";
 import testgambar from "../../../assets/img_car.png";
+import { useNavigate } from "react-router-dom";
 
 export default function AccPengadaanBarangOwner() {
   const [open, setOpen] = useState(false);
+  const nav = useNavigate();
 
   const data = [
     {
@@ -171,10 +173,18 @@ export default function AccPengadaanBarangOwner() {
       <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
         {/* <button onClick={(e) => setOpen(1)}>buka</button> */}
         {/* {open === 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null} */}
-        <SidebarOwner setSidebar={1} width={open} setWidth={setOpen} />
+        <SidebarOwner setSidebar={2} width={open} setWidth={setOpen} />
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
         <TopBarOwner>{"Dashboard Owner"}</TopBarOwner>
+        <div className="w-[94%] mx-auto">
+          <button
+            onClick={() => nav("/owner/pengadaan-barang")}
+            className="bg-[#7B2CBF] h-[34px] mt-3 mb-3 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
+          >
+            {"<"} Kembali
+          </button>
+        </div>
         <DataGrid
           className="w-[94%] mx-auto"
           disableRowSelectionOnClick

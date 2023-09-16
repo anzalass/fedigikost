@@ -1,14 +1,20 @@
 import { useState } from "react";
-import Sidebar from "../../components/layout/Sidebar";
-import TopBar from "../../components/layout/TopBar";
+
 import Indikator from "../../components/admin/home/Indikator";
 import Tagihan from "../../components/admin/pengadaanbarang/TabelBarang";
 import Aktivitas from "../../components/admin/home/Aktivitas";
 import AdminDetailCard from "../../components/admin/home/AdminDetailCard";
 import SidebarOwner from "../../components/layoutowner/SidebarOwner";
+import TopBarOwner from "../../components/layoutowner/TopbarOwner";
+import AdminDetailCardOwner from "../../components/owner/AdminDetailCardOwner";
+import { useEffect } from "react";
 
-export default function HomePageOwner() {
+export default function HomePageOwner(userSession) {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    console.log("loading : ", loading);
+  }, [loading]);
 
   return (
     <div className="w-full h-[160vh] flex">
@@ -18,10 +24,10 @@ export default function HomePageOwner() {
         <SidebarOwner setSidebar={1} width={open} setWidth={setOpen} />
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-        <TopBar>{"Dashboard Admin"}</TopBar>
+        <TopBarOwner>{"Dashboard Owner"}</TopBarOwner>
         <div className="w-full mt-2 h-[50px] mx-auto ">
           <h1 className="text-[20px] font-abc ml-6">
-            Selamat datang <span className="font-[500]">, Admin</span>
+            Selamat datang <span className="font-[500]">, Owner</span>
           </h1>
           <div className="mt-4 w-[95%] opacity-25 mx-auto  h-[1px] bg-slate-600"></div>
         </div>
@@ -31,7 +37,7 @@ export default function HomePageOwner() {
             <Aktivitas />
           </div>
           <div className=" w-[44%] ">
-            <AdminDetailCard />
+            <AdminDetailCardOwner userSession={userSession} />
           </div>
         </div>
       </div>

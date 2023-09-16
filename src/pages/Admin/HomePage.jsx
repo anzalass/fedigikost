@@ -12,20 +12,18 @@ export default function HomePage({ userSession }) {
   let [loading, setLoading] = useState(true);
   let [color, setColor] = useState("#ffffff");
 
-  useEffect(() => {
-    console.log("loading : ", loading);
-  }, [loading])
+  // useEffect(() => {
+  //   console.log("loading : ", loading);
+  // }, [loading]);
 
   return (
     <div>
       <div className="w-full h-[160vh] flex">
         <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
-          {/* <button onClick={(e) => setOpen(1)}>buka</button> */}
-          {/* {open === 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null} */}
           <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
         </div>
         <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-          <TopBar userSession={userSession} >{"Dashboard Admin"}</TopBar>
+          <TopBar userSession={userSession}>{"Dashboard Admin"}</TopBar>
           <div className="w-full mt-2 h-[50px] mx-auto ">
             <h1 className="text-[20px] font-abc ml-6">
               Selamat datang <span className="font-[500]">, Admin</span>

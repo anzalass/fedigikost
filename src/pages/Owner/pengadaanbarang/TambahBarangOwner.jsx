@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function TambahBarangOwner() {
   const [open, setOpen] = useState(false);
+  const [img, setImg] = useState();
   const nav = useNavigate();
   return (
     <div className="w-full h-[160vh] flex">
@@ -59,24 +60,35 @@ export default function TambahBarangOwner() {
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div> */}
+
             <div className="w-full mt-4">
               <h1 className="font-abc pb-2">Foto Nota Pembelian</h1>
+              <label
+                htmlFor="buktiNota"
+                className="border-2 border-slate-500 px-2 py-1 text-sm font-abc rounded-md"
+              >
+                Pilih Foto
+              </label>
               <input
-                type="text"
+                type="file"
                 name="buktiNota"
-                // onChange={(e) => changePengadaanHandler(e)}
-                className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
+                id="buktiNota"
+                onChange={(e) => setImg(e.target.files[0])}
+                className="hidden border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
               />
             </div>
-            {/* <div className="w-full mt-4">
-              <h1 className="font-abc pb-2">Alamat</h1>
-              <textarea
-                name=""
-                id=""
-                rows="3"
-                className="w-full p-3 border-2 border-slate-500"
-              ></textarea>
-            </div> */}
+            <div className="w-full mt-4">
+              {img ? (
+                <div className="w-full ">
+                  <img
+                    className="w-[50%] mx-auto object-contain"
+                    src={URL.createObjectURL(img)}
+                    alt=""
+                  />
+                </div>
+              ) : null}
+            </div>
+
             <div className="w-full mt-4">
               <h1 className="font-abc pb-2">Spesifikasi Barang</h1>
               <input
@@ -137,15 +149,6 @@ export default function TambahBarangOwner() {
               />
             </div>
 
-            {/* <div className="w-full mt-4">
-              <label
-                htmlFor="ktp"
-                className="h-[20px] w-[50px] text-[13px] font-abc rounded-lg p-2 bg-[#E3E8EF]"
-              >
-                Upload KTP
-              </label>
-              <input type="file" id="ktp" name="ktp" className="hidden" />
-            </div> */}
             <div className="w-full justify-center mt-12 mb-12 flex items-center">
               <button
                 onClick={(e) => TambahPengadaan(e)}

@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import TopBar from "../../components/layout/TopBar";
 import TabelPemeliharaan from "../../components/admin/pemeliharaan/TablePemeliharaan";
-import TambahPemeliharaan from "../../components/admin/pemeliharaan/TambahPemeliharaan";
 
 export default function PengeluaranPage({ userSession }) {
   const [open, setOpen] = useState(false);
@@ -15,7 +14,6 @@ export default function PengeluaranPage({ userSession }) {
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
         <TopBar userSession={userSession}>{"Pemeliharaan "}</TopBar>
         <TabelPemeliharaan />
-        {/* <TambahPemeliharaan /> */}
       </div>
     </div>
   );
