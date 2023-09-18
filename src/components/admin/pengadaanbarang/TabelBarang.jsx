@@ -6,7 +6,6 @@ import { BsEye, BsTrash3 } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
 
 import axios from "axios";
-// import testgambar from "../../../assets/img_car.png";
 import FotoDetail from "./FotoDetail";
 import EditBarang from "./EditBarang";
 import DetailPengadaan from "./DetailPengadaan";
@@ -17,21 +16,33 @@ export default function TabelBarang({ data }) {
   const [valuePengadaan, setValuePengadaan] = useState();
   const [detailPengadaan, setDetailPengadaan] = useState(false);
   const [pengadaanBarang, setPengadaanBarang] = useState(false);
-  const [foto, setFoto] = useState('');
+  const [foto, setFoto] = useState("");
   const nav = useNavigate();
   const [img, setImg] = useState();
   const [idBarang, setIdBarang] = useState("");
   const [kategori, setKategori] = useState([]);
   const [ruang, setRuang] = useState([]);
-  const [filterBulan, setFilterBulan] = useState('');
-  const [filterTahun, setFilterTahun] = useState('');
-  const [status, setStatus] = useState('');
-  const bulan = ['Januari', 'Febuari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+  const [filterBulan, setFilterBulan] = useState("");
+  const [filterTahun, setFilterTahun] = useState("");
+  const [status, setStatus] = useState("");
+  const bulan = [
+    "Januari",
+    "Febuari",
+    "Maret",
+    "April",
+    "Mei",
+    "Juni",
+    "Juli",
+    "Agustus",
+    "September",
+    "Oktober",
+    "November",
+    "Desember",
+  ];
   let tahunSekarang = new Date().getFullYear() + 1;
   const tahun = [];
   const [gridKey, setGridKey] = useState(0);
-  const [filter, setFilter] = useState('');
-
+  const [filter, setFilter] = useState("");
 
   for (let i = 0; i < 10; i++) {
     tahun.push(tahunSekarang - 1);
@@ -40,7 +51,7 @@ export default function TabelBarang({ data }) {
 
   useEffect(() => {
     setAllBarang(data);
-  }, [data])
+  }, [data]);
 
   let row = [];
 
@@ -73,9 +84,12 @@ export default function TabelBarang({ data }) {
   useEffect(() => {
     fetchData();
   }, []);
+  console.log(kategori);
 
   const fetchData = async () => {
-    const getKategori = await axios.get("http://127.0.0.1:8000/api/getKategori");
+    const getKategori = await axios.get(
+      "http://127.0.0.1:8000/api/getKategori"
+    );
     const getRuang = await axios.get("http://127.0.0.1:8000/api/getRuang");
 
     // if (getRuang && getKategori) {
@@ -85,8 +99,6 @@ export default function TabelBarang({ data }) {
   };
 
   const [detailFoto, setDetailFoto] = useState(false);
-
-
 
   const changePengadaanHandler = (e) => {
     setPengadaan({
@@ -117,63 +129,63 @@ export default function TabelBarang({ data }) {
       data.append("upload_preset", "digikostDemoApp");
       data.append("cloud_name", "dkt6ysk5c");
 
-      const res = await axios.post("https://api.cloudinary.com/v1_1/dkt6ysk5c/image/upload", data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const res = await axios.post(
+        "https://api.cloudinary.com/v1_1/dkt6ysk5c/image/upload",
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
       pengadaan.buktiNota = res.data.secure_url;
 
       if (response.status === 200) {
         window.location.reload(true);
       }
-
     } catch (err) {
       console.log(err.response.data.errors);
-      setErrorPengadaan({
-        namaBarang: err.response.data.errors.namaBarang,
-        kodeBarang: err.response.data.errors.kodeBarang,
-        kodeRuang: err.response.data.errors.kodeRuang,
-        merek: err.response.data.errors.merek,
-        hargaBarang: err.response.data.errors.hargaBarang,
-        quantity: err.response.data.errors.quantity,
-        spesifikasi: err.response.data.errors.spesifikasi,
-        ruang: err.response.data.errors.ruang,
-        supplier: err.response.data.errors.supplier,
-        buktiNota: err.response.data.errors.buktiNota,
-      })
+      // setErrorPengadaan({
+      //   namaBarang: err.response.data.errors.namaBarang,
+      //   kodeBarang: err.response.data.errors.kodeBarang,
+      //   kodeRuang: err.response.data.errors.kodeRuang,
+      //   merek: err.response.data.errors.merek,
+      //   hargaBarang: err.response.data.errors.hargaBarang,
+      //   quantity: err.response.data.errors.quantity,
+      //   spesifikasi: err.response.data.errors.spesifikasi,
+      //   ruang: err.response.data.errors.ruang,
+      //   supplier: err.response.data.errors.supplier,
+      //   buktiNota: err.response.data.errors.buktiNota,
+      // });
     }
   };
 
   const showBarang = () => {
-    // data.map(item => {
-    //   if (Number(filterTahun) === new Date(item.created_at).getFullYear()) {
-    //     console.log('Months match');
-    //   } else {
-    //     console.log('Months do not match');
-    //   }
-    // });
-    console.log("test : ", data);
-    data.filter(item => (
-      (filter === '' || item.ruang === filter) &&
-      (filterBulan === '' || new Date(item.created_at).getMonth() === Number(filterBulan)) &&
-      (filterTahun === '' || new Date(item.created_at).getFullYear() === Number(filterTahun)) &&
-      (status === '' || item.status === status)
-    )).forEach((a) => {
-      row.push({
-        id: a.id,
-        nama_barang: `${a.namaBarang}:${a.merek}`,
-        tgl: a.tanggalPembelian,
-        harga: a.hargaBarang,
-        lokasi_barang: a.ruang,
-        foto: a.buktiNota,
-        qty_barang: a.quantity,
-        total_harga: a.hargaBarang * a.quantity,
-        status: a?.status,
+    data
+      .filter(
+        (item) =>
+          (filter === "" || item.ruang === filter) &&
+          (filterBulan === "" ||
+            new Date(item.created_at).getMonth() === Number(filterBulan)) &&
+          (filterTahun === "" ||
+            new Date(item.created_at).getFullYear() === Number(filterTahun)) &&
+          (status === "" || item.status === status)
+      )
+      .forEach((a) => {
+        row.push({
+          id: a.id,
+          nama_barang: `${a.namaBarang}:${a.merek}`,
+          tgl: a.tanggalPembelian,
+          harga: a.hargaBarang,
+          lokasi_barang: a.ruang,
+          foto: a.buktiNota,
+          qty_barang: a.quantity,
+          total_harga: a.hargaBarang * a.quantity,
+          status: a?.status,
+        });
       });
-    });
-  }
+  };
 
   showBarang();
 
@@ -237,7 +249,10 @@ export default function TabelBarang({ data }) {
         console.log(params);
         return (
           <img
-            onClick={() => { setFoto(params.row.foto); setDetailFoto(!detailFoto); }}
+            onClick={() => {
+              setFoto(params.row.foto);
+              setDetailFoto(!detailFoto);
+            }}
             src={params.row.foto}
             alt=""
           />
@@ -284,7 +299,11 @@ export default function TabelBarang({ data }) {
 
             <button
               className="mr-4"
-              onClick={() => { setValuePengadaan(params.row.foto); setDetailPengadaan(true); }}
+              onClick={() => {
+                setValuePengadaan(params.row.foto);
+                console.log(params.row.foto, "Adasdasdasdas");
+                setDetailPengadaan(true);
+              }}
             >
               <BsEye size={20} />
             </button>
@@ -304,10 +323,16 @@ export default function TabelBarang({ data }) {
     },
   ];
 
+  console.log();
+
   return (
     <>
       {detailPengadaan ? (
-        <DetailPengadaan open={detailPengadaan} setOpen={setDetailPengadaan} value={valuePengadaan} />
+        <DetailPengadaan
+          open={detailPengadaan}
+          setOpen={setDetailPengadaan}
+          value={valuePengadaan}
+        />
       ) : null}
       {detailFoto ? (
         <FotoDetail open={detailFoto} setOpen={setDetailFoto} foto={foto} />
@@ -329,23 +354,24 @@ export default function TabelBarang({ data }) {
                 <h1 className="font-abc pb-2 ">Kategori</h1>
                 <select
                   name="kodeBarang"
-                  onChange={
-                    (e) => {
-                      const selectedBarang = kategori.find((item) => item.kodeBarang === e.target.value);
+                  onChange={(e) => {
+                    const selectedBarang = kategori.find(
+                      (item) => item.kodeBarang === e.target.value
+                    );
 
-                      setPengadaan({
-                        ...pengadaan,
-                        kodeBarang: selectedBarang.kodeBarang,
-                        namaBarang: `${selectedBarang.namaBarang}`,
-                        merek: selectedBarang.kategori
-                      });
-                      console.log(pengadaan);
-                    }
-                  }
+                    setPengadaan({
+                      ...pengadaan,
+                      kodeBarang: selectedBarang.kodeBarang,
+                      namaBarang: `${selectedBarang.namaBarang}`,
+                      merek: selectedBarang.kategori,
+                    });
+                    console.log(pengadaan);
+                  }}
                   id=""
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 >
                   <option value="">Pilih Category</option>
+
                   {kategori.map((item, index) => {
                     return (
                       <option key={index} value={`${item.kodeBarang}`}>
@@ -354,48 +380,42 @@ export default function TabelBarang({ data }) {
                     );
                   })}
                 </select>
-                {errPengadaan.kodeBarang ?
+                {errPengadaan.kodeBarang ? (
                   <p>{errPengadaan.kodeBarang}</p>
-                  : null
-                }
+                ) : null}
               </div>
-              {/* <div className="w-full mt-4">
-                <h1 className="font-abc pb-2">Merek Barang</h1>
-                <input
-                  type="text"
-                  name="merek"
-                  onChange={(e) => changePengadaanHandler(e)}
-                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                />
-              </div> */}
-              {/* <div className="w-full mt-4">
-                <h1 className="font-abc pb-2">Resi Barang</h1>
-                <input
-                  type="text"
-                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                />
-              </div> */}
+
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Foto Nota Pembelian</h1>
+                <label
+                  htmlFor="buktiNota"
+                  className="border-2 border-slate-500 px-2 py-1 text-sm font-abc rounded-md"
+                >
+                  Pilih Foto
+                </label>
                 <input
                   type="file"
                   name="buktiNota"
-                  onChange={(e) => setImg(e.target.files[0])}
-                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
+                  id="buktiNota"
+                  onChange={(e) => { setPengadaan({ ...pengadaan, buktiNota: e.target.files[0] }); setImg(e.target.files[0]) }}
+                  className="hidden border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
-                {errPengadaan.buktiNota ?
-                  <p>{errPengadaan.buktiNota}</p> : null
-                }
+                {errPengadaan.buktiNota ? (
+                  <p>{errPengadaan.buktiNota}</p>
+                ) : null}
               </div>
-              {/* <div className="w-full mt-4">
-              <h1 className="font-abc pb-2">Alamat</h1>
-              <textarea
-                name=""
-                id=""
-                rows="3"
-                className="w-full p-3 border-2 border-slate-500"
-              ></textarea>
-            </div> */}
+              <div className="w-full mt-4">
+                {img ? (
+                  <div className="w-full ">
+                    <img
+                      className="w-[50%] mx-auto object-contain"
+                      src={URL.createObjectURL(img)}
+                      alt=""
+                    />
+                  </div>
+                ) : null}
+              </div>
+
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Spesifikasi Barang</h1>
                 <input
@@ -404,9 +424,9 @@ export default function TabelBarang({ data }) {
                   onChange={(e) => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
-                {errPengadaan.spesifikasi ?
-                  <p>{errPengadaan.spesifikasi}</p> : null
-                }
+                {errPengadaan.spesifikasi ? (
+                  <p>{errPengadaan.spesifikasi}</p>
+                ) : null}
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Supplier</h1>
@@ -416,39 +436,33 @@ export default function TabelBarang({ data }) {
                   onChange={(e) => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
-                {errPengadaan.supplier ?
-                  <p>{errPengadaan.supplier}</p> : null
-                }
+                {errPengadaan.supplier ? <p>{errPengadaan.supplier}</p> : null}
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Lokasi Barang</h1>
                 <select
                   id="cars"
                   name="kodeRuang"
-                  onChange={
-                    (e) => {
-                      const selectedRuang = ruang.find((item) => item.kodeRuang === e.target.value);
+                  onChange={(e) => {
+                    const selectedRuang = ruang.find(
+                      (item) => item.kodeRuang === e.target.value
+                    );
 
-                      setPengadaan({
-                        ...pengadaan,
-                        kodeRuang: selectedRuang.kodeRuang,
-                        ruang: selectedRuang.ruang
-                      });
-                      console.log(pengadaan);
-                    }
-                  }
+                    setPengadaan({
+                      ...pengadaan,
+                      kodeRuang: selectedRuang.kodeRuang,
+                      ruang: selectedRuang.ruang,
+                    });
+                    console.log(pengadaan);
+                  }}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 >
                   <option value="">Pilih Ruang</option>
                   {ruang.map((item) => {
-                    return (
-                      <option value={item.kodeRuang}>{item.ruang}</option>
-                    )
+                    return <option value={item.kodeRuang}>{item.ruang}</option>;
                   })}
                 </select>
-                {errPengadaan.ruang ?
-                  <p>{errPengadaan.ruang}</p> : null
-                }
+                {errPengadaan.ruang ? <p>{errPengadaan.ruang}</p> : null}
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Quantitas Barang</h1>
@@ -458,9 +472,7 @@ export default function TabelBarang({ data }) {
                   onChange={(e) => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
-                {errPengadaan.quantity ?
-                  <p>{errPengadaan.quantity}</p> : null
-                }
+                {errPengadaan.quantity ? <p>{errPengadaan.quantity}</p> : null}
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Harga</h1>
@@ -470,9 +482,9 @@ export default function TabelBarang({ data }) {
                   onChange={(e) => changePengadaanHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
-                {errPengadaan.hargaBarang ?
-                  <p>{errPengadaan.hargaBarang}</p> : null
-                }
+                {errPengadaan.hargaBarang ? (
+                  <p>{errPengadaan.hargaBarang}</p>
+                ) : null}
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Total Harga</h1>
@@ -481,16 +493,6 @@ export default function TabelBarang({ data }) {
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
-
-              {/* <div className="w-full mt-4">
-              <label
-                htmlFor="ktp"
-                className="h-[20px] w-[50px] text-[13px] font-abc rounded-lg p-2 bg-[#E3E8EF]"
-              >
-                Upload KTP
-              </label>
-              <input type="file" id="ktp" name="ktp" className="hidden" />
-            </div> */}
               <div className="w-full justify-center mt-12 mb-12 flex items-center">
                 <button
                   onClick={(e) => TambahPengadaan(e)}
@@ -527,14 +529,16 @@ export default function TabelBarang({ data }) {
                       <select
                         name=""
                         id="ruang"
-                        onChange={e => setFilter(e.target.value)}
+                        onChange={(e) => setFilter(e.target.value)}
                         className="border h-[34px] rounded-xl w-[100px] pl-2 "
                       >
-                        <option value="" selected>Ruang</option>
+                        <option value="" selected>
+                          Ruang
+                        </option>
                         {ruang.map((item) => {
                           return (
                             <option value={item.ruang}>{item.ruang}</option>
-                          )
+                          );
                         })}
                       </select>
                     </div>
@@ -542,14 +546,12 @@ export default function TabelBarang({ data }) {
                       <select
                         name=""
                         id="bulan"
-                        onChange={e => setFilterBulan(e.target.value)}
+                        onChange={(e) => setFilterBulan(e.target.value)}
                         className="border h-[34px] rounded-xl w-[100px] pl-2 "
                       >
                         <option value="">Bulan</option>
                         {bulan.map((item, index) => {
-                          return (
-                            <option value={index}>{item}</option>
-                          )
+                          return <option value={index}>{item}</option>;
                         })}
                       </select>
                     </div>
@@ -557,14 +559,12 @@ export default function TabelBarang({ data }) {
                       <select
                         name=""
                         id="tahun"
-                        onChange={e => setFilterTahun(e.target.value)}
+                        onChange={(e) => setFilterTahun(e.target.value)}
                         className="border h-[34px] rounded-xl w-[100px] pl-2 "
                       >
                         <option value="">Tahun</option>
                         {tahun.map((item, index) => {
-                          return (
-                            <option value={item}>{item}</option>
-                          )
+                          return <option value={item}>{item}</option>;
                         })}
                       </select>
                     </div>
@@ -572,7 +572,7 @@ export default function TabelBarang({ data }) {
                       <select
                         name=""
                         id="statuss"
-                        onChange={e => setStatus(e.target.value)}
+                        onChange={(e) => setStatus(e.target.value)}
                         className="border h-[34px] rounded-xl w-[100px] pl-2 "
                       >
                         <option value="">Status</option>
@@ -581,9 +581,9 @@ export default function TabelBarang({ data }) {
                         <option value="">All</option>
                       </select>
                     </div>
-                    <button className="bg-[#7B2CBF]  mb-4 px-3 text-center py-1 w-[100px] rounded-xl text-[#E5D5F2] font-abc">
+                    {/* <button className="bg-[#7B2CBF]  mb-4 px-3 text-center py-1 w-[100px] rounded-xl text-[#E5D5F2] font-abc">
                       Filter
-                    </button>
+                    </button> */}
                   </form>
                 </div>
               </div>

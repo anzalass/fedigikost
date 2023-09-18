@@ -95,7 +95,7 @@ export default function TambahBarangPage({ userSession }) {
   const DeleteKategori = async (id) => {
     console.log("ini id nya : ", id);
     const result = await axios.delete(
-      `${BACKEND_BASE_URL}/api/kategoriDelete` + id
+      `${BACKEND_BASE_URL}/api/kategoriDelete/` + id
     );
     if (result) {
       window.location.reload();

@@ -15,27 +15,27 @@ export default function SidebarOwner({ open, setSidebar, width, setWidth }) {
   const sidebarMenu = [
     {
       title: "Beranda",
-      url: "/",
+      url: "/owner",
       icon: <GrHomeRounded className={` fill-white  my-auto`} />,
     },
     {
       title: "Pengadaan Barang",
-      url: "/tambah-barang",
+      url: "/owner/pengadaan-barang",
       icon: <BsPencilSquare className="my-auto" />,
     },
     {
       title: "Pemeliharaan Barang",
-      url: "/pengeluaran",
+      url: "/owner/pemeliharaan",
       icon: <ImEnter className="my-auto" />,
     },
     {
       title: "Data Ruangan",
-      url: "/data-ruangan",
+      url: "/owner/data-ruangan",
       icon: <HiMiniClipboardDocumentList className="my-auto" />,
     },
     {
       title: "Petugas",
-      url: "/petugas",
+      url: "/owner/petugas",
       icon: <ImEnter className="my-auto" />,
     },
   ];
@@ -89,7 +89,7 @@ export default function SidebarOwner({ open, setSidebar, width, setWidth }) {
               : "hidden sm:hidden  md:hidden lg:hidden xl:hidden "
           } font-abc`}
         >
-          Main Menu
+          Main Menu Owner
         </h1>
         <div className=" ml-2 mt-4">
           {sidebarMenu &&

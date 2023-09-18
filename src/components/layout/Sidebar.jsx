@@ -33,11 +33,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
       url: "/data-ruangan",
       icon: <HiMiniClipboardDocumentList className="my-auto" />,
     },
-    {
-      title: "Petugas",
-      url: "/petugas",
-      icon: <ImEnter className="my-auto" />,
-    },
+
   ];
 
   const navigate = useNavigate();

@@ -5,11 +5,11 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function LoginPage({ userSession }) {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [data, setData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
   const [redirect, setRedirect] = useState(false);
   const nav = useNavigate();
@@ -20,14 +20,18 @@ export default function LoginPage({ userSession }) {
       [e.target.name]: e.target.value,
     });
     console.log(data);
-  }
+  };
 
   const login = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8000/api/login', data);
 
-      localStorage.setItem('token', response.data.message);
+      const response = await axios.post(
+        "http://localhost:8000/api/login",
+        data
+      );
+
+      localStorage.setItem("token", response.data.message);
 
       const content = response.data.message;
       console.log(response.status);
@@ -37,7 +41,7 @@ export default function LoginPage({ userSession }) {
       // setRedirect(false);
       console.log(e);
     }
-  }
+  };
 
   if (userSession.name != undefined) {
     window.location.href = "/";
@@ -86,7 +90,10 @@ export default function LoginPage({ userSession }) {
               />
             </div>
             <div className="mt-8 ml-8">
-              <button onClick={login} className="rounded-xl  font-abc text-white w-[90%] bg-[#7B2CBF] h-[36px]">
+              <button
+                onClick={login}
+                className="rounded-xl  font-abc text-white w-[90%] bg-[#7B2CBF] h-[36px]"
+              >
                 Login
               </button>
             </div>

@@ -6,35 +6,27 @@ import { AiOutlineArrowRight } from "react-icons/ai";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-export default function TabelDataRuangan({ edit, data }) {
+export default function TabelDataRuangan({ edit, data, setEdit, setValueEdit, setErrRuangan }) {
   const nav = useNavigate();
+  const OpenEdit = () => {
+    setEdit(1);
+  };
 
   console.log("data : ", data);
 
   const DeleteRuang = async (kodeRuang) => {
-    const res = await axios.delete(`http://127.0.0.1:8000/api/deleteRuang/${kodeRuang}`);
+    const res = await axios.delete(
+      `http://127.0.0.1:8000/api/deleteRuang/${kodeRuang}`
+    );
 
     if (res.status == 200) {
       window.location.reload();
     }
-  }
-  // const data = [
-  //   {
-  //     id: 1,
-  //     ruangan: "D002",
-  //     qtybarang: "12",
-  //   },
-  // ];
+  };
+
   const columns = [
     { field: "id", headerName: "ID", minWidth: 50, flex: 0.2 },
     { field: "ruangan", headerName: "Ruangan", minWidth: 100, flex: 0.7 },
-
-    // {
-    //   field: "qtybarang",
-    //   headerName: "Qty Barang",
-    //   minWidth: 100,
-    //   flex: 0.7,
-    // },
     {
       field: "aksi",
       headerName: "Aksi",
@@ -54,7 +46,7 @@ export default function TabelDataRuangan({ edit, data }) {
             <button className="mr-4" onClick={() => DeleteRuang(params.id)}>
               <BsTrash3 color="red" size={20} />
             </button>
-            <button className="" onClick={() => { }}>
+            <button className="mr-4" onClick={() => { OpenEdit(); setValueEdit({ kodeRuang: params.id, ruang: params.row.ruangan }); setErrRuangan({ kodeRuang: "", ruang: "" }) }}>
               <BiEditAlt color="blue" size={20} />
             </button>
           </div>
@@ -62,6 +54,7 @@ export default function TabelDataRuangan({ edit, data }) {
       },
     },
   ];
+
   const row = [];
   data.forEach((a) => {
     row.push({
