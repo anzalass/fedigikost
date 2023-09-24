@@ -11,6 +11,7 @@ import ModalChangeStatus from "../../components/admin/detailbarangruangan/ModalC
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../config/base_url";
+import EditPemeliharaanModal from "../../components/admin/pemeliharaan/EditPemeliharaanModal";
 
 export default function DetailBarangRuangan({ userSession }) {
   const [open, setOpen] = useState(false);
@@ -20,6 +21,7 @@ export default function DetailBarangRuangan({ userSession }) {
   const [pengadaan, setPengadaan] = useState([]);
   const [barang, setBarang] = useState([]);
   const [pemeliharaanBarang, setPemeliharaanBarang] = useState([]);
+  const [editMaintenence, setEditMaintenence] = useState(false);
   const rowBarangRuangan = [];
 
   const [updateData, setUpdateData] = useState({
@@ -29,7 +31,7 @@ export default function DetailBarangRuangan({ userSession }) {
 
   const { id } = useParams();
 
-  const updateStatus = () => { };
+  const updateStatus = () => {};
   // # curl "https://randomuser.me/api/?results=10" | jq '.results[].name.first' >> "$1 at $date_time/my_friends/list_of_my_friends.txt"
   useEffect(() => {
     fetchData();
@@ -46,7 +48,10 @@ export default function DetailBarangRuangan({ userSession }) {
         item.is_active == 1
     );
     const filterPemeliharaan = pemeliharaanBarang.filter(
-      (item) => item.kodeBarang == a.kodeBarang && item.kodeRuang == id && item.status != 'selesai'
+      (item) =>
+        item.kodeBarang == a.kodeBarang &&
+        item.kodeRuang == id &&
+        item.status != "selesai"
     );
 
     filterPengadaan.forEach((bi) => {
@@ -227,6 +232,13 @@ export default function DetailBarangRuangan({ userSession }) {
             >
               <BsTrash3 color="red" size={20} />
             </button>
+            <button className="">
+              <BiEditAlt
+                color="blue"
+                size={20}
+                onClick={() => setEditMaintenence(true)}
+              />
+            </button>
           </div>
         );
       },
@@ -264,6 +276,12 @@ export default function DetailBarangRuangan({ userSession }) {
           setOpen={setMaintenence}
           data={data}
           ruang={id}
+        />
+      ) : null}
+      {editMaintenence ? (
+        <EditPemeliharaanModal
+          open={editMaintenence}
+          setOpen={setEditMaintenence}
         />
       ) : null}
       <div className="w-full h-[160vh] flex">

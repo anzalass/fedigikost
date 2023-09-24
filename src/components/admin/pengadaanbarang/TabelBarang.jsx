@@ -269,12 +269,13 @@ export default function TabelBarang({ data }) {
       renderCell: (params) => {
         return (
           <div
-            className={`${params.row.status === "pending"
-              ? "bg-yellow-400"
-              : params.row.status === "acc"
+            className={`${
+              params.row.status === "pending"
+                ? "bg-yellow-400"
+                : params.row.status === "acc"
                 ? "bg-green-500"
                 : "bg-red-600"
-              } h-full text-center pt-3 text-white font-abc w-full `}
+            } h-full text-center pt-3 text-white font-abc w-full `}
           >
             {params.row.status}
           </div>
@@ -397,7 +398,13 @@ export default function TabelBarang({ data }) {
                   type="file"
                   name="buktiNota"
                   id="buktiNota"
-                  onChange={(e) => { setPengadaan({ ...pengadaan, buktiNota: e.target.files[0] }); setImg(e.target.files[0]) }}
+                  onChange={(e) => {
+                    setPengadaan({
+                      ...pengadaan,
+                      buktiNota: e.target.files[0],
+                    });
+                    setImg(e.target.files[0]);
+                  }}
                   className="hidden border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
                 {errPengadaan.buktiNota ? (
@@ -486,13 +493,7 @@ export default function TabelBarang({ data }) {
                   <p>{errPengadaan.hargaBarang}</p>
                 ) : null}
               </div>
-              <div className="w-full mt-4">
-                <h1 className="font-abc pb-2">Total Harga</h1>
-                <input
-                  type="text"
-                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                />
-              </div>
+
               <div className="w-full justify-center mt-12 mb-12 flex items-center">
                 <button
                   onClick={(e) => TambahPengadaan(e)}

@@ -57,7 +57,7 @@ export default function EditBarang({ close, setClose, idBarang }) {
       setRuang(getRuang.data.results);
       setBarang(getBarang.data.results);
     }
-  }
+  };
 
   const getDataByID = async () => {
     const result = await axios.get(
@@ -110,12 +110,14 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   {barang.map((item, index) => {
                     if (item.namaBarang == data.namaBarang) {
                       return (
-                        <option value="kodeBarang" selected>{item.namaBarang}</option>
-                      )
+                        <option value="kodeBarang" selected>
+                          {item.namaBarang}
+                        </option>
+                      );
                     } else {
                       return (
                         <option value="kodeBarang">{item.namaBarang}</option>
-                      )
+                      );
                     }
                   })}
                 </select>
@@ -171,12 +173,20 @@ export default function EditBarang({ close, setClose, idBarang }) {
                     if (item.ruang == data.ruang) {
                       console.log("item : ", item.kodeRuang);
                       return (
-                        <option key={item.kodeBarang} value={item.kodeRuang} selected>{item.ruang}</option>
-                      )
+                        <option
+                          key={item.kodeBarang}
+                          value={item.kodeRuang}
+                          selected
+                        >
+                          {item.ruang}
+                        </option>
+                      );
                     } else {
                       return (
-                        <option key={item.kodeBarang} value={item.kodeRuang}>{item.ruang}</option>
-                      )
+                        <option key={item.kodeBarang} value={item.kodeRuang}>
+                          {item.ruang}
+                        </option>
+                      );
                     }
                   })}
                 </select>
@@ -201,15 +211,7 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
-              <div className="w-full mt-4">
-                <h1 className="font-abc pb-2">Total Harga</h1>
-                <input
-                  type="text"
-                  value={data.totalHargaBarang}
-                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                  disabled
-                />
-              </div>
+
               <div className="w-full justify-center mt-12 mb-12 flex items-center">
                 <button
                   onClick={() => UpdatePengadaan()}
