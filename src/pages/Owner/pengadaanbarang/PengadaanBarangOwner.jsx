@@ -63,10 +63,10 @@ export default function PengadaanBarangOwner() {
       const result = await axios.get(`http://localhost:8000/api/pengadaan`);
       setBarang(result.data.results);
 
-      // const resultKategori = await axios.get(
-      //   `http://localhost:8000/api/getKategori`
-      // );
-      // setallKategori(resultKategori.data.results);
+      const resultRuang = await axios.get(
+        `http://localhost:8000/api/getRuang`
+      );
+      setRuang(resultRuang.data.results);
 
       // Add a delay before making the next request
       await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 milliseconds
@@ -298,10 +298,12 @@ export default function PengadaanBarangOwner() {
                     id="ruang"
                     className="border h-[34px] rounded-xl w-[100px] pl-2 "
                   >
-                    <option value="">Ruang</option>
-                    <option value="">112</option>
-                    <option value="">113</option>
-                    <option value="">114</option>
+                    <option value="" selected>Ruang</option>
+                    {ruang.map((item) => {
+                      return (
+                        <option value={item.ruang}>{item.ruang}</option>
+                      )
+                    })}
                   </select>
                 </div>
                 <div className="">
@@ -310,10 +312,12 @@ export default function PengadaanBarangOwner() {
                     id="bulan"
                     className="border h-[34px] rounded-xl w-[100px] pl-2 "
                   >
-                    <option value="">Bulan</option>
-                    <option value="">Januari</option>
-                    <option value="">Februari</option>
-                    <option value="">Maret</option>
+                    <option value="" selected>Bulan</option>
+                    {bulan.map((item) => {
+                      return (
+                        <option value={item}>{item}</option>
+                      )
+                    })}
                   </select>
                 </div>
                 <div className="">

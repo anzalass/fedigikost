@@ -1,14 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import SidebarOwner from "../../../components/layoutowner/SidebarOwner";
 import TopBarOwner from "../../../components/layoutowner/TopbarOwner";
 import { useNavigate } from "react-router-dom";
 import { BsTrash3 } from "react-icons/bs";
 import { BiEditAlt } from "react-icons/bi";
 import { DataGrid } from "@mui/x-data-grid";
+import axios from "axios";
+import { BACKEND_BASE_URL } from "../../../config/base_url";
 
 export default function TambahKategoriOwner() {
   const [open, setOpen] = useState(false);
+  const [allKategori, setAllKategori] = useState([]);
   const nav = useNavigate();
+
+  useEffect(() => {
+    getKategori();
+  }, [])
+
+  const getKategori = async () => {
+    const DataKategori = await axios.get(`${BACKEND_BASE_URL}/api/getKategori`);
+    setAllKategori(DataKategori.request.results);
+  }
 
   const columns = [
     { field: "id", headerName: "Kode Barang", minWidth: 50, flex: 0.5 },
@@ -32,13 +44,13 @@ export default function TambahKategoriOwner() {
           <div className="flex">
             <button
               className="mr-4"
-              // onClick={() => DeleteKategori(params.id)}
+            // onClick={() => DeleteKategori(params.id)}
             >
               <BsTrash3 color="red" size={20} />
             </button>
             <button
               className=""
-              //   onClick={() => EditHandler(params.id, params.row.nama_barang)}
+            //   onClick={() => EditHandler(params.id, params.row.nama_barang)}
             >
               <BiEditAlt color="blue" size={20} />
             </button>
@@ -49,6 +61,12 @@ export default function TambahKategoriOwner() {
   ];
 
   const row = [];
+
+  allKategori.map((item, index) => {
+    row.push({
+
+    })
+  })
 
   return (
     <div className="w-full h-[160vh] flex">

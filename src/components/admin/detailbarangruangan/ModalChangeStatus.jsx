@@ -17,6 +17,9 @@ export default function ModalChangeStatus({ open, setOpen, id }) {
       }
     } catch (err) {
       alert(err);
+      console.log(data);
+      console.log("error : ", err.response.data);
+      console.log("error : ", err.response.data.error);
     }
   }
 

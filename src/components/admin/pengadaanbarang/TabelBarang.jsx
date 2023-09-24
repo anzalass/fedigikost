@@ -60,8 +60,8 @@ export default function TabelBarang({ data }) {
     kodeBarang: "",
     kodeRuang: "",
     merek: "",
-    hargaBarang: 0,
-    quantity: 0,
+    hargaBarang: "",
+    quantity: "",
     spesifikasi: "",
     ruang: "",
     supplier: "",
@@ -73,8 +73,8 @@ export default function TabelBarang({ data }) {
     kodeBarang: "",
     kodeRuang: "",
     merek: "",
-    hargaBarang: 0,
-    quantity: 0,
+    hargaBarang: "",
+    quantity: "",
     spesifikasi: "",
     ruang: "",
     supplier: "",
@@ -119,11 +119,6 @@ export default function TabelBarang({ data }) {
 
   const TambahPengadaan = async (e) => {
     try {
-      const response = await axios.post(
-        "http://127.0.0.1:8000/api/tambahPengadaan",
-        pengadaan
-      );
-
       const data = new FormData();
       data.append("file", img);
       data.append("upload_preset", "digikostDemoApp");
@@ -141,23 +136,28 @@ export default function TabelBarang({ data }) {
 
       pengadaan.buktiNota = res.data.secure_url;
 
+      const response = await axios.post(
+        "http://127.0.0.1:8000/api/tambahPengadaan",
+        pengadaan
+      );
+
       if (response.status === 200) {
         window.location.reload(true);
       }
     } catch (err) {
-      console.log(err.response.data.errors);
-      // setErrorPengadaan({
-      //   namaBarang: err.response.data.errors.namaBarang,
-      //   kodeBarang: err.response.data.errors.kodeBarang,
-      //   kodeRuang: err.response.data.errors.kodeRuang,
-      //   merek: err.response.data.errors.merek,
-      //   hargaBarang: err.response.data.errors.hargaBarang,
-      //   quantity: err.response.data.errors.quantity,
-      //   spesifikasi: err.response.data.errors.spesifikasi,
-      //   ruang: err.response.data.errors.ruang,
-      //   supplier: err.response.data.errors.supplier,
-      //   buktiNota: err.response.data.errors.buktiNota,
-      // });
+      console.log(err);
+      setErrorPengadaan({
+        namaBarang: err.response.data.errors.namaBarang,
+        kodeBarang: err.response.data.errors.kodeBarang,
+        kodeRuang: err.response.data.errors.kodeRuang,
+        merek: err.response.data.errors.merek,
+        hargaBarang: err.response.data.errors.hargaBarang,
+        quantity: err.response.data.errors.quantity,
+        spesifikasi: err.response.data.errors.spesifikasi,
+        ruang: err.response.data.errors.ruang,
+        supplier: err.response.data.errors.supplier,
+        buktiNota: err.response.data.errors.buktiNota,
+      });
     }
   };
 

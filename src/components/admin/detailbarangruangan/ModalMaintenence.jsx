@@ -1,5 +1,6 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { BACKEND_BASE_URL } from "../../../config/base_url";
 
 export default function ModalMaintenence({ open, setOpen, data, ruang }) {
   const [dataConst, setDataConst] = useState({
@@ -13,8 +14,14 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
     jumlah: 1,
     buktiPembayaran: "",
     status: "pending",
-    harga: 0,
+    harga: "",
   });
+
+  const [errResponse, setErrResponse] = useState({
+    jumlah: "",
+    harga: "",
+    keterangan: ""
+  })
 
   useEffect(() => {
     setDataBarang((prevData) => ({
@@ -25,7 +32,7 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
       jumlah: 1,
       buktiPembayaran: "test.jpg",
       status: "pending",
-      harga: 0,
+      harga: "",
     }));
     setDataConst((prevData) => ({
       ...prevData,
@@ -53,7 +60,7 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
   const tambahPemeliharaan = async () => {
     try {
       const tambah = await axios.post(
-        "http://127.0.0.1:8000/api/tambahPemeliharaan",
+        `${BACKEND_BASE_URL}/api/tambahPemeliharaan`,
         dataBarang
       );
 
@@ -61,13 +68,12 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
         window.location.reload();
       }
     } catch (err) {
-      if (err.response) {
-        alert("Server Error: " + err.response.data.message);
-      } else if (err.request) {
-        alert("No response from server");
-      } else {
-        alert("Error: " + err.message);
-      }
+      console.log(err.response.data.error);
+      setErrResponse({
+        jumlah: err.response.data.error.jumlah,
+        harga: err.response.data.error.harga,
+        keterangan: err.response.data.error.keterangan
+      })
     }
   };
 
@@ -84,6 +90,9 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
               onChange={(e) => handleChange(e)}
               className="w-full mt-2 h-[30px] border-2 border-slate-500 rounded-md"
             />
+            {errResponse.jumlah ?
+              <p>{errResponse.jumlah}</p> : null
+            }
             <h1>Masukkan Harga Maintenance Barang</h1>
             <input
               type="number"
@@ -91,6 +100,9 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
               onChange={(e) => handleChange(e)}
               className="w-full mt-2 h-[30px] border-2 border-slate-500 rounded-md"
             />
+            {errResponse.harga ?
+              <p>{errResponse.harga}</p> : null
+            }
             <h1>Keterangan Barang</h1>
             <input
               type="text"
@@ -98,6 +110,9 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
               onChange={(e) => handleChange(e)}
               className="w-full mt-2 h-[30px] border-2 border-slate-500 rounded-md"
             />
+            {errResponse.keterangan ?
+              <p>{errResponse.keterangan}</p> : null
+            }
             <div className="mx-auto flex justify-center items-center w-full mt-2">
               <button
                 onClick={tambahPemeliharaan}

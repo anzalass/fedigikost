@@ -11,6 +11,11 @@ export default function LoginPage({ userSession }) {
     email: "",
     password: "",
   });
+
+  const [errData, setErrData] = useState({
+    email: "",
+    password: ""
+  })
   const [redirect, setRedirect] = useState(false);
   const nav = useNavigate();
 
@@ -38,8 +43,11 @@ export default function LoginPage({ userSession }) {
       console.log(content);
       setRedirect(true);
     } catch (e) {
-      // setRedirect(false);
       console.log(e);
+      setErrData({
+        email: e.response.data.errors.email,
+        password: e.response.data.errors.password
+      })
     }
   };
 
@@ -77,8 +85,10 @@ export default function LoginPage({ userSession }) {
                 className="border-2  rounded-xl pl-3 w-[90%] h-[36px] font-abc text-[14px] border-slate-400"
                 placeholder="Masukan Username"
               />
+              {errData.email ?
+                <p>{errData.email}</p> : null
+              }
             </div>
-
             <div className="mt-4 ml-8">
               <h1 className="font-abc mb-1">Password</h1>
               <input
@@ -88,6 +98,9 @@ export default function LoginPage({ userSession }) {
                 className="border-2  rounded-xl pl-3 w-[90%] h-[36px] font-abc text-[14px] border-slate-400"
                 placeholder="Masukan Password"
               />
+              {errData.password ?
+                <p>{errData.password}</p> : null
+              }
             </div>
             <div className="mt-8 ml-8">
               <button

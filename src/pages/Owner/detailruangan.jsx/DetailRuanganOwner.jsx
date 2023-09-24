@@ -241,7 +241,7 @@ export default function DetailRuanganOwner() {
           <TopBarOwner>{"Detail Ruangan Owner"}</TopBarOwner>
           <div className="w-full">
             <div className="w-[96%] mx-auto mt-10">
-              <DataGrid columns={columnsRuangan} rows={rowBarangRuangan} />
+              <DataGrid columns={columnsRuangan} rows={rowBarangRuangan.filter((item) => item.qtybarang)} />
             </div>
             <div className="w-[96%] mx-auto mt-12">
               <DataGrid
