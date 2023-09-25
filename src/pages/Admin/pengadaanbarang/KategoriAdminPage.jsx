@@ -1,19 +1,20 @@
-import Sidebar from "../../components/layout/Sidebar.jsx";
-import TopBar from "../../components/layout/TopBar.jsx";
-import TableTambahBarang from "../../components/admin/pengadaanbarang/TabelBarang.jsx";
 import axios, { all } from "axios";
 import { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { BsTrash3 } from "react-icons/bs";
 import { BiEditAlt } from "react-icons/bi";
-import { data } from "autoprefixer";
-import { BASE_URL, BACKEND_BASE_URL } from "../../config/base_url.jsx";
 
-export default function TambahBarangPage() {
+import Sidebar from "../../../components/layout/Sidebar.jsx";
+import TopBar from "../../../components/layout/TopBar.jsx";
+import { BACKEND_BASE_URL } from "../../../config/base_url.jsx";
+import { useNavigate } from "react-router-dom";
+
+export default function TambahBarangPage({ userSession }) {
   const [barang, setBarang] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [allKategori, setallKategori] = useState([]);
+  const nav = useNavigate();
   const [kategori, setKategori] = useState({
     kodeBarang: "",
     namaBarang: "",
@@ -81,7 +82,7 @@ export default function TambahBarangPage() {
 
   const UpdateKategori = async (id) => {
     const result = await axios.put(
-      `${BACKEND_BASE_URL}/api/updateKategori/` + id,
+      `${BACKEND_BASE_URL}/api/updateKategori` + id,
       kategori
     );
     if (result) {
@@ -174,7 +175,6 @@ export default function TambahBarangPage() {
   allKategori.forEach((a) => {
     row.push({
       id: a.kodeBarang,
-
       nama_barang: a.namaBarang,
     });
   });
@@ -185,127 +185,115 @@ export default function TambahBarangPage() {
         <Sidebar setSidebar={2} width={open} setWidth={setOpen} />
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-        <TopBar>{"Pengadaan Barang"}</TopBar>
+        <TopBar userSession={userSession}>{"Pengadaan Barang"}</TopBar>
         <div className="w-[95%] h-[80px] justify-between flex mx-auto">
           <div className="">
             <button
-              onClick={() => setAddBarang(!addBarang)}
+              onClick={() => nav("/admin/pengadaan")}
               className="bg-[#7B2CBF] mt-5 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
             >
-              Kategori Barang
+              {"<"} Kembali
             </button>
           </div>
-          {addBarang ? null : (
-            <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
-              <input
-                type="text"
-                className="w-full h-full pl-2 rounded-lg"
-                placeholder="Search"
-              />
-            </div>
-          )}
         </div>
         <div className="w-[95%] opacity-25 mx-auto mt-0 h-[1px] bg-slate-600"></div>
-
-        {!addBarang ? <TableTambahBarang data={barang} /> : null}
-
-        {addBarang ? (
-          <div className="w-[95%] mx-auto h-[105vh] bg-white rounded-xl">
-            {isEdit ? (
-              <div className="w-[95%] mx-auto mt-6 p-3">
-                <div className="w-full mt-4">
-                  <h1 className="font-abc pb-2 ">Kode Barang</h1>
-                  <input
-                    type="text"
-                    value={kategori.kodeBarang}
-                    name="kodeBarang"
-                    disabled
-                    onChange={(e) => changeKategoriHandler(e)}
-                    className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                  />
-                </div>
-                <div className="w-full mt-4">
-                  <h1 className="font-abc pb-2">Nama Barang</h1>
-                  <input
-                    type="text"
-                    value={kategori.namaBarang}
-                    name="namaBarang"
-                    onChange={(e) => changeKategoriHandler(e)}
-                    className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                  />
-                </div>
-
-                <div className="w-full justify-center mt-12 flex items-center">
-                  <button
-                    onClick={(e) => UpdateKategori(kategori.kodeBarang)}
-                    className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc"
-                  >
-                    Simpan
-                  </button>
-                  <button
-                    onClick={() => TambahHandler()}
-                    className="bg-[#E5D5F2] px-3 py-1 w-[140px] rounded-md ml-2  text-[#7B2CBF] font-abc"
-                  >
-                    Batal
-                  </button>
-                </div>
+        <div className="w-[95%] mx-auto h-[105vh] bg-white rounded-xl">
+          {isEdit ? (
+            <div className="w-[95%] mx-auto mt-6 p-3">
+              <div className="w-full mt-4">
+                <h1 className="font-abc pb-2 ">Kode Barang</h1>
+                <input
+                  type="text"
+                  value={kategori.kodeBarang}
+                  name="kodeBarang"
+                  disabled
+                  onChange={(e) => changeKategoriHandler(e)}
+                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
+                />
               </div>
-            ) : (
-              <div className="w-[95%] mx-auto mt-6 p-3">
-                <div className="w-full mt-4">
-                  <h1 className="font-abc pb-2 ">Kode Barang</h1>
-                  <input
-                    type="text"
-                    value={kategori.kodeBarang}
-                    name="kodeBarang"
-                    onChange={(e) => changeKategoriHandler(e)}
-                    className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                  />
-                  {kategoriErrors.kodeBarang ? (
-                    <p>{kategoriErrors.kodeBarang}</p>
-                  ) : null}
-                </div>
-                <div className="w-full mt-4">
-                  <h1 className="font-abc pb-2">Nama Barang</h1>
-                  <input
-                    type="text"
-                    value={kategori.namaBarang}
-                    name="namaBarang"
-                    onChange={(e) => changeKategoriHandler(e)}
-                    className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                  />
-                  {kategoriErrors.namaBarang ? (
-                    <p>{kategoriErrors.namaBarang}</p>
-                  ) : null}
-                </div>
-
-                <div className="w-full justify-center mt-12 flex items-center">
-                  <button
-                    onClick={(e) => TambahKategori(e)}
-                    className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc"
-                  >
-                    Simpan
-                  </button>
-                  <button
-                    onClick={() => setAddBarang(!addBarang)}
-                    className="bg-[#E5D5F2] px-3 py-1 w-[140px] rounded-md ml-2  text-[#7B2CBF] font-abc"
-                  >
-                    Batal
-                  </button>
-                </div>
+              <div className="w-full mt-4">
+                <h1 className="font-abc pb-2">Nama Barang</h1>
+                <input
+                  type="text"
+                  value={kategori.namaBarang}
+                  name="namaBarang"
+                  onChange={(e) => changeKategoriHandler(e)}
+                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
+                />
               </div>
-            )}
-            <div className="w-[95%] mx-auto mt-6 p-3 bg-white">
-              <DataGrid
-                className="w-full"
-                disableRowSelectionOnClick
-                autoHeight
-                columns={columns}
-                rows={row}
-              />
+
+              <div className="w-full justify-center mt-12 flex items-center">
+                <button
+                  onClick={(e) => UpdateKategori(kategori.kodeBarang)}
+                  className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc"
+                >
+                  Simpan
+                </button>
+                <button
+                  onClick={() => {
+                    TambahHandler();
+                  }}
+                  className="bg-[#E5D5F2] px-3 py-1 w-[140px] rounded-md ml-2  text-[#7B2CBF] font-abc"
+                >
+                  Batal
+                </button>
+              </div>
             </div>
+          ) : (
+            <div className="w-[95%] mx-auto mt-6 p-3">
+              <div className="w-full mt-4">
+                <h1 className="font-abc pb-2 ">Kode Barang</h1>
+                <input
+                  type="text"
+                  value={kategori.kodeBarang}
+                  name="kodeBarang"
+                  onChange={(e) => changeKategoriHandler(e)}
+                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
+                />
+                {kategoriErrors.kodeBarang ? (
+                  <p>{kategoriErrors.kodeBarang}</p>
+                ) : null}
+              </div>
+              <div className="w-full mt-4">
+                <h1 className="font-abc pb-2">Nama Barang</h1>
+                <input
+                  type="text"
+                  value={kategori.namaBarang}
+                  name="namaBarang"
+                  onChange={(e) => changeKategoriHandler(e)}
+                  className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
+                />
+                {kategoriErrors.namaBarang ? (
+                  <p>{kategoriErrors.namaBarang}</p>
+                ) : null}
+              </div>
+
+              <div className="w-full justify-center mt-12 flex items-center">
+                <button
+                  onClick={(e) => TambahKategori(e)}
+                  className="bg-[#7B2CBF] px-3 py-1 w-[140px] rounded-md text-[#E5D5F2] font-abc"
+                >
+                  Simpan
+                </button>
+                <button
+                  onClick={() => setAddBarang(!addBarang)}
+                  className="bg-[#E5D5F2] px-3 py-1 w-[140px] rounded-md ml-2  text-[#7B2CBF] font-abc"
+                >
+                  Batal
+                </button>
+              </div>
+            </div>
+          )}
+          <div className="w-[95%] mx-auto mt-6 p-3 bg-white">
+            <DataGrid
+              className="w-full"
+              disableRowSelectionOnClick
+              autoHeight
+              columns={columns}
+              rows={row}
+            />
           </div>
-        ) : null}
+        </div>
       </div>
     </div>
   );

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import Sidebar from "../../../components/layout/Sidebar";
-import TopBar from "../../../components/layout/TopBar";
-import { Link, useNavigate } from "react-router-dom";
 
-export default function EditProfileAdminPage() {
+import { Link, useNavigate } from "react-router-dom";
+import TopBarOwner from "../../../components/layoutowner/TopbarOwner";
+
+export default function EditProfileOwnerPage() {
   const nav = useNavigate();
   const [open, setOpen] = useState(false);
   return (
@@ -14,7 +15,7 @@ export default function EditProfileAdminPage() {
         <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
-        <TopBar>{"Edit Profile Admin"}</TopBar>
+        <TopBarOwner>{"Edit Profile Admin"}</TopBarOwner>
         <div className="w-[94%] mx-auto">
           <div className="w-full mt-6">
             <h1 className="font-abc font-[500]">Nama</h1>
@@ -49,7 +50,7 @@ export default function EditProfileAdminPage() {
               Simpan
             </button>
             <button
-              onClick={() => nav("/")}
+              onClick={() => nav("/owner")}
               className="bg-[#E5D5F2] px-3 py-1 w-[140px] rounded-md ml-2  text-[#7B2CBF] font-abc"
             >
               Batal

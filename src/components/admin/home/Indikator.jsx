@@ -14,7 +14,7 @@ export default function Indikator() {
   const [allPemeliharaan, setAllPemeliharaan] = useState([]);
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [allRuang, allPengadaan, allKategori, allPemeliharaan]);
 
   const fetchData = async () => {
     try {
@@ -30,7 +30,7 @@ export default function Indikator() {
       setAllKategori(kategori.data.results);
       setAllPemeliharaan(pemeliharaan.data.results);
 
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 milliseconds
+      // await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 milliseconds
     } catch (err) {
       console.log(err);
     }
