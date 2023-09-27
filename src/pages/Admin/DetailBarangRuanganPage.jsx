@@ -40,7 +40,7 @@ export default function DetailBarangRuangan() {
   barang.forEach(async (a) => {
     let jumlahBarang = 0;
     // const getPengadaan = await axios.get("http://127.0.0.1:8000/api/findByKategori/"+a.kodeBarang);
-    console.log(a.kodeBarang);
+    // console.log(a.kodeBarang);
     const filterPengadaan = pengadaan.filter(
       (item) =>
         item.kodeBarang == a.kodeBarang &&
@@ -61,7 +61,7 @@ export default function DetailBarangRuangan() {
     filterPemeliharaan.forEach((bi) => {
       jumlahBarang -= bi.jumlah;
     });
-    console.log(a.kodeBarang);
+    // console.log(a.kodeBarang);
 
     rowBarangRuangan.push({
       id: a.kodeBarang,

@@ -104,7 +104,7 @@ export default function TambahBarangPage() {
       ...kategori,
       [e.target.name]: e.target.value,
     });
-    console.log(kategori);
+    // console.log(kategori);
   };
 
   useEffect(() => {
@@ -117,8 +117,8 @@ export default function TambahBarangPage() {
         quantity: 1,
       };
       const result = await axios.get(`${BACKEND_BASE_URL}/api/pengadaan`);
-      setBarang(result.data.results);
-
+      setBarang(result.data.result);
+      // console.log(result.data.result);
       const resultKategori = await axios.get(
         `${BACKEND_BASE_URL}/api/getKategori`
       );

@@ -105,7 +105,7 @@ export default function TambahBarangPage({ userSession }) {
       ...kategori,
       [e.target.name]: e.target.value,
     });
-    console.log(kategori);
+    // console.log(kategori);
   };
 
   useEffect(() => {

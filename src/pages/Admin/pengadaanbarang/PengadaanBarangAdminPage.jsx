@@ -140,7 +140,7 @@ export default function PengadaanBarangAdminPage({ userSession }) {
       minWidth: 100,
       flex: 0.7,
       renderCell: (params) => {
-        console.log(params);
+        // console.log(params);
         return (
           <img
             onClick={() => {
@@ -196,7 +196,7 @@ export default function PengadaanBarangAdminPage({ userSession }) {
               className="mr-4"
               onClick={() => {
                 setValuePengadaan(params.row.foto);
-                console.log(params.row.foto, "Adasdasdasdas");
+                // console.log(params.row.foto, "Adasdasdasdas");
                 setDetailPengadaan(true);
               }}
             >

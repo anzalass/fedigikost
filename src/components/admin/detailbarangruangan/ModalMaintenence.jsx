@@ -54,7 +54,7 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
       ...dataBarang,
       [e.target.name]: e.target.value,
     });
-    console.log(dataBarang);
+    // console.log(dataBarang);
   };
 
   const tambahPemeliharaan = async () => {

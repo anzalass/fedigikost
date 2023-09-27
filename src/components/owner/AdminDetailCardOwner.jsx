@@ -6,7 +6,7 @@ export default function AdminDetailCardOwner() {
   const { user } = useSelector((state) => state.user);
   return (
     <div className="w-[97%] h-[500px] rounded-lg mt-4 bg-white justify-center items-center flex-col">
-      <div className="w-[25%] mx-auto flex-col pt-[70px]">
+      <div className="w-full mx-auto flex-col pt-[70px]">
         <FaUserCircle size={100} className="mx-auto" />
         <div className="text-center  font-abc">
           <h1 className="">{user?.name}</h1>
@@ -27,16 +27,6 @@ export default function AdminDetailCardOwner() {
         </h1>
       </div>
       <div className="w-[80%] mx-auto h-[1px] mt-3 bg-[#CDD5DF]"></div>
-      <div className="w-[243px] mx-auto justify-center mb-3 mt-8  items-center">
-        <button className="bg-[#7B2CBF]  px-3 py-1 w-full rounded-md text-[#E5D5F2] font-abc">
-          Simpan
-        </button>
-      </div>
-      <div className="w-[243px] mx-auto justify-center mb-7  items-center">
-        <button className="bg-[#E5D5F2] px-3 py-1 w-full rounded-md   text-[#7B2CBF] font-abc">
-          Batal
-        </button>
-      </div>
     </div>
   );
 }

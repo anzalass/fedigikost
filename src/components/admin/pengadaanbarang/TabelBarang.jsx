@@ -9,6 +9,7 @@ import axios from "axios";
 import FotoDetail from "./FotoDetail";
 import EditBarang from "./EditBarang";
 import DetailPengadaan from "./DetailPengadaan";
+import Spinner from "../../layout/Spinner";
 
 export default function TabelBarang({ data }) {
   const [allBarang, setAllBarang] = useState([data]);
@@ -83,8 +84,8 @@ export default function TabelBarang({ data }) {
 
   useEffect(() => {
     fetchData();
+    console.log(data.length);
   }, []);
-  console.log(kategori);
 
   const fetchData = async () => {
     const getKategori = await axios.get(
@@ -105,7 +106,7 @@ export default function TabelBarang({ data }) {
       ...pengadaan,
       [e.target.name]: e.target.value,
     });
-    console.log(pengadaan);
+    // console.log(pengadaan);
   };
 
   const DeletePengadaan = async (id) => {
@@ -246,7 +247,6 @@ export default function TabelBarang({ data }) {
       minWidth: 100,
       flex: 0.7,
       renderCell: (params) => {
-        console.log(params);
         return (
           <img
             onClick={() => {
@@ -272,7 +272,7 @@ export default function TabelBarang({ data }) {
             className={`${
               params.row.status === "pending"
                 ? "bg-yellow-400"
-                : params.row.status === "acc"
+                : params.row.status === "selesai"
                 ? "bg-green-500"
                 : "bg-red-600"
             } h-full text-center pt-3 text-white font-abc w-full `}
@@ -302,7 +302,7 @@ export default function TabelBarang({ data }) {
               className="mr-4"
               onClick={() => {
                 setValuePengadaan(params.row.foto);
-                console.log(params.row.foto, "Adasdasdasdas");
+                // console.log(params.row.foto, "Adasdasdasdas");
                 setDetailPengadaan(true);
               }}
             >
@@ -323,8 +323,6 @@ export default function TabelBarang({ data }) {
       },
     },
   ];
-
-  console.log();
 
   return (
     <>
@@ -366,7 +364,7 @@ export default function TabelBarang({ data }) {
                       namaBarang: `${selectedBarang.namaBarang}`,
                       merek: selectedBarang.kategori,
                     });
-                    console.log(pengadaan);
+                    // console.log(pengadaan);
                   }}
                   id=""
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
@@ -460,7 +458,7 @@ export default function TabelBarang({ data }) {
                       kodeRuang: selectedRuang.kodeRuang,
                       ruang: selectedRuang.ruang,
                     });
-                    console.log(pengadaan);
+                    // console.log(pengadaan);
                   }}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 >
@@ -588,14 +586,19 @@ export default function TabelBarang({ data }) {
                   </form>
                 </div>
               </div>
-              <DataGrid
-                key={gridKey}
-                disableRowSelectionOnClick
-                autoHeight
-                columns={columns}
-                rows={row}
-                data={row}
-              />
+
+              {data ? (
+                <DataGrid
+                  key={gridKey}
+                  disableRowSelectionOnClick
+                  autoHeight
+                  columns={columns}
+                  rows={row}
+                  data={row}
+                />
+              ) : (
+                <Spinner />
+              )}
             </div>
           </div>
         ) : null}

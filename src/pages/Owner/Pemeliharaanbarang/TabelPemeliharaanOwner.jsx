@@ -201,7 +201,7 @@ export default function TabelPemeliharaanOwner() {
           </select>
         </div>
         <button
-          onClick={() => nav("/owner/menunggu-acc/")}
+          onClick={() => nav("/owner/acc-pemeliharaan")}
           className="bg-[#7B2CBF] relative mt-1 mb-3 h-[40px] px-3 text-center py-1 w-[300px] rounded-md text-[#E5D5F2] font-abc"
         >
           <div className="absolute h-[20px] text-sm w-[20px] text-white bg-red-500 -right-2 -top-2 rounded-full">

@@ -11,6 +11,7 @@ import axios from "axios";
 import DetailPengadaan from "../../../components/admin/pengadaanbarang/DetailPengadaan";
 import FotoDetail from "../../../components/admin/pengadaanbarang/FotoDetail";
 import ModalPengadaanOwner from "./ModalPengadaanOwner";
+import { BACKEND_BASE_URL } from "../../../config/base_url";
 
 export default function PengadaanBarangOwner() {
   const [open, setOpen] = useState(false);
@@ -63,7 +64,7 @@ export default function PengadaanBarangOwner() {
         quantity: 1,
       };
       const result = await axios.get(`http://localhost:8000/api/pengadaan`);
-      setBarang(result.data.results);
+      setBarang(result.data.result);
 
       const resultRuang = await axios.get(`http://localhost:8000/api/getRuang`);
       setRuang(resultRuang.data.results);
@@ -136,7 +137,7 @@ export default function PengadaanBarangOwner() {
       minWidth: 100,
       flex: 0.7,
       renderCell: (params) => {
-        console.log(params);
+        // console.log(params);
         return (
           <img
             onClick={() => {
@@ -159,11 +160,14 @@ export default function PengadaanBarangOwner() {
       renderCell: (params) => {
         return (
           <div
-            onClick={() => setModalAccPengadaan(true)}
+            onClick={() => {
+              setIdBarang(params.id);
+              setModalAccPengadaan(true);
+            }}
             className={`${
               params.row.status === "pending"
                 ? "bg-yellow-400"
-                : params.row.status === "acc"
+                : params.row.status === "selesai"
                 ? "bg-green-500"
                 : "bg-red-600"
             } h-full text-center pt-3 text-white font-abc w-full `}
@@ -251,6 +255,7 @@ export default function PengadaanBarangOwner() {
         <ModalPengadaanOwner
           open={modalAccPengadaan}
           setOpen={setModalAccPengadaan}
+          id={idBarang}
         />
       ) : null}
       {detailPengadaan ? (

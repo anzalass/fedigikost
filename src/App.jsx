@@ -12,7 +12,7 @@ import PengadaanBarangOwner from "./pages/Owner/pengadaanbarang/PengadaanBarangO
 import TambahBarangOwner from "./pages/Owner/pengadaanbarang/TambahBarangOwner";
 import TambahKategoriOwner from "./pages/Owner/pengadaanbarang/TambahKategoriOwner";
 import EditBarangOwner from "./pages/Owner/pengadaanbarang/EditBarangOwner";
-import AccPengadaanBarangOwner from "./pages/Owner/pengadaanbarang/AccPengadaanBarangOwner";
+
 import PemeliharaanBarangOwner from "./pages/Owner/Pemeliharaanbarang/PemeliharaanBarangOwner";
 import DataRuanganOwnerPage from "./pages/Owner/dataruangan/DataRuanganOwnerPage";
 import TambahRuanganOwner from "./pages/Owner/dataruangan/TambahRuanganOwner";
@@ -32,6 +32,7 @@ import PemeliharaanAdminPage from "./pages/Admin/maintenenceadmin/PemeliharaanAd
 import { store } from "./redux/store";
 import { loadUser } from "./redux/actions/user";
 import { useSelector } from "react-redux";
+import InvoicePage from "./components/InvoicePage";
 
 function App() {
   const [dataCookie, setDataCookie] = useState([]);
@@ -44,6 +45,10 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+          {/* UNIVERSAL PAGE */}
+
+          <Route path="/invoice/:id" element={<InvoicePage />} />
+          {/* UNIVERSAL PAGE */}
           <Route path="/login" element={<LoginPage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/tambah-barang" element={<PengadaanBarang />} />
@@ -68,10 +73,7 @@ function App() {
             path="/owner/pemeliharaan"
             element={<PemeliharaanBarangOwner />}
           />
-          <Route
-            path="/owner/menunggu-acc"
-            element={<AccPengadaanBarangOwner />}
-          />
+
           <Route
             path="/owner/data-ruangan"
             element={<DataRuanganOwnerPage />}

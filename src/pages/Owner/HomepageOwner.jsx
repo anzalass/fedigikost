@@ -1,15 +1,12 @@
 import { useState } from "react";
-
-import Indikator from "../../components/admin/home/Indikator";
-import Tagihan from "../../components/admin/pengadaanbarang/TabelBarang";
 import Aktivitas from "../../components/admin/home/Aktivitas";
-import AdminDetailCard from "../../components/admin/home/AdminDetailCard";
 import SidebarOwner from "../../components/layoutowner/SidebarOwner";
 import TopBarOwner from "../../components/layoutowner/TopbarOwner";
 import AdminDetailCardOwner from "../../components/owner/AdminDetailCardOwner";
 import { useEffect } from "react";
+import Indikator from "../../components/admin/home/Indikator";
 
-export default function HomePageOwner(userSession) {
+export default function HomePageOwner() {
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -19,8 +16,6 @@ export default function HomePageOwner(userSession) {
   return (
     <div className="w-full h-[160vh] flex">
       <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
-        {/* <button onClick={(e) => setOpen(1)}>buka</button> */}
-        {/* {open === 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null} */}
         <SidebarOwner setSidebar={1} width={open} setWidth={setOpen} />
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
@@ -37,7 +32,7 @@ export default function HomePageOwner(userSession) {
             <Aktivitas />
           </div>
           <div className=" w-[44%] ">
-            <AdminDetailCardOwner userSession={userSession} />
+            <AdminDetailCardOwner />
           </div>
         </div>
       </div>

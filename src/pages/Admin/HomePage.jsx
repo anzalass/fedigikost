@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../components/layout/Sidebar";
 import TopBar from "../../components/layout/TopBar";
-import Indikator from "../../components/admin/home/Indikator";
+// import Indikator from "../../components/admin/home/Indikator";
 import Tagihan from "../../components/admin/pengadaanbarang/TabelBarang";
 import Aktivitas from "../../components/admin/home/Aktivitas";
 import AdminDetailCard from "../../components/admin/home/AdminDetailCard";
 import { ClipLoader } from "react-spinners";
 import { useSelector } from "react-redux";
+import Indikator from "../../components/admin/home/Indikator";
 
 export default function HomePage() {
   const [open, setOpen] = useState(false);

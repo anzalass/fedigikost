@@ -26,7 +26,7 @@ export default function DataRuanganPage() {
   const getAllRuangan = async () => {
     try {
       const ruang = await axios.get(`${BACKEND_BASE_URL}/api/getRuang`);
-      console.log(ruang);
+      // console.log(ruang);
       setDataRuangan(ruang.data.results);
       await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 milliseconds
     } catch (err) {
@@ -64,7 +64,7 @@ export default function DataRuanganPage() {
         window.location.reload();
       }
     } catch (err) {
-      console.log(err.response.data.errors);
+      // console.log(err.response.data.errors);
       setErrRuangan({
         kodeRuang: err.response.data.errors.kodeRuang,
         ruang: err.response.data.errors.ruang,

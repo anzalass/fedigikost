@@ -49,7 +49,7 @@ export default function EditPengadaanAdminPage({ userSession }) {
       ...data,
       [e.target.name]: e.target.value,
     });
-    console.log(data);
+    // console.log(data);
   };
 
   const getDataByID = async () => {
@@ -80,7 +80,7 @@ export default function EditPengadaanAdminPage({ userSession }) {
         "http://127.0.0.1:8000/api/updatePengadaan/" + id,
         data
       );
-      console.log(result);
+      // console.log(result);
       if (result) {
         nav("/admin/pengadaan");
       }

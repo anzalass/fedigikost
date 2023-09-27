@@ -10,8 +10,6 @@ export default function EditProfileOwnerPage() {
   return (
     <div className="w-full h-[160vh] flex">
       <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
-        {/* <button onClick={(e) => setOpen(1)}>buka</button> */}
-        {/* {open === 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null} */}
         <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
