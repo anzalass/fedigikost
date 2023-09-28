@@ -36,9 +36,9 @@ export default function Indikator() {
     }
   };
   return (
-    <div className="mt-3 p-3 w-[95%] mx-auto bg-white rounded-lg h-[40vh]">
-      <div className=" grid grid-cols-2 gap-4 ml-2 md:grid-cols-3 lg:grid-cols-4">
-        <div className="h-[100px] pl-3 pt-6 relative z-30 rounded-md w-[240px] bg-[#9556CC]">
+    <div className="mt-3 p-3 w-full mx-auto bg-white rounded-lg h-[40vh]">
+      <div className=" grid grid-cols-2 gap-4 w-full mx-auto  md:grid-cols-2 lg:grid-cols-4 ">
+        <div className="h-[100px] pl-3 pt-6 relative z-30 rounded-md w-[100%] bg-[#9556CC]">
           <h1 className=" text-white font-[500] text-[20px]">10</h1>
           <h1 className=" text-white font-[500] text-[16px]">Pegawai</h1>
           <img
@@ -47,7 +47,7 @@ export default function Indikator() {
             alt=""
           />
         </div>
-        <div className="h-[100px] pl-3 pt-6 relative rounded-md w-[240px] bg-[#FDB022]">
+        <div className="h-[100px] pl-3 pt-6 relative rounded-md w-[100%] bg-[#FDB022]">
           <h1 className=" text-white font-[500] text-[20px]">{allRuang}</h1>
           <h1 className=" text-white font-[500] text-[16px]">Ruangan</h1>
           <img
@@ -56,7 +56,7 @@ export default function Indikator() {
             alt=""
           />
         </div>
-        <div className="h-[100px] pl-3 pt-6 relative rounded-md w-[240px] bg-[#07BEB8]">
+        <div className="h-[100px] pl-3 pt-6 relative rounded-md w-[100%] bg-[#07BEB8]">
           <h1 className=" text-white font-[500] text-[20px]">{allKategori}</h1>
           <h1 className=" text-white font-[500] text-[16px]">
             Kategori Barang
@@ -67,7 +67,7 @@ export default function Indikator() {
             alt=""
           />
         </div>
-        <div className="h-[100px] pl-3 pt-6 relative rounded-md w-[240px] bg-[#36BFFA]">
+        <div className="h-[100px] pl-3 pt-6 relative rounded-md w-[100%] bg-[#36BFFA]">
           <h1 className=" text-white font-[500] text-[20px]">{allPengadaan}</h1>
           <h1 className=" text-white font-[500] text-[16px]">Pengadaan</h1>
           <img
@@ -77,8 +77,9 @@ export default function Indikator() {
           />
         </div>
       </div>
-      <div className="grid grid-cols-2 mt-7 ml-2">
-        <div className=" pl-8 py-2 h-[100px] relative rounded-md w-[510px] bg-[#F04438]">
+
+      <div className="grid grid-cols-1 mt-7 gap-3 w-full  md:grid-cols-1 lg:grid-cols-2  ">
+        <div className=" pl-8 py-2 h-[100px] relative rounded-md w-[100%] bg-[#F04438]">
           <h1 className=" text-white font-[500] text-[30px]">10</h1>
           <h1 className=" text-white font-[500] text-[16px]">Total Barang</h1>
           <img
@@ -87,7 +88,7 @@ export default function Indikator() {
             alt=""
           />
         </div>
-        <div className="h-[100px] pl-8 py-2 relative rounded-md w-[510px] bg-[#32D583]">
+        <div className="h-[100px] pl-8 py-2 relative rounded-md w-[100%] bg-[#32D583]">
           <h1 className=" text-white font-[500] text-[30px]">
             {allPemeliharaan}
           </h1>

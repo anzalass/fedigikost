@@ -92,10 +92,10 @@ export default function DataRuanganOwnerPage(userSession) {
 
   return (
     <div className="w-full h-[160vh] flex">
-      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+      <div className={` `}>
         <SidebarOwner setSidebar={4} width={open} setWidth={setOpen} />
       </div>
-      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+      <div className={`w-11/12 mx-auto `}>
         <TopBarOwner>{"Data Ruangan"}</TopBarOwner>
         <div className="w-full">
           <div className="w-[95%] h-[80px] justify-between flex mx-auto">

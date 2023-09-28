@@ -8,10 +8,10 @@ export default function PengeluaranPage() {
 
   return (
     <div className="w-full flex">
-      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+      <div className={``}>
         <Sidebar setSidebar={3} width={open} setWidth={setOpen} />
       </div>
-      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+      <div className={`w-11/12 mx-auto`}>
         <TopBar>{"Pemeliharaan "}</TopBar>
         <TabelPemeliharaan />
       </div>

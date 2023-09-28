@@ -33,6 +33,8 @@ import { store } from "./redux/store";
 import { loadUser } from "./redux/actions/user";
 import { useSelector } from "react-redux";
 import InvoicePage from "./components/InvoicePage";
+import DetailPemeliharaanPage from "./components/DetailPemeliharaanPage";
+import DetailPengadaanPage from "./components/DetailPengadaanPage";
 
 function App() {
   const [dataCookie, setDataCookie] = useState([]);
@@ -47,6 +49,14 @@ function App() {
         <Routes>
           {/* UNIVERSAL PAGE */}
 
+          <Route
+            path="/detail-pemeliharaan/:id"
+            element={<DetailPemeliharaanPage />}
+          />
+          <Route
+            path="/detail-pengadaan/:id"
+            element={<DetailPengadaanPage />}
+          />
           <Route path="/invoice/:id" element={<InvoicePage />} />
           {/* UNIVERSAL PAGE */}
           <Route path="/login" element={<LoginPage />} />

@@ -47,7 +47,7 @@ export default function DetailRuanganOwner() {
       );
       // setAsetBarang(data.data.results);
       setBarang(getBarang.data.results);
-      setPengadaan(getPengadaan.data.results);
+      setPengadaan(getPengadaan.data.result);
       setPemeliharaanBarang(getPemeliharan.data.results);
     } catch (err) {
       alert(err);
@@ -245,10 +245,10 @@ export default function DetailRuanganOwner() {
         />
       ) : null}
       <div className="w-full h-[160vh] flex">
-        <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+        <div className={` `}>
           <SidebarOwner setSidebar={4} width={open} setWidth={setOpen} />
         </div>
-        <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+        <div className={`w-11/12 mx-auto `}>
           <TopBarOwner>{"Detail Ruangan Owner"}</TopBarOwner>
           <div className="w-full">
             <div className="w-[96%] mx-auto mt-10">

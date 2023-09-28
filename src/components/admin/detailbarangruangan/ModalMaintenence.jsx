@@ -79,8 +79,8 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
 
   return (
     <div className="w-full h-screen  flex items-center left-0 top-0 fixed z-40 bg-[#00000030]">
-      <div className="w-[400px]  h-[300px]  mx-auto bg-white p-3 rounded-lg">
-        <div className="w-[90%] mx-auto mt-3 my-auto">
+      <div className="w-[400px]  mx-auto bg-white p-3 rounded-lg">
+        <div className="w-[90%] mx-auto mt-3 my-auto py-3 pb-3 pt-3">
           <div className="w-full">
             <h1>Set Quantity Kipas yang Ingin di Maintenence</h1>
             <input

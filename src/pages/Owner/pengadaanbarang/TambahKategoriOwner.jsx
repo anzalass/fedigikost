@@ -15,12 +15,12 @@ export default function TambahKategoriOwner() {
 
   useEffect(() => {
     getKategori();
-  }, [])
+  }, []);
 
   const getKategori = async () => {
     const DataKategori = await axios.get(`${BACKEND_BASE_URL}/api/getKategori`);
     setAllKategori(DataKategori.request.results);
-  }
+  };
 
   const columns = [
     { field: "id", headerName: "Kode Barang", minWidth: 50, flex: 0.5 },
@@ -44,13 +44,13 @@ export default function TambahKategoriOwner() {
           <div className="flex">
             <button
               className="mr-4"
-            // onClick={() => DeleteKategori(params.id)}
+              // onClick={() => DeleteKategori(params.id)}
             >
               <BsTrash3 color="red" size={20} />
             </button>
             <button
               className=""
-            //   onClick={() => EditHandler(params.id, params.row.nama_barang)}
+              //   onClick={() => EditHandler(params.id, params.row.nama_barang)}
             >
               <BiEditAlt color="blue" size={20} />
             </button>
@@ -62,18 +62,18 @@ export default function TambahKategoriOwner() {
 
   const row = [];
 
-  allKategori.map((item, index) => {
-    row.push({
+  // allKategori.map((item, index) => {
+  //   row.push({
 
-    })
-  })
+  //   })
+  // })
 
   return (
     <div className="w-full h-[160vh] flex">
-      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+      <div className={` `}>
         <SidebarOwner setSidebar={2} width={open} setWidth={setOpen} />
       </div>
-      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+      <div className={`w-11/12 mx-auto `}>
         <TopBarOwner>{"Dashboard Owner"}</TopBarOwner>
         <div className="w-[95%] mx-auto mt-6 p-3">
           <div className="w-full mt-4">

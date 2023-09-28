@@ -39,8 +39,10 @@ export default function DetailBarangRuangan() {
 
   barang.forEach(async (a) => {
     let jumlahBarang = 0;
-    // const getPengadaan = await axios.get("http://127.0.0.1:8000/api/findByKategori/"+a.kodeBarang);
-    // console.log(a.kodeBarang);
+    // const getPengadaan = await axios.get(
+    //   "http://127.0.0.1:8000/api/findByKategori/" + a.kodeBarang
+    // );
+    // // console.log(a.kodeBarang);
     const filterPengadaan = pengadaan.filter(
       (item) =>
         item.kodeBarang == a.kodeBarang &&
@@ -94,7 +96,7 @@ export default function DetailBarangRuangan() {
       );
       // setAsetBarang(data.data.results);
       setBarang(getBarang.data.results);
-      setPengadaan(getPengadaan.data.results);
+      setPengadaan(getPengadaan.data.result);
       setPemeliharaanBarang(getPemeliharan.data.results);
     } catch (err) {
       alert(err);
@@ -285,10 +287,10 @@ export default function DetailBarangRuangan() {
         />
       ) : null}
       <div className="w-full h-[160vh] flex">
-        <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+        <div className={``}>
           <Sidebar width={open} setWidth={setOpen} setSidebar={4} />
         </div>
-        <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+        <div className={`w-11/12 mx-auto`}>
           <TopBar>{`Detail Ruangan ${id} `}</TopBar>
           <div className="w-full mt-2 h-[50px] mx-auto "></div>
           <div className="w-[95%] mx-auto">

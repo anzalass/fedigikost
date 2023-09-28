@@ -513,76 +513,78 @@ export default function TabelBarang({ data }) {
         {!pengadaanBarang && !editBarang ? (
           <div className="">
             <div className="bg-white w-[96%] mt-3 mb-[200px]  mx-auto  rounded-lg">
-              <div className="flex justify-between">
+              <div className="lg:flex xl:flex block justify-between">
                 <div className="">
                   <button
                     onClick={() => setPengadaanBarang(!pengadaanBarang)}
-                    className="bg-[#7B2CBF] mt-1 mb-3 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
+                    className="bg-[#7B2CBF] mt-1 mb-3 px-3 text-center py-1 xl:w-[200px] lg:w-[200px] w-full md:w-[200px] rounded-md text-[#E5D5F2] font-abc"
                   >
                     Tambah Barang +
                   </button>
                 </div>
-                <div className="flex">
-                  <form className="flex ">
-                    <div className="">
-                      <select
-                        name=""
-                        id="ruang"
-                        onChange={(e) => setFilter(e.target.value)}
-                        className="border h-[34px] rounded-xl w-[100px] pl-2 "
-                      >
-                        <option value="" selected>
-                          Ruang
-                        </option>
-                        {ruang.map((item) => {
-                          return (
-                            <option value={item.ruang}>{item.ruang}</option>
-                          );
-                        })}
-                      </select>
+                <div className="">
+                  <form className="block lg:flex xl:flex md:block   md:mt-[0px] lg:mt-0 xl:mt-0  ">
+                    <div className="flex">
+                      <div className="">
+                        <select
+                          name=""
+                          id="ruang"
+                          onChange={(e) => setFilter(e.target.value)}
+                          className="border h-[34px] rounded-xl w-[100px] pl-2 "
+                        >
+                          <option value="" selected>
+                            Ruang
+                          </option>
+                          {ruang.map((item) => {
+                            return (
+                              <option value={item.ruang}>{item.ruang}</option>
+                            );
+                          })}
+                        </select>
+                      </div>
+                      <div className="">
+                        <select
+                          name=""
+                          id="bulan"
+                          onChange={(e) => setFilterBulan(e.target.value)}
+                          className="border h-[34px] rounded-xl w-[100px] pl-2 "
+                        >
+                          <option value="">Bulan</option>
+                          {bulan.map((item, index) => {
+                            return <option value={index}>{item}</option>;
+                          })}
+                        </select>
+                      </div>
                     </div>
-                    <div className="">
-                      <select
-                        name=""
-                        id="bulan"
-                        onChange={(e) => setFilterBulan(e.target.value)}
-                        className="border h-[34px] rounded-xl w-[100px] pl-2 "
-                      >
-                        <option value="">Bulan</option>
-                        {bulan.map((item, index) => {
-                          return <option value={index}>{item}</option>;
-                        })}
-                      </select>
+
+                    <div className="flex">
+                      <div className="">
+                        <select
+                          name=""
+                          id="tahun"
+                          onChange={(e) => setFilterTahun(e.target.value)}
+                          className="border h-[34px] rounded-xl w-[100px] pl-2 "
+                        >
+                          <option value="">Tahun</option>
+                          {tahun.map((item, index) => {
+                            return <option value={item}>{item}</option>;
+                          })}
+                        </select>
+                      </div>
+                      <div className="">
+                        <select
+                          name=""
+                          id="statuss"
+                          onChange={(e) => setStatus(e.target.value)}
+                          className="border h-[34px] rounded-xl w-[100px] pl-2 "
+                        >
+                          <option value="">Status</option>
+                          <option value="pending">Pending</option>
+                          <option value="accept">Acc</option>
+                          <option value="">All</option>
+                        </select>
+                      </div>
                     </div>
-                    <div className="">
-                      <select
-                        name=""
-                        id="tahun"
-                        onChange={(e) => setFilterTahun(e.target.value)}
-                        className="border h-[34px] rounded-xl w-[100px] pl-2 "
-                      >
-                        <option value="">Tahun</option>
-                        {tahun.map((item, index) => {
-                          return <option value={item}>{item}</option>;
-                        })}
-                      </select>
-                    </div>
-                    <div className="">
-                      <select
-                        name=""
-                        id="statuss"
-                        onChange={(e) => setStatus(e.target.value)}
-                        className="border h-[34px] rounded-xl w-[100px] pl-2 "
-                      >
-                        <option value="">Status</option>
-                        <option value="pending">Pending</option>
-                        <option value="accept">Acc</option>
-                        <option value="">All</option>
-                      </select>
-                    </div>
-                    {/* <button className="bg-[#7B2CBF]  mb-4 px-3 text-center py-1 w-[100px] rounded-xl text-[#E5D5F2] font-abc">
-                      Filter
-                    </button> */}
                   </form>
                 </div>
               </div>

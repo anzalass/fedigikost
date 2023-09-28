@@ -3,9 +3,11 @@ import loginBanner from "../../assets/BACKGROUND.png";
 import digiKosLogo from "../../assets/Digikos.svg";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 
-export default function LoginPage({ userSession }) {
+export default function LoginPage() {
   const [email, setEmail] = useState("");
+  const { user } = useSelector((state) => state.user);
   const [password, setPassword] = useState("");
   const [data, setData] = useState({
     email: "",
@@ -50,7 +52,7 @@ export default function LoginPage({ userSession }) {
     }
   };
 
-  if (userSession.name != undefined) {
+  if (user?.name != undefined) {
     window.location.href = "/";
   }
 

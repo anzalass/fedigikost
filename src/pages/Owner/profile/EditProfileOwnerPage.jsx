@@ -9,10 +9,10 @@ export default function EditProfileOwnerPage() {
   const [open, setOpen] = useState(false);
   return (
     <div className="w-full h-[160vh] flex">
-      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+      <div className={``}>
         <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
       </div>
-      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+      <div className={`w-11/12 mx-auto`}>
         <TopBarOwner>{"Edit Profile Admin"}</TopBarOwner>
         <div className="w-[94%] mx-auto">
           <div className="w-full mt-6">

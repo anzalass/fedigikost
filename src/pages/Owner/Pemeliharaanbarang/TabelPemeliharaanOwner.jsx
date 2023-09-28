@@ -161,48 +161,54 @@ export default function TabelPemeliharaanOwner() {
 
   return (
     <div className="bg-white w-[95%] mt-1 mx-auto">
-      <div className="flex justify-between w-full p-3">
-        <div className="flex">
-          <select
-            name=""
-            id=""
-            onChange={(e) => setFilterBulan(e.target.value)}
-            className="border h-[34px] rounded-xl w-[100px] pl-2 "
-          >
-            <option value="">Bulan</option>
-            {bulan.map((item, index) => {
-              return <option value={index}>{item}</option>;
-            })}
-          </select>
-          <select
-            name=""
-            id=""
-            onChange={(e) => setFilterTahun(e.target.value)}
-            className="border h-[34px] rounded-xl w-[100px] pl-2 "
-          >
-            <option value="">Tahun</option>
-            {tahun.map((item) => {
-              return <option value={item}>{item}</option>;
-            })}
-          </select>
-          <select
-            name=""
-            id=""
-            // onChange={(e) => setFilterTahun(e.target.value)}
-            className="border h-[34px] rounded-xl w-[100px] pl-2 "
-          >
-            <option value="">All</option>
-            <option value="">Pending</option>
-            <option value="">Dalam Perbaikan</option>
-            <option value="">Selesai</option>
-            {/* {tahun.map((item) => {
+      <div className="md:flex xl:flex block lg:flex xl:justify-between lg:justify-between justify-start w-full p-3">
+        <div className="flex w-full mx-auto md:w-full lg:w-full xl:w-full">
+          <div className="mx-auto md:m-0 lg:m-0 xl:m-0">
+            <select
+              name=""
+              id=""
+              onChange={(e) => setFilterBulan(e.target.value)}
+              className="border h-[34px] rounded-xl w-[100px] pl-2 "
+            >
+              <option value="">Bulan</option>
+              {bulan.map((item, index) => {
+                return <option value={index}>{item}</option>;
+              })}
+            </select>
+          </div>
+          <div className="mx-auto md:m-0 lg:m-0 xl:m-0">
+            <select
+              name=""
+              id=""
+              onChange={(e) => setFilterTahun(e.target.value)}
+              className="border h-[34px] rounded-xl w-[100px] pl-2 "
+            >
+              <option value="">Tahun</option>
+              {tahun.map((item) => {
+                return <option value={item}>{item}</option>;
+              })}
+            </select>
+          </div>
+          <div className="mx-auto md:m-0 lg:m-0 xl:m-0">
+            <select
+              name=""
+              id=""
+              // onChange={(e) => setFilterTahun(e.target.value)}
+              className="border h-[34px] rounded-xl w-[100px] pl-2 "
+            >
+              <option value="">All</option>
+              <option value="">Pending</option>
+              <option value="">Dalam Perbaikan</option>
+              <option value="">Selesai</option>
+              {/* {tahun.map((item) => {
               return <option value={item}>{item}</option>;
             })} */}
-          </select>
+            </select>
+          </div>
         </div>
         <button
           onClick={() => nav("/owner/acc-pemeliharaan")}
-          className="bg-[#7B2CBF] relative mt-1 mb-3 h-[40px] px-3 text-center py-1 w-[300px] rounded-md text-[#E5D5F2] font-abc"
+          className="bg-[#7B2CBF] relative mt-1 mb-3 h-[40px] px-3 text-center py-1 xl:w-[300px] md:w-[300px] w-full lg:w-[300px]  rounded-md text-[#E5D5F2] font-abc"
         >
           <div className="absolute h-[20px] text-sm w-[20px] text-white bg-red-500 -right-2 -top-2 rounded-full">
             5

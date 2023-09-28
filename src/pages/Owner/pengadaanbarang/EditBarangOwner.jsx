@@ -8,16 +8,16 @@ export default function EditBarangOwner() {
   const nav = useNavigate();
   return (
     <div className="w-full h-[160vh] flex">
-      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+      <div className={` `}>
         <SidebarOwner setSidebar={2} width={open} setWidth={setOpen} />
       </div>
-      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+      <div className={`w-full mx-auto `}>
         <TopBarOwner>{"Dashboard Admin"}</TopBarOwner>
-        <div className="bg-white w-[98%] mt-3  mb-[200px]  mx-auto p-3 rounded-lg">
+        <div className="bg-white w-full mt-3  mb-[200px]  mx-auto p-3 rounded-lg">
           <div className="bg-white w-[100%] mt-3  mb-[200px]  mx-auto p-3 rounded-lg">
-            <div className="w-[95%] mx-auto h-[130vh] bg-white rounded-xl">
+            <div className="w-full mx-auto h-[130vh] bg-white rounded-xl">
               <h1 className="font-abc text-xl">Edit Barang</h1>
-              <div action="" className="w-[95%] mx-auto mt-2 p-3">
+              <div action="" className="w-full mx-auto mt-2 p-3">
                 <div className="w-full mt-4">
                   <h1 className="font-abc pb-2 ">Tanggal Pengadaan</h1>
                   <input

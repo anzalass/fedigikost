@@ -3,8 +3,8 @@ import React from "react";
 export default function EditPemeliharaanModal({ open, setOpen }) {
   return (
     <div className="w-full h-screen  flex items-center left-0 top-0 fixed z-40 bg-[#00000030]">
-      <div className="w-[400px]  h-[300px]  mx-auto bg-white p-3 rounded-lg">
-        <div className="w-[90%] mx-auto mt-3 my-auto">
+      <div className="w-[400px]  mx-auto bg-white p-3 rounded-lg">
+        <div className="w-[90%] mx-auto mt-3 my-auto pb-3">
           <div className="w-full">
             <h1 className="font-abc">Edit Detail Maintenence</h1>
             <div className="">

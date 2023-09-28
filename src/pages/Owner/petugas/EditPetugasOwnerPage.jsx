@@ -9,12 +9,12 @@ export default function EditPetugasOwnerPage() {
   const [loading, setLoading] = useState(true);
   return (
     <div className="w-full h-[160vh] flex">
-      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+      <div className={``}>
         {/* <button onClick={(e) => setOpen(1)}>buka</button> */}
         {/* {open === 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null} */}
         <SidebarOwner setSidebar={5} width={open} setWidth={setOpen} />
       </div>
-      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+      <div className={`w-11/12 mx-auto`}>
         <TopBarOwner>{"Edit Petugas Owner"}</TopBarOwner>
         <div className="w-[94%] mx-auto">
           <div className="w-full mt-6">

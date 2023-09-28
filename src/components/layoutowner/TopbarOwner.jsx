@@ -7,8 +7,8 @@ export default function TopBarOwner({ children }) {
   const nav = useNavigate();
   return (
     <div>
-      <div className="w-full h-[80px] flex p-6 justify-between">
-        <div className="w-[50%] text-[25px] font-abc font-[500]">
+      <div className="w-full h-[80px] flex p-6 lg:justify-between xl:justify-between justify-end">
+        <div className="w-[50%] text-[25px] hidden md:hidden lg:block xl:block font-abc font-[500]">
           {children}
         </div>
         <div className="w-[50% flex">

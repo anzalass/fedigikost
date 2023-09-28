@@ -93,10 +93,10 @@ export default function DataRuanganPage() {
 
   return (
     <div className="w-full h-[160vh] flex">
-      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+      <div className={``}>
         <Sidebar setSidebar={4} width={open} setWidth={setOpen} />
       </div>
-      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+      <div className={`w-11/12 mx-auto `}>
         <TopBar>{"Data Ruangan"}</TopBar>
         <div className="w-full mt-2 h-[50px] mx-auto ">
           <div className="w-[95%] h-[80px] justify-between flex mx-auto">

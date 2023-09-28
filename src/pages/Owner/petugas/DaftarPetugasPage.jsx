@@ -97,10 +97,10 @@ export default function DaftarPetugasPage() {
 
   return (
     <div className="w-full h-[160vh] flex">
-      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+      <div className={``}>
         <SidebarOwner setSidebar={5} width={open} setWidth={setOpen} />
       </div>
-      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+      <div className={`mx-auto w-11/12 `}>
         <TopBarOwner>{"Daftar Petugas"}</TopBarOwner>
         <div className="w-full">
           <div className="w-[95%] h-[80px] justify-between flex mx-auto">

@@ -269,31 +269,31 @@ export default function PengadaanBarangOwner() {
         <FotoDetail open={detailFoto} setOpen={setDetailFoto} foto={foto} />
       ) : null}
       <div className="w-full h-[160vh] flex">
-        <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+        <div className={``}>
           <SidebarOwner setSidebar={2} width={open} setWidth={setOpen} />
         </div>
-        <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+        <div className={`w-11/12 mx-auto `}>
           <TopBarOwner>{"Dashboard Owner"}</TopBarOwner>
           <div className=" min-h-screen bg-white  w-[95%] mx-auto mt-[10px] ">
             {/* section 1  */}
-            <div className="w-full h-[100px] bg-white flex p-3  justify-between">
+            <div className="w-full h-[100px] bg-white block md:flex lg:flex xl:flex p-3  justify-between">
               <div className="">
                 <button
                   onClick={() => nav("/owner/tambah-barang")}
-                  className="bg-[#7B2CBF] h-[40px] mt-1 mr-2 mb-3 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
+                  className="bg-[#7B2CBF] h-[40px] mt-1 mr-2 mb-3 px-3 text-center py-1 w-full md:w-[200px] lg:w-[200px] xl:w-[200px] rounded-md text-[#E5D5F2] font-abc"
                 >
                   Tambah Barang +
                 </button>
                 <button
                   onClick={() => nav("/owner/kategori")}
-                  className="bg-[#7B2CBF] h-[40px] mt-1 mb-3 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
+                  className="bg-[#7B2CBF] h-[40px] mt-1 mb-3 px-3 text-center py-1  w-full md:w-[200px] lg:w-[200px] xl:w-[200px] rounded-md text-[#E5D5F2] font-abc"
                 >
                   Kategori Barang
                 </button>
               </div>
               <button
                 onClick={() => nav("/owner/menunggu-acc/")}
-                className="bg-[#7B2CBF] relative mt-1 mb-3 h-[40px] px-3 text-center py-1 w-[300px] rounded-md text-[#E5D5F2] font-abc"
+                className="bg-[#7B2CBF] relative mt-1 mb-3 h-[40px] px-3 text-center py-1 w-full md:w-[300px] lg:w-[300px] xl:w-[300px] rounded-md text-[#E5D5F2] font-abc"
               >
                 <div className="absolute h-[20px] text-sm w-[20px] text-white bg-red-500 -right-2 -top-2 rounded-full">
                   {barang.filter((item) => item.status == "pending").length}
@@ -303,63 +303,65 @@ export default function PengadaanBarangOwner() {
             </div>
             {/* section 1  */}
             {/* section 2 */}
-            <div className="w-full  bg-white flex p-3  justify-start">
-              <form className="flex ">
-                <div className="">
-                  <select
-                    name=""
-                    id="ruang"
-                    className="border h-[34px] rounded-xl w-[100px] pl-2 "
-                  >
-                    <option value="" selected>
-                      Ruang
-                    </option>
-                    {ruang.map((item) => {
-                      return <option value={item.ruang}>{item.ruang}</option>;
-                    })}
-                  </select>
+            <div className="w-full  bg-white  p-3   justify-start">
+              <form className="block lg:flex xl:flex md:block mt-[80px] md:mt-[0px] lg:mt-0 xl:mt-0  ">
+                <div className="flex">
+                  <div className="">
+                    <select
+                      name=""
+                      id="ruang"
+                      className="border h-[34px] rounded-xl w-[100px] pl-2 "
+                    >
+                      <option value="" selected>
+                        Ruang
+                      </option>
+                      {ruang.map((item) => {
+                        return <option value={item.ruang}>{item.ruang}</option>;
+                      })}
+                    </select>
+                  </div>
+                  <div className="">
+                    <select
+                      name=""
+                      id="bulan"
+                      className="border h-[34px] rounded-xl w-[100px] pl-2 "
+                    >
+                      <option value="" selected>
+                        Bulan
+                      </option>
+                      {bulan.map((item) => {
+                        return <option value={item}>{item}</option>;
+                      })}
+                    </select>
+                  </div>
                 </div>
-                <div className="">
-                  <select
-                    name=""
-                    id="bulan"
-                    className="border h-[34px] rounded-xl w-[100px] pl-2 "
-                  >
-                    <option value="" selected>
-                      Bulan
-                    </option>
-                    {bulan.map((item) => {
-                      return <option value={item}>{item}</option>;
-                    })}
-                  </select>
+
+                <div className="flex">
+                  <div className="">
+                    <select
+                      name=""
+                      id="tahun"
+                      className="border h-[34px] rounded-xl w-[100px] pl-2 "
+                    >
+                      <option value="">Tahun</option>
+                      <option value="">2023</option>
+                      <option value="">2022</option>
+                      <option value="">2021</option>
+                    </select>
+                  </div>
+                  <div className="">
+                    <select
+                      name=""
+                      id="statuss"
+                      className="border h-[34px] rounded-xl w-[100px] pl-2 "
+                    >
+                      <option value="">Status</option>
+                      <option value="">Pending</option>
+                      <option value="">Acc</option>
+                      <option value="">All</option>
+                    </select>
+                  </div>
                 </div>
-                <div className="">
-                  <select
-                    name=""
-                    id="tahun"
-                    className="border h-[34px] rounded-xl w-[100px] pl-2 "
-                  >
-                    <option value="">Tahun</option>
-                    <option value="">2023</option>
-                    <option value="">2022</option>
-                    <option value="">2021</option>
-                  </select>
-                </div>
-                <div className="">
-                  <select
-                    name=""
-                    id="statuss"
-                    className="border h-[34px] rounded-xl w-[100px] pl-2 "
-                  >
-                    <option value="">Status</option>
-                    <option value="">Pending</option>
-                    <option value="">Acc</option>
-                    <option value="">All</option>
-                  </select>
-                </div>
-                <button className="bg-[#7B2CBF]  mb-4 px-3 text-center py-1 w-[100px] rounded-xl text-[#E5D5F2] font-abc">
-                  Filter
-                </button>
               </form>
             </div>
             {/* section 2 */}

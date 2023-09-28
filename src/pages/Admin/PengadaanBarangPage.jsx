@@ -181,12 +181,12 @@ export default function TambahBarangPage() {
 
   return (
     <div className="w-full h-[100vh] flex">
-      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+      <div className={``}>
         <Sidebar setSidebar={2} width={open} setWidth={setOpen} />
       </div>
-      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+      <div className={`w-11/12 mx-auto`}>
         <TopBar>{"Pengadaan Barang"}</TopBar>
-        <div className="w-[95%] h-[80px] justify-between flex mx-auto">
+        <div className="w-[95%] h-[80px] lg:justify-between justify-center xl:justify-between mx-auto flex">
           <div className="">
             <button
               onClick={() => setAddBarang(!addBarang)}

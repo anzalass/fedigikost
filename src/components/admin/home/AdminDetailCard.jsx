@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 export default function AdminDetailCard() {
   const { user } = useSelector((state) => state.user);
   return (
-    <div className="w-[97%] h-[500px] rounded-lg mt-4 bg-white justify-center items-center flex-col">
+    <div className="w-[100%] border-2 border-slate-400 h-[500px] rounded-lg mt-4 bg-white justify-center items-center flex-col">
       <div className="w-full mx-auto flex-col pt-[70px]">
         <FaUserCircle size={100} className="mx-auto" />
         <div className="text-center  font-abc w-full">

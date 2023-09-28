@@ -10,10 +10,10 @@ export default function PemeliharaanBarangOwner({ userSession }) {
 
   return (
     <div className="w-full flex">
-      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
+      <div className={` `}>
         <SidebarOwner setSidebar={3} width={open} setWidth={setOpen} />
       </div>
-      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+      <div className={`w-11/12 mx-auto`}>
         <TopBarOwner userSession={userSession}>
           {"Pemeliharaan Owner"}
         </TopBarOwner>

@@ -9,27 +9,13 @@ export default function TopBar({ children }) {
   const nav = useNavigate();
   const { user } = useSelector((state) => state.user);
 
-  // useEffect(() => {
-  //   // Add a delay of 1000 milliseconds (1 second) before checking userSession
-  //   const delay = 3000;
-
-  //   const timer = setTimeout(() => {
-  //     if (userSession.id == undefined) {
-  //       window.location.href = "/login";
-  //     }
-  //   }, delay);
-
-  //   // Clear the timer if the component unmounts or userSession changes
-  //   return () => clearTimeout(timer);
-  // }, [userSession]);
-
   return (
     <div>
-      <div className="w-full h-[80px] flex p-6 justify-between">
-        <div className="w-[50%] text-[25px] font-abc font-[500]">
+      <div className="w-full h-[80px] flex p-6 lg:justify-between xl:justify-between justify-end">
+        <div className="w-[50%] text-[25px] hidden md:hidden lg:block xl:block font-abc font-[500]">
           {children}
         </div>
-        <div className="w-[50% flex">
+        <div className="w-[50%] flex justify-end  ">
           <div className="mr-5">
             <BsFillBellFill size={25} />
           </div>
