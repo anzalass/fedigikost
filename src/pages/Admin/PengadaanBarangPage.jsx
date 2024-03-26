@@ -174,7 +174,6 @@ export default function TambahBarangPage() {
   allKategori.forEach((a) => {
     row.push({
       id: a.kodeBarang,
-
       nama_barang: a.namaBarang,
     });
   });

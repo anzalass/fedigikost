@@ -5,7 +5,7 @@ import { FaUserCircle } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
-export default function TopBar({ children }) {
+export default function TopBar({ children, openNotif, setOpenNotif }) {
   const nav = useNavigate();
   const { user } = useSelector((state) => state.user);
 
@@ -16,7 +16,7 @@ export default function TopBar({ children }) {
           {children}
         </div>
         <div className="w-[50%] flex justify-end  ">
-          <div className="mr-5">
+          <div className="mr-5" onClick={() => setOpenNotif(!openNotif)}>
             <BsFillBellFill size={25} />
           </div>
           <div className="flex">

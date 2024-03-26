@@ -8,24 +8,24 @@ import AdminDetailCard from "../../components/admin/home/AdminDetailCard";
 import { ClipLoader } from "react-spinners";
 import { useSelector } from "react-redux";
 import Indikator from "../../components/admin/home/Indikator";
+import NotifiikasiAdmin from "../../components/admin/home/NotifiikasiAdmin";
 
 export default function HomePage() {
   const [open, setOpen] = useState(false);
-
+  const [openNotif, setOpenNotif] = useState(false);
   const { user } = useSelector((state) => state.user);
-
-  // useEffect(() => {
-  //   console.log("loading : ", loading);
-  // }, [loading]);
 
   return (
     <div>
-      <div className="w-full h-[160vh]">
+      <div className="w-full h-[160vh] relative">
+        {openNotif ? <NotifiikasiAdmin /> : null}
         <div className={` `}>
           <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
         </div>
         <div className={`w-11/12 mx-auto`}>
-          <TopBar>{"Dashboard Admin"}</TopBar>
+          <TopBar openNotif={openNotif} setOpenNotif={setOpenNotif}>
+            {"Dashboard Admin"}
+          </TopBar>
           <div className="w-full mt-2 h-[50px] ">
             <div className="">
               <h1 className="text-[10px] font-abc ml-6 ">

@@ -68,7 +68,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
       <div
         className={`fixed h-[100vh] bg-white left-0 z-40 ${
           width ? "block" : "hidden"
-        }`}
+        } shadow-[4.0px_8.0px_8.0px_rgba(0,0,0,0.38)]`}
       >
         <div className="ml-[210px]"></div>
         <div className="pt-[40px] w-full">
