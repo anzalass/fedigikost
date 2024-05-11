@@ -13,8 +13,10 @@ import { useParams } from "react-router-dom";
 import ModalMaintenenceOwner from "./ModalMaintenenceOwner";
 import ModalChangeStatusOwner from "./ModalChangeStatusOwner";
 import EditPemeliharaanModal from "../../../components/admin/pemeliharaan/EditPemeliharaanModal";
+import { useSearch } from "../../../context/searchContext";
 
 export default function DetailRuanganOwner() {
+  const [search, setSearch] = useSearch();
   const [loading, setLoading] = useState(true);
   const [open, setOpen] = useState(false);
   const [maintenence, setMaintenence] = useState(false);

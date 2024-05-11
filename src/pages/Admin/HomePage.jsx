@@ -15,16 +15,21 @@ export default function HomePage() {
   const [openNotif, setOpenNotif] = useState(false);
   const { user } = useSelector((state) => state.user);
 
+  const [data, setData] = useState([]);
   return (
     <div>
       <div className="w-full h-[160vh] relative">
-        {openNotif ? <NotifiikasiAdmin /> : null}
+        {openNotif ? <NotifiikasiAdmin data={data} /> : null}
         <div className={` `}>
           <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
         </div>
         <div className={`w-11/12 mx-auto`}>
-          <TopBar openNotif={openNotif} setOpenNotif={setOpenNotif}>
-            {"Dashboard Admin"}
+          <TopBar
+            openNotif={openNotif}
+            setOpenNotif={setOpenNotif}
+            setData={setData}
+          >
+            {user?.role == 1 ? "Dashboard Owner" : "Dashboard Admin"}
           </TopBar>
           <div className="w-full mt-2 h-[50px] ">
             <div className="">

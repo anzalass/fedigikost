@@ -10,45 +10,109 @@ import { RxDashboard } from "react-icons/rx";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiMiniClipboardDocumentList } from "react-icons/hi2";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 export default function Sidebar({ open, setSidebar, width, setWidth }) {
-  const sidebarMenu = [
-    {
-      title: "Beranda",
-      url: "/",
-      icon: <GrHomeRounded className={` fill-white  my-auto`} />,
-    },
-    {
-      title: "Pengadaan Barang",
-      url: "/tambah-barang",
-      icon: <BsPencilSquare className="my-auto" />,
-    },
-    {
-      title: "Pemeliharaan Barang",
-      url: "/pengeluaran",
-      icon: <ImEnter className="my-auto" />,
-    },
-    {
-      title: "Data Ruangan",
-      url: "/data-ruangan",
-      icon: <HiMiniClipboardDocumentList className="my-auto" />,
-    },
-  ];
+  const { user } = useSelector((state) => state.user);
+  let sidebarMenu = [];
+  if (user?.role == 2) {
+    sidebarMenu = [
+      {
+        title: "Beranda",
+        url: "/",
+        icon: <GrHomeRounded className={` fill-white  my-auto`} />,
+      },
+      {
+        title: "Pengadaan Barang",
+        url: "/tambah-barang",
+        icon: <BsPencilSquare className="my-auto" />,
+      },
+      {
+        title: "Pemeliharaan Barang",
+        url: "/pengeluaran",
+        icon: <ImEnter className="my-auto" />,
+      },
+      {
+        title: "Data Ruangan",
+        url: "/data-ruangan",
+        icon: <HiMiniClipboardDocumentList className="my-auto" />,
+      },
+    ];
+  } else if (user?.role == 1) {
+    sidebarMenu = [
+      {
+        title: "Beranda",
+        url: "/",
+        icon: <GrHomeRounded className={` fill-white  my-auto`} />,
+      },
+      {
+        title: "Pengadaan Barang",
+        url: "/tambah-barang",
+        icon: <BsPencilSquare className="my-auto" />,
+      },
+      {
+        title: "Pemeliharaan Barang",
+        url: "/pengeluaran",
+        icon: <ImEnter className="my-auto" />,
+      },
+      {
+        title: "Data Ruangan",
+        url: "/data-ruangan",
+        icon: <HiMiniClipboardDocumentList className="my-auto" />,
+      },
+      {
+        title: "Data Petugas",
+        url: "/petugas",
+        icon: <HiMiniClipboardDocumentList className="my-auto" />,
+      },
+    ];
+  }
 
   const logout = async () => {
     try {
-      const res = await fetch("http://localhost:8000/api/logout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
+      Swal.fire({
+        title: "Keluar",
+        text: "Apakah Yakin Ingin Keluar ?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Ya, Keluar",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          const res = fetch("http://localhost:8000/api/logout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          })
+            .then((res) => {
+              if (res) {
+                localStorage.removeItem("token");
+                window.location.reload();
+              }
+              Swal.fire({
+                title: "Keluar ",
+                text: "Berhasil Keluar",
+                icon: "success",
+              });
+              window.location.href = "/";
+            })
+            .catch((err) => {
+              Swal.fire({
+                title: "Keluar ",
+                text: "Gagal Keluar, " + err.message,
+                icon: "error",
+              });
+            });
+        }
       });
-
-      if (res) {
-        localStorage.removeItem("token");
-        window.location.reload();
-      }
     } catch (err) {
-      alert(err);
+      Swal.fire({
+        title: "Keluar ",
+        text: "Gagal Keluar, " + err.message,
+        icon: "error",
+      });
     }
   };
 

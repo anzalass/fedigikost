@@ -4,8 +4,12 @@ import Sidebar from "../../components/layout/Sidebar";
 import TopBar from "../../components/layout/TopBar";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../config/base_url";
+import { useSelector } from "react-redux";
+import { useSearch } from "../../context/searchContext";
 
 export default function DataRuanganPage() {
+  const { user } = useSelector((state) => state.user);
+  const [search, setSearch] = useSearch();
   const [addRuangan, setaddRuangan] = useState(0);
   const [editRuangan, setEditRuangan] = useState(0);
   const [open, setOpen] = useState(false);
@@ -15,6 +19,7 @@ export default function DataRuanganPage() {
     ruang: "",
   });
   const [valueEdit, setValueEdit] = useState({
+    idUser: user?.id,
     kodeRuang: "",
     ruang: "",
   });
@@ -35,6 +40,7 @@ export default function DataRuanganPage() {
   };
 
   const [dataRuang, setDataRuang] = useState({
+    idUser: user?.id,
     kodeRuang: "",
     ruang: "",
   });
@@ -66,8 +72,8 @@ export default function DataRuanganPage() {
     } catch (err) {
       // console.log(err.response.data.errors);
       setErrRuangan({
-        kodeRuang: err.response.data.errors.kodeRuang,
-        ruang: err.response.data.errors.ruang,
+        kodeRuang: err.response.data?.errors?.kodeRuang,
+        ruang: err.response.data?.errors?.ruang,
       });
     }
   };
@@ -101,16 +107,20 @@ export default function DataRuanganPage() {
         <div className="w-full mt-2 h-[50px] mx-auto ">
           <div className="w-[95%] h-[80px] justify-between flex mx-auto">
             <div className="">
-              <button
-                onClick={() => setaddRuangan(1)}
-                className="bg-[#7B2CBF] mt-5 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
-              >
-                Tambah Ruangan
-              </button>
+              {user?.role == 1 ? (
+                <button
+                  onClick={() => setaddRuangan(1)}
+                  className="bg-[#7B2CBF] mt-5 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
+                >
+                  Tambah Ruangan
+                </button>
+              ) : null}
             </div>
             <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
               <input
                 type="text"
+                name="search"
+                onChange={(e) => setSearch(e.target.value)}
                 className="w-full h-full pl-2 rounded-lg"
                 placeholder="Search"
               />

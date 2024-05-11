@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import SidebarOwner from "../../../components/layoutowner/SidebarOwner";
+import Sidebar from "../../../components/layout/Sidebar";
 import TopBarOwner from "../../../components/layoutowner/TopbarOwner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
@@ -13,34 +13,29 @@ export default function PendaftaranPetugas() {
     email: "",
     password: "",
     role: "",
-    noHP: ""
-  })
+    noHP: "",
+  });
 
   const [err, setErr] = useState({
     name: "",
     email: "",
     password: "",
     role: "",
-    noHP: ""
-  })
+    noHP: "",
+  });
+
   const tambahPetugas = async () => {
     try {
       const res = await axios.post(`${BACKEND_BASE_URL}/api/Register`, data);
 
       if (res.status === 200) {
-        nav("/owner/petugas");
+        nav("/petugas");
       }
     } catch (err) {
-      console.log(err);
-      setErr({
-        name: err.response.data.errors.name,
-        email: err.response.data.errors.email,
-        password: err.response.data.errors.password,
-        role: err.response.data.errors.role,
-        noHP: err.response.data.errors.noHP
-      })
+      console.log("error : ", err.response.data.error);
+      setErr(err.response.data.error);
     }
-  }
+  };
 
   const changeDataHandler = (e) => {
     setData({
@@ -49,13 +44,13 @@ export default function PendaftaranPetugas() {
     });
 
     console.log(data);
-  }
+  };
   return (
-    <div className="w-full h-[160vh] flex">
-      <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
-        <SidebarOwner setSidebar={5} width={open} setWidth={setOpen} />
+    <div className="w-11/12 mx-auto h-[160vh] ">
+      <div className={`w-full`}>
+        <Sidebar setSidebar={5} width={open} setWidth={setOpen} />
       </div>
-      <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
+      <div className={`w-full`}>
         <TopBarOwner>{"Pendaftaran Petugas"}</TopBarOwner>
         <div className="w-full">
           <div className="w-[95%] h-[80px] justify-between flex mx-auto">
@@ -68,9 +63,7 @@ export default function PendaftaranPetugas() {
                   onChange={(e) => changeDataHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
-                {err.name ?
-                  <p>{err.name}</p> : null
-                }
+                {err.name ? <p>{err.name}</p> : null}
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Email</h1>
@@ -80,9 +73,7 @@ export default function PendaftaranPetugas() {
                   onChange={(e) => changeDataHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
-                {err.email ?
-                  <p>{err.email}</p> : null
-                }
+                {err.email ? <p>{err.email}</p> : null}
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Password</h1>
@@ -92,9 +83,7 @@ export default function PendaftaranPetugas() {
                   onChange={(e) => changeDataHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
-                {err.password ?
-                  <p>{err.password}</p> : null
-                }
+                {err.password ? <p>{err.password}</p> : null}
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">No HP</h1>
@@ -104,9 +93,7 @@ export default function PendaftaranPetugas() {
                   onChange={(e) => changeDataHandler(e)}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
-                {err.noHP ?
-                  <p>{err.noHP}</p> : null
-                }
+                {err.noHP ? <p>{err.noHP}</p> : null}
               </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2 ">Role</h1>
@@ -119,9 +106,7 @@ export default function PendaftaranPetugas() {
                   <option value="1">Pemilik Kos (beserta keluarganya)</option>
                   <option value="2">Admin</option>
                 </select>
-                {err.role ?
-                  <p>{err.role}</p> : null
-                }
+                {err.role ? <p>{err.role}</p> : null}
               </div>
               <div className="w-full justify-center mt-12 mb-12 flex items-center">
                 <button
@@ -131,7 +116,7 @@ export default function PendaftaranPetugas() {
                   Simpan
                 </button>
                 <button
-                  onClick={() => nav("/owner/petugas")}
+                  onClick={() => nav("/petugas")}
                   className="bg-[#E5D5F2] px-3 py-1 w-[140px] rounded-md ml-2  text-[#7B2CBF] font-abc"
                 >
                   Batal

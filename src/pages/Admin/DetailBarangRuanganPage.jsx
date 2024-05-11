@@ -12,6 +12,7 @@ import { useParams } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../config/base_url";
 import EditPemeliharaanModal from "../../components/admin/pemeliharaan/EditPemeliharaanModal";
+import { useSelector } from "react-redux";
 
 export default function DetailBarangRuangan() {
   const [open, setOpen] = useState(false);
@@ -23,15 +24,13 @@ export default function DetailBarangRuangan() {
   const [pemeliharaanBarang, setPemeliharaanBarang] = useState([]);
   const [editMaintenence, setEditMaintenence] = useState(false);
   const rowBarangRuangan = [];
-
   const [updateData, setUpdateData] = useState({
-    keterangan: null,
+    sisa: null,
     id: null,
   });
 
+  const { user } = useSelector((state) => state.user);
   const { id } = useParams();
-
-  const updateStatus = () => {};
 
   useEffect(() => {
     fetchData();
@@ -88,15 +87,14 @@ export default function DetailBarangRuangan() {
 
   const fetchData = async () => {
     try {
-      // const data = await axios.get("http://127.0.0.1:8000/api/getBarangRuangan/"+id);
       const getBarang = await axios.get(`${BACKEND_BASE_URL}/api/getKategori`);
       const getPengadaan = await axios.get(`${BACKEND_BASE_URL}/api/pengadaan`);
       const getPemeliharan = await axios.get(
         `${BACKEND_BASE_URL}/api/getPemeliharaan`
       );
-      // setAsetBarang(data.data.results);
       setBarang(getBarang.data.results);
       setPengadaan(getPengadaan.data.result);
+      console.log("test pemeliharaan : ", getPemeliharan.data.results);
       setPemeliharaanBarang(getPemeliharan.data.results);
     } catch (err) {
       alert(err);
@@ -136,12 +134,6 @@ export default function DetailBarangRuangan() {
               }}
             >
               <GiAutoRepair size={20} />
-            </button>
-            <button className="mr-4">
-              <BsTrash3 color="red" size={20} />
-            </button>
-            <button className="" onClick={() => edit(1)}>
-              <BiEditAlt color="blue" size={20} />
             </button>
           </div>
         );
@@ -210,7 +202,9 @@ export default function DetailBarangRuangan() {
             className=""
             onClick={() => {
               updateData.id = params.id;
-              setChangeStatus(!changeStatus);
+              if (user?.role == 1) {
+                setChangeStatus(!changeStatus);
+              }
             }}
           >
             {params.row.status}
@@ -226,21 +220,57 @@ export default function DetailBarangRuangan() {
 
       sortable: false,
       renderCell: (params) => {
+        console.log("params : ", params);
+        const sisa = rowBarangRuangan.filter(
+          (item) => item.id == params.row.nama_barang
+        );
         return (
           <div className="flex">
-            <button
-              onClick={() => hapusPemeliharaan(params.id)}
-              className="mr-4"
-            >
-              <BsTrash3 color="red" size={20} />
-            </button>
-            <button className="">
-              <BiEditAlt
-                color="blue"
-                size={20}
-                onClick={() => setEditMaintenence(true)}
-              />
-            </button>
+            {user.role == 1 ? (
+              <>
+                <button
+                  onClick={() => hapusPemeliharaan(params.id)}
+                  className="mr-4"
+                >
+                  <BsTrash3 color="red" size={20} />
+                </button>
+                <button className="">
+                  <BiEditAlt
+                    color="blue"
+                    size={20}
+                    onClick={() => {
+                      setEditMaintenence(true);
+                      console.log("params 1 : ", params);
+                      setUpdateData({
+                        sisa: sisa[0].qtybarang,
+                        id: params.id,
+                      });
+                    }}
+                  />
+                </button>
+              </>
+            ) : user?.id == params.row.idUser ? (
+              <>
+                <button
+                  onClick={() => hapusPemeliharaan(params.id)}
+                  className="mr-4"
+                >
+                  <BsTrash3 color="red" size={20} />
+                </button>
+                <button className="">
+                  <BiEditAlt
+                    color="blue"
+                    size={20}
+                    onClick={() => {
+                      setUpdateData({
+                        sisa: sisa[0].qtybarang,
+                        id: params.id,
+                      });
+                    }}
+                  />
+                </button>
+              </>
+            ) : null}
           </div>
         );
       },
@@ -253,6 +283,7 @@ export default function DetailBarangRuangan() {
     .forEach((a) => {
       rowBarangRuanganPemeliharaan.push({
         id: a.kodePemeliharaan,
+        idUser: a.idUser,
         tgl: a.created_at,
         nama_barang: a.kodeBarang,
         jumlah: a.jumlah,
@@ -268,6 +299,7 @@ export default function DetailBarangRuangan() {
       {changeStatus ? (
         <ModalChangeStatus
           id={updateData.id}
+          reFetch={fetchData}
           open={changeStatus}
           setOpen={setChangeStatus}
         />
@@ -283,6 +315,8 @@ export default function DetailBarangRuangan() {
       {editMaintenence ? (
         <EditPemeliharaanModal
           open={editMaintenence}
+          id={updateData.id}
+          sisa={updateData.sisa}
           setOpen={setEditMaintenence}
         />
       ) : null}
@@ -309,7 +343,9 @@ export default function DetailBarangRuangan() {
               autoHeight
               className="bg-white"
               columns={columnsRuanganPemeliharaan}
-              rows={rowBarangRuanganPemeliharaan}
+              rows={rowBarangRuanganPemeliharaan.filter(
+                (item) => item.status != "selesai"
+              )}
             />
           </div>
         </div>

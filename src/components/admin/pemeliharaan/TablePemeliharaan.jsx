@@ -4,14 +4,17 @@ import { BiEditAlt, BiPrinter } from "react-icons/bi";
 import { BsTrash3 } from "react-icons/bs";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useSelector } from "react-redux";
 
 // import "sweetalert2/src/sweetalert2.scss";
 
 export default function TablePengeluaran() {
+  const { user } = useSelector((state) => state.user);
   const [addPemeliharaan, setAddPemeliharaan] = useState(false);
   const [dataPemeliharaan, setDataPemeliharaan] = useState([]);
   const [filterBulan, setFilterBulan] = useState("");
   const [filterTahun, setFilterTahun] = useState("");
+  const [filterStatus, setStatus] = useState("");
   const bulan = [
     "Januari",
     "Febuari",
@@ -121,9 +124,15 @@ export default function TablePengeluaran() {
             <button className="mr-4">
               <BiPrinter size={20} />
             </button>
-            <button className="mr-4" onClick={() => deleteBarang()}>
-              <BsTrash3 color="red" size={20} />
-            </button>
+            {user?.role == 1 ? (
+              <button className="mr-4" onClick={() => deleteBarang()}>
+                <BsTrash3 color="red" size={20} />
+              </button>
+            ) : params.row.status == "pending" ? (
+              <button className="mr-4" onClick={() => deleteBarang()}>
+                <BsTrash3 color="red" size={20} />
+              </button>
+            ) : null}
           </div>
         );
       },
@@ -132,26 +141,52 @@ export default function TablePengeluaran() {
 
   const row = [];
 
-  dataPemeliharaan
-    .filter(
-      (item) =>
-        (filterBulan === "" ||
-          new Date(item.created_at).getMonth() === Number(filterBulan)) &&
-        (filterTahun === "" ||
-          new Date(item.created_at).getFullYear() === Number(filterTahun))
-    )
-    .forEach((a) => {
-      row.push({
-        id: a.kodePemeliharaan,
-        tgl: a.created_at,
-        nama_barang: a.kodeBarang,
-        jumlah: a.jumlah,
-        keterangan: a.keterangan,
-        lokasi_barang: a.kodeRuang,
-        status: a.status,
-        biaya: a.harga,
+  if (user?.role == 2) {
+    dataPemeliharaan
+      .filter(
+        (item) =>
+          user?.id == item.idUser &&
+          (filterBulan === "" ||
+            new Date(item.created_at).getMonth() === Number(filterBulan)) &&
+          (filterTahun === "" ||
+            new Date(item.created_at).getFullYear() === Number(filterTahun)) &&
+          (filterStatus === "" || filterStatus === item.status)
+      )
+      .forEach((a) => {
+        row.push({
+          id: a.kodePemeliharaan,
+          tgl: a.created_at,
+          nama_barang: a.kodeBarang,
+          jumlah: a.jumlah,
+          keterangan: a.keterangan,
+          lokasi_barang: a.kodeRuang,
+          status: a.status,
+          biaya: a.harga,
+        });
       });
-    });
+  } else if (user?.role == 1) {
+    dataPemeliharaan
+      .filter(
+        (item) =>
+          (filterBulan === "" ||
+            new Date(item.created_at).getMonth() === Number(filterBulan)) &&
+          (filterTahun === "" ||
+            new Date(item.created_at).getFullYear() === Number(filterTahun)) &&
+          (filterStatus === "" || filterStatus === item.status)
+      )
+      .forEach((a) => {
+        row.push({
+          id: a.kodePemeliharaan,
+          tgl: a.created_at,
+          nama_barang: a.kodeBarang,
+          jumlah: a.jumlah,
+          keterangan: a.keterangan,
+          lokasi_barang: a.kodeRuang,
+          status: a.status,
+          biaya: a.harga,
+        });
+      });
+  }
 
   return (
     <div className="bg-white w-[95%] mt-3 mx-auto">
@@ -178,6 +213,17 @@ export default function TablePengeluaran() {
             {tahun.map((item) => {
               return <option value={item}>{item}</option>;
             })}
+          </select>
+          <select
+            name=""
+            id=""
+            onChange={(e) => setStatus(e.target.value)}
+            className="border h-[34px] rounded-xl w-[100px] pl-2 "
+          >
+            <option value="">Status</option>
+            <option value="pending">pending</option>
+            <option value="selesai">selesai</option>
+            <option value="ditolak">ditolak</option>
           </select>
         </div>
       </div>

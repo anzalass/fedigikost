@@ -1,12 +1,19 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
+import { useRender } from "../../../context/rendertablepengadaan";
+import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 export default function EditBarang({ close, setClose, idBarang }) {
+  const { user } = useSelector((state) => state.user);
   const [pengadaan, setPengadaan] = useState([]);
   const [ruang, setRuang] = useState([]);
   const [barang, setBarang] = useState([]);
+  const [buktiNota, setBuktiNota] = useState(null);
+  const [render, setRender] = useRender();
 
   const [data, setData] = useState({
+    idUser: user?.id,
     namaBarang: "",
     kodeBarang: "",
     kodeRuang: "",
@@ -30,14 +37,22 @@ export default function EditBarang({ close, setClose, idBarang }) {
   };
 
   const UpdatePengadaan = async () => {
+    setRender(false);
     try {
       const result = await axios.put(
         "http://127.0.0.1:8000/api/updatePengadaan/" + idBarang,
         data
       );
-      console.log(result);
       if (result) {
-        window.location.reload();
+        setClose(!close);
+        setRender(true);
+        Swal.fire({
+          // position: "top-end",
+          icon: "success",
+          title: "Edit Berhasil",
+          showConfirmButton: false,
+          timer: 1500,
+        });
       }
     } catch (err) {
       console.log(err);
@@ -66,6 +81,9 @@ export default function EditBarang({ close, setClose, idBarang }) {
     setPengadaan(result);
     setData((prevData) => ({
       ...prevData,
+      idUser: user?.id,
+      kodeBarang: result.data.results.kodeBarang,
+      kodeRuang: result.data.results.kodeRuang,
       merek: result.data.results.merek,
       buktiNota: result.data.results.buktiNota,
       spesifikasi: result.data.results.spesifikasi,
@@ -87,6 +105,24 @@ export default function EditBarang({ close, setClose, idBarang }) {
         {pengadaan.length !== 0 ? (
           <div className="w-[95%] mx-auto h-[130vh] bg-white rounded-xl">
             <h1 className="font-abc text-xl">Edit Barang</h1>
+            {buktiNota ? (
+              <div className="p-2 border-2 rounded-md mx-auto w-[40%] h-[40%]">
+                <img
+                  src={URL.createObjectURL(buktiNota)}
+                  alt=""
+                  className="w-[100%] object-contain   rounded-md mx-auto h-[100%]"
+                />
+              </div>
+            ) : (
+              <div className="p-2 border-2 rounded-md mx-auto w-[40%] h-[40%]">
+                <img
+                  src={data?.buktiNota}
+                  alt=""
+                  className="w-[100%] object-contain   rounded-md mx-auto h-[100%]"
+                />
+              </div>
+            )}
+
             <div action="" className="w-[95%] mx-auto mt-2 p-3">
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2 ">Tanggal Pengadaan</h1>
@@ -103,20 +139,36 @@ export default function EditBarang({ close, setClose, idBarang }) {
                 <select
                   name="namaBarang"
                   id=""
-                  value={data.namaBarang}
-                  onChange={(e) => changePengadaanHandler(e)}
+                  onChange={(e) => {
+                    const selectedBarang = barang.find(
+                      (item) => item.kodeBarang === e.target.value
+                    );
+
+                    setData({
+                      ...data,
+                      kodeBarang: selectedBarang.kodeBarang,
+                      namaBarang: `${selectedBarang.namaBarang}`,
+                      merek: selectedBarang.kategori,
+                    });
+                  }}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 >
                   {barang.map((item, index) => {
                     if (item.namaBarang == data.namaBarang) {
                       return (
-                        <option value="kodeBarang" selected>
+                        <option
+                          key={index}
+                          value={`${item.kodeBarang}`}
+                          selected
+                        >
                           {item.namaBarang}
                         </option>
                       );
                     } else {
                       return (
-                        <option value="kodeBarang">{item.namaBarang}</option>
+                        <option key={index} value={`${item.kodeBarang}`}>
+                          {item.namaBarang}
+                        </option>
                       );
                     }
                   })}
@@ -135,10 +187,9 @@ export default function EditBarang({ close, setClose, idBarang }) {
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Foto Nota Pembelian</h1>
                 <input
-                  type="text"
+                  type="file"
                   name="buktiNota"
-                  value={data.buktiNota}
-                  onChange={(e) => changePengadaanHandler(e)}
+                  onChange={(e) => setBuktiNota(e.target.files[0])}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
@@ -167,11 +218,22 @@ export default function EditBarang({ close, setClose, idBarang }) {
                 <select
                   id="cars"
                   name="ruang"
+                  onChange={(e) => {
+                    const selectedRuang = ruang.find(
+                      (item) => item.kodeRuang === e.target.value
+                    );
+
+                    setData({
+                      ...data,
+                      kodeRuang: selectedRuang.kodeRuang,
+                      ruang: selectedRuang.ruang,
+                    });
+                    console.log(data);
+                  }}
                   className="w-full border-2 border-slate-500"
                 >
-                  {ruang.map((item, index) => {
+                  {ruang.map((item) => {
                     if (item.ruang == data.ruang) {
-                      console.log("item : ", item.kodeRuang);
                       return (
                         <option
                           key={item.kodeBarang}

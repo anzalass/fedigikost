@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-export default function ModalChangeStatus({ open, setOpen, id }) {
+export default function ModalChangeStatus({ open, setOpen, reFetch, id }) {
   const [data, setData] = useState({
     status: null,
   });
@@ -13,14 +13,11 @@ export default function ModalChangeStatus({ open, setOpen, id }) {
         data
       );
       if (res) {
-        console.log("res status : ", res.data.message);
-        console.log("id : ", id);
-        console.log("status : ", data.status);
-        // window.location.reload();
+        setOpen(false);
+        reFetch();
       }
     } catch (err) {
       alert(err);
-      console.log(data);
       console.log("error : ", err.response.data);
       console.log("error : ", err.response.data.error);
     }

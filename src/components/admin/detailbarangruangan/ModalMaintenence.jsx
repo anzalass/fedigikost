@@ -1,8 +1,10 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BACKEND_BASE_URL } from "../../../config/base_url";
+import { useSelector } from "react-redux";
 
 export default function ModalMaintenence({ open, setOpen, data, ruang }) {
+  const { user } = useSelector((state) => state.user);
   const [dataConst, setDataConst] = useState({
     jumlah: 1,
   });
@@ -10,7 +12,7 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
     kodeBarang: "",
     kodeRuang: "",
     keterangan: "",
-    idUser: 1,
+    idUser: user?.id,
     jumlah: 1,
     buktiPembayaran: "",
     status: "pending",

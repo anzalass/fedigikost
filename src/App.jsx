@@ -38,7 +38,7 @@ import DetailPengadaanPage from "./components/DetailPengadaanPage";
 
 function App() {
   const [dataCookie, setDataCookie] = useState([]);
-  const { isLogin } = useSelector((state) => state.user);
+  const { isLogin, user } = useSelector((state) => state.user);
   useEffect(() => {
     store.dispatch(loadUser());
   }, [isLogin === true]);
@@ -47,8 +47,78 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          {/* UNIVERSAL PAGE */}
+          {user?.role === undefined ? (
+            <Route path="/" element={<LoginPage />} />
+          ) : user?.role === 1 ? (
+            <>
+              {/* Owner Routes */}
+              <Route
+                path="/owner/"
+                element={<HomePageOwner userSession={dataCookie} />}
+              />
+              <Route
+                path="/owner/pengadaan-barang"
+                element={<PengadaanBarangOwner />}
+              />
+              <Route
+                path="/owner/tambah-barang"
+                element={<TambahBarangOwner />}
+              />
+              <Route path="/owner/kategori" element={<TambahKategoriOwner />} />
+              <Route
+                path="/owner/edit-barang/:id"
+                element={<EditBarangOwner />}
+              />
+              <Route
+                path="/owner/pemeliharaan"
+                element={<PemeliharaanBarangOwner />}
+              />
 
+              <Route
+                path="/owner/data-ruangan"
+                element={<DataRuanganOwnerPage />}
+              />
+              <Route
+                path="/owner/tambah-ruangan"
+                element={<TambahRuanganOwner />}
+              />
+              <Route
+                path="/owner/edit-ruangan"
+                element={<EditDataRuanganOwner />}
+              />
+              <Route
+                path="/owner/detail-ruangan/:id"
+                element={<DetailRuanganOwner />}
+              />
+              <Route path="/daftar-petugas" element={<PendaftaranPetugas />} />
+              <Route path="/petugas" element={<DaftarPetugasPage />} />
+              <Route
+                path="/edit-petugas/:id"
+                element={<EditPetugasOwnerPage />}
+              />
+              <Route path="/owner/profile" element={<EditProfileOwnerPage />} />
+            </>
+          ) : (
+            <>
+              <Route
+                path="/admin/pengadaan"
+                element={<PengadaanBarangAdminPage userSession={dataCookie} />}
+              />
+              <Route
+                path="/admin/edit-pengadaan/:id"
+                element={<EditPengadaanAdminPage userSession={dataCookie} />}
+              />
+              <Route
+                path="/admin/kategori"
+                element={<KategoriAdminPage userSession={dataCookie} />}
+              />
+              <Route
+                path="/admin/pemeliharaan"
+                element={<PemeliharaanAdminPage userSession={dataCookie} />}
+              />
+            </>
+          )}
+          {/* UNIVERSAL PAGE */}
           <Route
             path="/detail-pemeliharaan/:id"
             element={<DetailPemeliharaanPage />}
@@ -59,7 +129,7 @@ function App() {
           />
           <Route path="/invoice/:id" element={<InvoicePage />} />
           {/* UNIVERSAL PAGE */}
-          <Route path="/login" element={<LoginPage />} />
+          <Route path="/home" element={<HomePage />} />
           <Route path="/" element={<HomePage />} />
           <Route path="/tambah-barang" element={<PengadaanBarang />} />
           <Route path="/detail-ruangan/:id" element={<DetailBarangRuangan />} />
@@ -67,68 +137,6 @@ function App() {
           <Route path="/pengeluaran" element={<PengeluaranPage />} />
           <Route path="/profile" element={<EditProfileAdminPage />} />
           <Route path="/reset-password" element={<UbahPasswordAdminPage />} />
-          {/* Owner Routes */}
-          <Route
-            path="/owner/"
-            element={<HomePageOwner userSession={dataCookie} />}
-          />
-          <Route
-            path="/owner/pengadaan-barang"
-            element={<PengadaanBarangOwner />}
-          />
-          <Route path="/owner/tambah-barang" element={<TambahBarangOwner />} />
-          <Route path="/owner/kategori" element={<TambahKategoriOwner />} />
-          <Route path="/owner/edit-barang/:id" element={<EditBarangOwner />} />
-          <Route
-            path="/owner/pemeliharaan"
-            element={<PemeliharaanBarangOwner />}
-          />
-
-          <Route
-            path="/owner/data-ruangan"
-            element={<DataRuanganOwnerPage />}
-          />
-          <Route
-            path="/owner/tambah-ruangan"
-            element={<TambahRuanganOwner />}
-          />
-          <Route
-            path="/owner/edit-ruangan"
-            element={<EditDataRuanganOwner />}
-          />
-          <Route
-            path="/owner/detail-ruangan/:id"
-            element={<DetailRuanganOwner />}
-          />
-          <Route
-            path="/owner/daftar-petugas"
-            element={<PendaftaranPetugas />}
-          />
-          <Route path="/owner/petugas" element={<DaftarPetugasPage />} />
-          <Route
-            path="/owner/edit-petugas/:id"
-            element={<EditPetugasOwnerPage />}
-          />
-          <Route path="/owner/profile" element={<EditProfileOwnerPage />} />
-
-          {/*  REVOLUSI*/}
-          <Route
-            path="/admin/pengadaan"
-            element={<PengadaanBarangAdminPage userSession={dataCookie} />}
-          />
-          <Route
-            path="/admin/edit-pengadaan/:id"
-            element={<EditPengadaanAdminPage userSession={dataCookie} />}
-          />
-          <Route
-            path="/admin/kategori"
-            element={<KategoriAdminPage userSession={dataCookie} />}
-          />
-          <Route
-            path="/admin/pemeliharaan"
-            element={<PemeliharaanAdminPage userSession={dataCookie} />}
-          />
-          {/*  REVOLUSI*/}
         </Routes>
       </BrowserRouter>
     </>

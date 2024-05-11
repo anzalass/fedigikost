@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import SidebarOwner from "../../../components/layoutowner/SidebarOwner";
+import Sidebar from "../../../components/layout/Sidebar";
 import TopBarOwner from "../../../components/layoutowner/TopbarOwner";
 import { useNavigate } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
@@ -7,9 +7,10 @@ import { BsTrash3 } from "react-icons/bs";
 import { BiEditAlt } from "react-icons/bi";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../../config/base_url";
-
+import { useSearch } from "../../../context/searchContext";
 export default function DaftarPetugasPage() {
   const nav = useNavigate();
+  const [search, setSearch] = useSearch();
   const [open, setOpen] = useState(false);
   const [allUser, setAllUser] = useState([]);
 
@@ -73,7 +74,7 @@ export default function DaftarPetugasPage() {
             </button>
             <button
               className=""
-              onClick={() => nav(`/owner/edit-petugas/${params.id}`)}
+              onClick={() => nav(`/edit-petugas/${params.id}`)}
             >
               <BiEditAlt color="blue" size={20} />
             </button>
@@ -84,21 +85,29 @@ export default function DaftarPetugasPage() {
   ];
 
   const row = [];
-  allUser.forEach((a) => {
-    row.push({
-      id: a.id,
-      nama: a.name,
-      email: a.email,
-      role: a.role,
-      nohp: a.noHP,
-      // qtybarang: a.qtybarang,
+  allUser
+    .filter(
+      (item) =>
+        search === "" ||
+        item.name.toLowerCase().includes(search.toLowerCase()) ||
+        item.email.toLowerCase().includes(search.toLowerCase()) ||
+        item.noHP.toLowerCase().includes(search.toLowerCase())
+    )
+    .forEach((a) => {
+      row.push({
+        id: a.id,
+        nama: a.name,
+        email: a.email,
+        role: a.role,
+        nohp: a.noHP,
+        // qtybarang: a.qtybarang,
+      });
     });
-  });
 
   return (
     <div className="w-full h-[160vh] flex">
       <div className={``}>
-        <SidebarOwner setSidebar={5} width={open} setWidth={setOpen} />
+        <Sidebar setSidebar={5} width={open} setWidth={setOpen} />
       </div>
       <div className={`mx-auto w-11/12 `}>
         <TopBarOwner>{"Daftar Petugas"}</TopBarOwner>
@@ -106,7 +115,7 @@ export default function DaftarPetugasPage() {
           <div className="w-[95%] h-[80px] justify-between flex mx-auto">
             <div className="">
               <button
-                onClick={() => nav("/owner/daftar-petugas")}
+                onClick={() => nav("/daftar-petugas")}
                 className="bg-[#7B2CBF] mt-5 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
               >
                 Tambah Petugas +
@@ -114,6 +123,8 @@ export default function DaftarPetugasPage() {
             </div>
             <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
               <input
+                name="search"
+                onChange={(e) => setSearch(e.target.value)}
                 type="text"
                 className="w-full h-full pl-2 rounded-lg"
                 placeholder="Search"

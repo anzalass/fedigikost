@@ -8,8 +8,10 @@ import axios from "axios";
 import { AiOutlineArrowRight } from "react-icons/ai";
 import { BsTrash3 } from "react-icons/bs";
 import { BiEditAlt } from "react-icons/bi";
+import { useSearch } from "../../../context/searchContext";
 
 export default function DataRuanganOwnerPage(userSession) {
+  const [search, setSearch] = useSearch();
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [dataRuangan, setDataRuangan] = useState([]);
@@ -82,13 +84,20 @@ export default function DataRuanganOwnerPage(userSession) {
   ];
 
   const row = [];
-  dataRuangan.forEach((a) => {
-    row.push({
-      id: a.kodeRuang,
-      ruangan: a.ruang,
-      // qtybarang: a.qtybarang,
+  dataRuangan
+    .filter(
+      (item) =>
+        search === "" ||
+        item.kodeRuang.toLowerCase().includes(search.toLowerCase()) ||
+        item.ruang.toLowerCase().includes(search.toLowerCase())
+    )
+    .forEach((a) => {
+      row.push({
+        id: a.kodeRuang,
+        ruangan: a.ruang,
+        // qtybarang: a.qtybarang,
+      });
     });
-  });
 
   return (
     <div className="w-full h-[160vh] flex">
@@ -109,6 +118,8 @@ export default function DataRuanganOwnerPage(userSession) {
             </div>
             <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
               <input
+                name="search"
+                onChange={(e) => setSearch(e.target.value)}
                 type="text"
                 className="w-full h-full pl-2 rounded-lg"
                 placeholder="Search"
