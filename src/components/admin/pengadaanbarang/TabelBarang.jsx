@@ -1,6 +1,7 @@
 import { DataGrid } from "@mui/x-data-grid";
 import React, { useContext, useEffect, useState } from "react";
 import { AiOutlineArrowRight } from "react-icons/ai";
+import { IoQrCodeSharp } from "react-icons/io5";
 import { BiSolidImageAdd } from "react-icons/bi";
 import { BiEditAlt } from "react-icons/bi";
 import { BsEye, BsTrash3 } from "react-icons/bs";
@@ -16,8 +17,21 @@ import { useRender } from "../../../context/rendertablepengadaan";
 import { useSearch } from "../../../context/searchContext";
 import { useSelector } from "react-redux";
 import ModalResi from "./ModalResi";
+import PropTypes from "prop-types";
 
-export default function TabelBarang({ data }) {
+TabelBarang.propTypes = {
+  kategori: PropTypes.array.isRequired,
+  ruang: PropTypes.array.isRequired,
+  data: PropTypes.array.isRequired,
+};
+
+const options = {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
+
+export default function TabelBarang({ data, ruang, kategori }) {
   const { user } = useSelector((state) => state.user);
   const [search, setSearch] = useSearch();
   const [allBarang, setAllBarang] = useState([data]);
@@ -30,8 +44,8 @@ export default function TabelBarang({ data }) {
   const nav = useNavigate();
   const [img, setImg] = useState();
   const [idBarang, setIdBarang] = useState("");
-  const [kategori, setKategori] = useState([]);
-  const [ruang, setRuang] = useState([]);
+  // const [kategori, setKategori] = useState([]);
+  // const [ruang, setRuang] = useState([]);
   const [filterBulan, setFilterBulan] = useState("");
   const [filterTahun, setFilterTahun] = useState("");
   const [status, setStatus] = useState("");
@@ -68,6 +82,9 @@ export default function TabelBarang({ data }) {
   let row = [];
 
   const [pengadaan, setPengadaan] = useState({
+    id_pembuat: user?.id,
+    role_pembuat: user?.role,
+    nama_pembuat: user?.name,
     idUser: user?.id,
     namaBarang: "",
     kodeBarang: "",
@@ -83,21 +100,21 @@ export default function TabelBarang({ data }) {
 
   const [errPengadaan, setErrorPengadaan] = useState([]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
-  const fetchData = async () => {
-    const getKategori = await axios.get(
-      "http://127.0.0.1:8000/api/getKategori"
-    );
-    const getRuang = await axios.get("http://127.0.0.1:8000/api/getRuang");
+  // const fetchData = async () => {
+  //   const getKategori = await axios.get(
+  //     "http://127.0.0.1:8000/api/getKategori"
+  //   );
+  //   const getRuang = await axios.get("http://127.0.0.1:8000/api/getRuang");
 
-    // if (getRuang && getKategori) {
-    setKategori(getKategori.data.results);
-    setRuang(getRuang.data.results);
-    // }
-  };
+  //   // if (getRuang && getKategori) {
+  //   setKategori(getKategori.data.results);
+  //   setRuang(getRuang.data.results);
+  //   // }
+  // };
 
   const [detailFoto, setDetailFoto] = useState(false);
 
@@ -120,7 +137,11 @@ export default function TabelBarang({ data }) {
       confirmButtonText: "Ya, Hapus",
     }).then((result) => {
       axios
-        .delete("http://127.0.0.1:8000/api/pengadaanDelete/" + id)
+        .delete("http://127.0.0.1:8000/api/pengadaanDelete/" + id, {
+          id_pembuat: user?.id,
+          role_pembuat: user?.role,
+          nama_pembuat: user?.name,
+        })
         .then((response) => {
           Swal.fire({
             title: "Hapus",
@@ -147,6 +168,9 @@ export default function TabelBarang({ data }) {
     setPengadaan({
       ...pengadaan,
       idUser: user?.id,
+      id_pembuat: user?.id,
+      role_pembuat: user?.role,
+      nama_pembuat: user?.name,
     });
     setRender(false);
     // Swal.fire({
@@ -168,10 +192,10 @@ export default function TabelBarang({ data }) {
         showConfirmButton: false,
         timer: 1500,
       });
-      // Swal.close();
+      console.log(pengadaan);
+      Swal.close();
     } catch (err) {
       console.log("errors ", err);
-      Swal.close();
 
       Swal.fire("Error", "Failed to add pengadaan!", "error");
       setErrorPengadaan(err.response.data.error);
@@ -198,8 +222,12 @@ export default function TabelBarang({ data }) {
           row.push({
             id: a.id,
             nama_barang: `${a.namaBarang}:${a.merek}`,
-            tgl: a.tanggalPembelian,
+            tgl: new Date(a.tanggalPembelian).toLocaleDateString(
+              "id-ID",
+              options
+            ),
             harga: a.hargaBarang,
+            resi: a.NoResi,
             lokasi_barang: a.ruang,
             foto: a.buktiNota,
             qty_barang: a.quantity,
@@ -225,7 +253,11 @@ export default function TabelBarang({ data }) {
           row.push({
             id: a.id,
             nama_barang: `${a.namaBarang}:${a.merek}`,
-            tgl: a.tanggalPembelian,
+            tgl: new Date(a.tanggalPembelian).toLocaleDateString(
+              "id-ID",
+              options
+            ),
+            resi: a.NoResi,
             harga: a.hargaBarang,
             lokasi_barang: a.ruang,
             foto: a.buktiNota,
@@ -247,7 +279,7 @@ export default function TabelBarang({ data }) {
 
   const columns = [
     {
-      field: "id",
+      field: "resi",
       headerName: "Resi Barang",
       headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 50,
@@ -328,22 +360,46 @@ export default function TabelBarang({ data }) {
       sortable: false,
       renderCell: (params) => {
         return (
-          <div
-            onClick={() => {
-              setEditStatus(true);
-              setIdBarang(params.id);
-              console.log(params.id);
-            }}
-            className={`${
-              params.row.status === "pending"
-                ? "bg-yellow-400"
-                : params.row.status === "selesai"
-                ? "bg-green-500"
-                : "bg-red-600"
-            } h-full text-center pt-3 cursor-pointer text-white font-abc w-full `}
-          >
-            {params.row.status}
-          </div>
+          <>
+            {user?.role === 1 ? (
+              <div
+                onClick={() => {
+                  setEditStatus(true);
+                  setIdBarang(params.id);
+                  console.log(params.id);
+                }}
+                className={`${
+                  params.row.status === "pending"
+                    ? "bg-yellow-400"
+                    : params.row.status === "selesai"
+                    ? "bg-blue-500"
+                    : params.row.status === "disetujui"
+                    ? "bg-green-500"
+                    : "bg-red-500"
+                } ${
+                  user?.role === 2
+                } h-full text-center pt-3 cursor-pointer text-white font-abc w-full `}
+              >
+                {params.row.status}
+              </div>
+            ) : (
+              <div
+                className={`${
+                  params.row.status === "pending"
+                    ? "bg-yellow-400"
+                    : params.row.status === "selesai"
+                    ? "bg-blue-500"
+                    : params.row.status === "disetujui"
+                    ? "bg-green-500"
+                    : "bg-red-500"
+                } ${
+                  user?.role === 2
+                } h-full text-center pt-3 cursor-pointer text-white font-abc w-full `}
+              >
+                {params.row.status}
+              </div>
+            )}
+          </>
         );
       },
     },
@@ -356,10 +412,120 @@ export default function TabelBarang({ data }) {
       minWidth: 150,
 
       sortable: false,
+
       renderCell: (params) => {
+        console.log("BKTI", params.row);
         return (
-          <div className="flex">
-            {user?.role == 1 ? (
+          <div className="flex gap-2">
+            {params.row.status !== "disetujui" &&
+            params.row.status !== "ditolak" &&
+            params.row.status !== "selesai" ? (
+              <>
+                <button
+                  className=""
+                  onClick={() => {
+                    editBarangFunc(params.id);
+                    setIdBarang(params.id);
+                  }}
+                >
+                  <BiEditAlt color="blue" size={20} />
+                </button>
+                <button
+                  className="mr-4"
+                  onClick={() => DeletePengadaan(params.id)}
+                >
+                  <BsTrash3 color="red" size={20} />
+                </button>
+                {params.row.status === "selesai" ? (
+                  <button
+                    className="mr-4"
+                    onClick={() => {
+                      setValuePengadaan(params.id);
+                      setDetailPengadaan(true);
+                    }}
+                  >
+                    <IoQrCodeSharp size={20} />
+                  </button>
+                ) : null}
+                <button
+                  className="mr-4"
+                  onClick={() => {
+                    nav(`/detail-pengadaan/${params.id}`);
+                  }}
+                >
+                  <BsEye size={20} />
+                </button>
+              </>
+            ) : params.row.status === "disetujui" ? (
+              <>
+                {params.row.foto === null ? (
+                  <button
+                    className="mr-4"
+                    onClick={() => ModalResiBarang(params.id)}
+                  >
+                    <BiSolidImageAdd color="" size={20} />
+                  </button>
+                ) : null}
+                {/* <button
+                  className="mr-4"
+                  onClick={() => {
+                    setValuePengadaan(params.id);
+                    setDetailPengadaan(true);
+                  }}
+                >
+                  <IoQrCodeSharp size={20} />
+                </button> */}
+                <button
+                  className="mr-4"
+                  onClick={() => {
+                    nav(`/detail-pengadaan/${params.id}`);
+                  }}
+                >
+                  <BsEye size={20} />
+                </button>
+              </>
+            ) : params.row.status === "ditolak" ? (
+              <>
+                {/* <button
+                  className="mr-4"
+                  onClick={() => {
+                    setValuePengadaan(params.id);
+                    setDetailPengadaan(true);
+                  }}
+                >
+                  <IoQrCodeSharp size={20} />
+                </button> */}
+                <button
+                  className="mr-4"
+                  onClick={() => {
+                    nav(`/detail-pengadaan/${params.id}`);
+                  }}
+                >
+                  <BsEye size={20} />
+                </button>
+              </>
+            ) : params.row.status === "selesai" ? (
+              <>
+                <button
+                  className="mr-4"
+                  onClick={() => {
+                    setValuePengadaan(params.id);
+                    setDetailPengadaan(true);
+                  }}
+                >
+                  <IoQrCodeSharp size={20} />
+                </button>
+                <button
+                  className="mr-4"
+                  onClick={() => {
+                    nav(`/detail-pengadaan/${params.id}`);
+                  }}
+                >
+                  <BsEye size={20} />
+                </button>
+              </>
+            ) : null}
+            {/* {user?.role == 1 ? (
               <>
                 <button
                   className="mr-4"
@@ -418,13 +584,13 @@ export default function TabelBarang({ data }) {
               >
                 <BiEditAlt color="blue" size={20} />
               </button>
-            ) : null}
+            ) : null} */}
           </div>
         );
       },
     },
   ];
-
+  console.log(kategori, "Asasasasa");
   return (
     <>
       {editStatus ? (
@@ -480,7 +646,7 @@ export default function TabelBarang({ data }) {
                 >
                   <option value="">Pilih Category</option>
 
-                  {kategori.map((item, index) => {
+                  {kategori?.map((item, index) => {
                     return (
                       <option key={index} value={`${item.kodeBarang}`}>
                         {item.namaBarang}:{item.kategori}
@@ -631,7 +797,7 @@ export default function TabelBarang({ data }) {
           <div className="">
             <div className="bg-white w-[96%] mt-3 mb-[200px]  mx-auto  rounded-lg">
               <div className="lg:flex xl:flex block justify-between">
-                <div className="">
+                <div className="w-[50%]">
                   <button
                     onClick={() => setPengadaanBarang(!pengadaanBarang)}
                     className="bg-[#7B2CBF] mt-1 mb-3 px-3 text-center py-1 xl:w-[200px] lg:w-[200px] w-full md:w-[200px] rounded-md text-[#E5D5F2] font-abc"
@@ -639,15 +805,15 @@ export default function TabelBarang({ data }) {
                     Tambah Barang +
                   </button>
                 </div>
-                <div className="">
-                  <form className="block lg:flex xl:flex md:block   md:mt-[0px] lg:mt-0 xl:mt-0  ">
+                <div className="lg:w-[50%] xl:w-[50%] md:w-[100%] w-full mx-auto  mb-5">
+                  <div className="block sm:block lg:flex xl:flex md:flex mx-auto   md:mt-[0px] lg:mt-0 xl:mt-0  ">
                     <div className="flex">
-                      <div className="">
+                      <div className="w-full">
                         <select
                           name=""
                           id="ruang"
                           onChange={(e) => setFilter(e.target.value)}
-                          className="border h-[34px] rounded-xl w-[100px] pl-2 "
+                          className="border h-[34px] rounded-xl  pl-2 w-full "
                         >
                           <option value="" selected>
                             Ruang
@@ -661,12 +827,12 @@ export default function TabelBarang({ data }) {
                           })}
                         </select>
                       </div>
-                      <div className="">
+                      <div className="w-full">
                         <select
                           name=""
                           id="bulan"
                           onChange={(e) => setFilterBulan(e.target.value)}
-                          className="border h-[34px] rounded-xl w-[100px] pl-2 "
+                          className="border h-[34px] rounded-xl w-full pl-2 "
                         >
                           <option value="">Bulan</option>
                           {bulan.map((item, index) => {
@@ -679,27 +845,30 @@ export default function TabelBarang({ data }) {
                         </select>
                       </div>
                     </div>
-
-                    <div className="flex">
-                      <div className="">
+                    <div className="flex w-full">
+                      <div className="w-full">
                         <select
                           name=""
                           id="tahun"
                           onChange={(e) => setFilterTahun(e.target.value)}
-                          className="border h-[34px] rounded-xl w-[100px] pl-2 "
+                          className="border h-[34px] rounded-xl w-full pl-2 "
                         >
                           <option value="">Tahun</option>
                           {tahun.map((item, index) => {
-                            return <option value={item}>{item}</option>;
+                            return (
+                              <option key={index} value={item}>
+                                {item}
+                              </option>
+                            );
                           })}
                         </select>
                       </div>
-                      <div className="">
+                      <div className="w-full">
                         <select
                           name=""
                           id="statuss"
                           onChange={(e) => setStatus(e.target.value)}
-                          className="border h-[34px] rounded-xl w-[100px] pl-2 "
+                          className="border h-[34px] rounded-xl w-full pl-2 "
                         >
                           <option value="">Status</option>
                           <option value="pending">Pending</option>
@@ -709,7 +878,7 @@ export default function TabelBarang({ data }) {
                         </select>
                       </div>
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
 

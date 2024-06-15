@@ -1,26 +1,34 @@
-import axios from "axios";
-
 export const loadUser = () => async (dispatch) => {
-  const token = localStorage.getItem("token");
   try {
     dispatch({
       type: "LoadUserRequest",
     });
-    const headers = {
-      Authorization: `Bearer ${token}`,
-    };
-    const { data } = await axios.get("http://localhost:8000/api/user", {
-      headers,
-      withCredentials: true,
-    });
-    dispatch({
-      type: "LoadUserSuccess",
-      payload: data,
-    });
+    let parseData = null;
+    const data = localStorage.getItem("user");
+
+    if (data) {
+      parseData = JSON.parse(data);
+      dispatch({
+        type: "LoadUserSuccess",
+        payload: parseData,
+      });
+    } else {
+      dispatch({
+        type: "LoadUserFail",
+        payload: "data is null",
+      });
+    }
   } catch (error) {
     dispatch({
       type: "LoadUserFail",
       payload: error,
     });
   }
+};
+
+// actions/user.js
+export const logoutUser = () => (dispatch) => {
+  dispatch({
+    type: "LogoutUser",
+  });
 };

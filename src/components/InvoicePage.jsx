@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import SidebarOwner from "./layoutowner/SidebarOwner";
 import Sidebar from "./layout/Sidebar";
 import TopBar from "./layout/TopBar";
 
@@ -17,11 +16,7 @@ export default function InvoicePage() {
     <div>
       <div className="w-full h-[160vh] flex font-abc">
         <div className={``}>
-          {user?.role === 1 ? (
-            <SidebarOwner setSidebar={3} width={open} setWidth={setOpen} />
-          ) : (
-            <Sidebar setSidebar={3} width={open} setWidth={setOpen} />
-          )}
+          <Sidebar setSidebar={3} width={open} setWidth={setOpen} />
         </div>
         <div className={`w-11/12 mx-auto`}>
           <TopBar>{"Invoice Pemeliharaan"}</TopBar>

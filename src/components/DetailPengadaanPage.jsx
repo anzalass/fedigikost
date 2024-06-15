@@ -4,156 +4,187 @@ import { useEffect } from "react";
 
 import { useSelector } from "react-redux";
 import Sidebar from "./layout/Sidebar";
-import SidebarOwner from "./layoutowner/SidebarOwner";
-import TopBarOwner from "./layoutowner/TopbarOwner";
+import TopBar from "./layout/TopBar";
+import axios from "axios";
+import { useParams } from "react-router-dom";
 
 export default function DetailPengadaanPage() {
   const [open, setOpen] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [pengadaan, setPengadaan] = useState([]);
+  // const [loading, setLoading] = useState(true);
   const { user } = useSelector((state) => state.user);
+  const [data, setData] = useState({
+    id: 0,
+    namaBarang: "",
+    kodeBarang: "",
+    kodeRuang: "",
+    merek: "",
+    buktiNota: "",
+    spesifikasi: "",
+    tanggalPembelian: "",
+    ruang: "",
+    supplier: "",
+    quantity: 0,
+    hargaBarang: 0,
+    status: "",
+    totalHargaBarang: 0,
+  });
+
+  const { id } = useParams();
+  const getDataByID = async () => {
+    const result = await axios.get(
+      "http://127.0.0.1:8000/api/findPengadaan/" + id
+    );
+    setPengadaan(result);
+    console.log(result);
+    setData((prevData) => ({
+      ...prevData,
+      id: result.data.results.id,
+      kodeBarang: result.data.results.kodeBarang,
+      kodeRuang: result.data.results.kodeRuang,
+      merek: result.data.results.merek,
+      buktiNota: result.data.results.buktiNota,
+      spesifikasi: result.data.results.spesifikasi,
+      tanggalPembelian: result.data.results.tanggalPembelian,
+      namaBarang: result.data.results.namaBarang,
+      ruang: result.data.results.ruang,
+      supplier: result.data.results.supplier,
+      quantity: result.data.results.quantity,
+      hargaBarang: result.data.results.hargaBarang,
+      status: result.data.results.status,
+      totalHargaBarang:
+        result.data.results.quantity * result.data.results.hargaBarang,
+    }));
+  };
   useEffect(() => {
-    console.log("loading : ", loading);
-  }, [loading]);
+    getDataByID();
+  }, [id]);
 
   return (
-    <div className="w-full h-screen flex">
+    <div className="w-full  flex mx-auto">
       <div className={` `}>
-        {user?.role === 1 ? (
-          <SidebarOwner setSidebar={2} width={open} setWidth={setOpen} />
-        ) : (
-          <Sidebar setSidebar={2} width={open} setWidth={setOpen} />
-        )}
+        <Sidebar setSidebar={2} width={open} setWidth={setOpen} />
       </div>
       <div className={`w-11/12 mx-auto`}>
-        <TopBarOwner>{"Detail Pengadaan - ASW1123"}</TopBarOwner>
-        <div className="w-[95%] mx-auto mt-2 h-[50px] flex">
-          <div className="block w-full font-abc">
-            <div className="flex w-full ">
-              <div className="w-[40%] md:w-[25%] lg:w-[20%] xl:w-[20%]">
-                {" "}
-                <h1 className="my-3">ID Pengadaan</h1>
+        <TopBar>{"Detail Pengadaan - " + id}</TopBar>
+        <div className="w-[95%] mx-auto mt-5 h-[50px] flex mb-30">
+          <div className="w-[100%] mx-auto">
+            <form className="w-full mx-auto">
+              <div className="mb-5">
+                <label
+                  htmlFor="email"
+                  className="block mb-2 text-sm font-medium "
+                >
+                  ID Pengadaan
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                  disabled
+                  value={data.id}
+                />
               </div>
-              <div className="w-[5%]">
-                {" "}
-                <h1 className="my-3">:</h1>
+              <div className="mb-5">
+                <label
+                  htmlFor="password"
+                  className="block mb-2 text-sm font-medium "
+                >
+                  Nama Barang
+                </label>
+                <input
+                  type="text"
+                  id="password"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                  disabled
+                  value={data.namaBarang}
+                />
               </div>
-              <div className="w-[65%]">
-                {" "}
-                <h1 className="my-3">AASSW1123</h1>
+              <div className="mb-5">
+                <label
+                  htmlFor="repeat-password"
+                  className="block mb-2 text-sm font-medium "
+                >
+                  Tanggal Pengadaan
+                </label>
+                <input
+                  type="text"
+                  id="repeat-password"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                  disabled
+                  value={data.tanggalPembelian}
+                />
               </div>
-            </div>
-            <div className="flex w-full ">
-              <div className="w-[40%] md:w-[25%] lg:w-[20%] xl:w-[20%]">
-                {" "}
-                <h1 className="my-3">Nama Barang</h1>
+              <div className="w-[50%]">
+                <h1 className="font-medium text-sm">Bukti Nota</h1>
+                <img
+                  src={data.buktiNota}
+                  alt=""
+                  className="object-contain border-2"
+                />
               </div>
-              <div className="w-[5%]">
-                {" "}
-                <h1 className="my-3">:</h1>
+              <div className="mb-5">
+                <label
+                  htmlFor="repeat-password"
+                  className="block mb-2 text-sm font-medium "
+                >
+                  Harga
+                </label>
+                <input
+                  type="text"
+                  id="repeat-password"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                  disabled
+                  value={"Rp." + data.hargaBarang}
+                />
               </div>
-              <div className="w-[65%]">
-                {" "}
-                <h1 className="my-3">Kulkas Miyako</h1>
+              <div className="mb-5">
+                <label
+                  htmlFor="repeat-password"
+                  className="block mb-2 text-sm font-medium "
+                >
+                  Quantity Barang
+                </label>
+                <input
+                  type="text"
+                  id="repeat-password"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                  disabled
+                  value={data.quantity}
+                />
               </div>
-            </div>
-            <div className="flex w-full ">
-              <div className="w-[40%] md:w-[25%] lg:w-[20%] xl:w-[20%]">
-                {" "}
-                <h1 className="my-3">Tanggal Pengadaan</h1>
+              <div className="mb-5">
+                <label
+                  htmlFor="repeat-password"
+                  className="block mb-2 text-sm font-medium "
+                >
+                  Status
+                </label>
+                <input
+                  type="text"
+                  id="repeat-password"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                  disabled
+                  value={data.status}
+                />
               </div>
-              <div className="w-[5%]">
-                {" "}
-                <h1 className="my-3">:</h1>
+              <div className="mb-10">
+                <label
+                  htmlFor="repeat-password"
+                  className="block mb-2 text-sm font-medium "
+                >
+                  Biaya
+                </label>
+                <input
+                  type="text"
+                  id="repeat-password"
+                  className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
+                  disabled
+                  value={"Rp." + data.quantity * data.hargaBarang}
+                />
               </div>
-              <div className="w-[65%]">
-                {" "}
-                <h1 className="my-3">27 Agustus 2023</h1>
-              </div>
-            </div>
-            <div className="flex w-full ">
-              <div className="w-[40%] md:w-[25%] lg:w-[20%] xl:w-[20%]">
-                {" "}
-                <h1 className="my-3">Harga</h1>
-              </div>
-              <div className="w-[5%]">
-                {" "}
-                <h1 className="my-3">:</h1>
-              </div>
-              <div className="w-[65%]">
-                {" "}
-                <h1 className="my-3">Rp. 23000</h1>
-              </div>
-            </div>
-            <div className="flex w-full ">
-              <div className="w-[40%] md:w-[25%] lg:w-[20%] xl:w-[20%]">
-                {" "}
-                <h1 className="my-3">Lokasi Barang</h1>
-              </div>
-              <div className="w-[5%]">
-                {" "}
-                <h1 className="my-3">:</h1>
-              </div>
-              <div className="w-[65%]">
-                {" "}
-                <h1 className="my-3">R001</h1>
-              </div>
-            </div>
-            <div className="flex w-full ">
-              <div className="w-[40%] md:w-[25%] lg:w-[20%] xl:w-[20%]">
-                {" "}
-                <h1 className="my-3">Foto</h1>
-              </div>
-              <div className="w-[5%]">
-                {" "}
-                <h1 className="my-3">:</h1>
-              </div>
-              <div className="w-[65%]">
-                {" "}
-                <img src={Car} alt="" />
-              </div>
-            </div>
-            <div className="flex w-full ">
-              <div className="w-[40%] md:w-[25%] lg:w-[20%] xl:w-[20%]">
-                {" "}
-                <h1 className="my-3">Qty Barang</h1>
-              </div>
-              <div className="w-[5%]">
-                {" "}
-                <h1 className="my-3">:</h1>
-              </div>
-              <div className="w-[65%]">
-                {" "}
-                <h1 className="my-3">2</h1>
-              </div>
-            </div>
-            <div className="flex w-full ">
-              <div className="w-[40%] md:w-[25%] lg:w-[20%] xl:w-[20%]">
-                {" "}
-                <h1 className="my-3">Status</h1>
-              </div>
-              <div className="w-[5%]">
-                {" "}
-                <h1 className="my-3">:</h1>
-              </div>
-              <div className="w-[65%]">
-                {" "}
-                <h1 className="my-3">Pending / Menunggu Persetujuan</h1>
-              </div>
-            </div>
-            <div className="flex w-full ">
-              <div className="w-[40%] md:w-[25%] lg:w-[20%] xl:w-[20%]">
-                {" "}
-                <h1 className="my-3">Biaya</h1>
-              </div>
-              <div className="w-[5%]">
-                {" "}
-                <h1 className="my-3">:</h1>
-              </div>
-              <div className="w-[65%]">
-                {" "}
-                <h1 className="my-3">Rp.230000</h1>
-              </div>
-            </div>
+              <div className="h-[100px]"></div>
+            </form>
           </div>
         </div>
       </div>

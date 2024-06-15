@@ -37,12 +37,8 @@ export default function LoginPage() {
         "http://localhost:8000/api/login",
         data
       );
+      localStorage.setItem("user", JSON.stringify(response.data.data));
 
-      localStorage.setItem("token", response.data.message);
-
-      const content = response.data.message;
-      console.log(response.status);
-      console.log(content);
       setRedirect(true);
       Swal.fire({
         icon: "success",
@@ -50,32 +46,24 @@ export default function LoginPage() {
         // text: "Something went wrong!",
         // footer: '<a href="#">Why do I have this issue?</a>',
       });
-      window.location.href = "/home";
+      if (response.status === 200) {
+        window.location.href = "/home";
+      }
     } catch (e) {
-      console.log(e);
-      setErrData({
-        email: e.response.data.errors.email,
-        password: e.response.data.errors.password,
-      });
       Swal.fire({
         icon: "error",
         title: "Oops...",
         text: "Email  atau Password Salah",
         // footer: '<a href="#">Why do I have this issue?</a>',
       });
+      console.log(e);
+      setErrData({
+        email: e.response.data.errors.email,
+        password: e.response.data.errors.password,
+      });
     }
   };
 
-  // if (redirect) {
-  //   window.location.href = "/home";
-  // }
-
-  useEffect(() => {
-    if (user) {
-      window.location.href = "/home";
-    }
-  }, [user]);
-  console.log("data", user);
   return (
     <>
       {user ? null : (

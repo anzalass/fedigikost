@@ -1,8 +1,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BACKEND_BASE_URL } from "../../../config/base_url";
+import { useRender } from "../../../context/rendertablepengadaan";
+import { useSelector } from "react-redux";
 
 export default function ModalAccPengadaan({ open, setOpen, id }) {
+  const { user } = useSelector((state) => state.user);
+  const [render, setRender] = useRender();
   useEffect(() => {
     getDataOnChangeId();
   }, [id]);
@@ -17,14 +21,22 @@ export default function ModalAccPengadaan({ open, setOpen, id }) {
   };
 
   const editStatus = async () => {
+    setRender(false);
     try {
       const res = await axios.put(
         `${BACKEND_BASE_URL}/api/updateStatusPengadaan/${id}`,
-        { status: status }
+        {
+          status: status,
+          id_pembuat: user?.id,
+          role_pembuat: user?.role,
+          nama_pembuat: user?.name,
+        }
       );
 
       if (res.status == 200) {
-        window.location.reload();
+        // window.location.reload();
+        setRender(true);
+        setOpen(false);
       }
     } catch (e) {
       console.log("error : ", e);

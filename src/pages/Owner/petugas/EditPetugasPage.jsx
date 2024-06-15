@@ -1,12 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Sidebar from "../../../components/layout/Sidebar";
-import TopBarOwner from "../../../components/layoutowner/TopbarOwner";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../../config/base_url";
 import { data } from "autoprefixer";
+import TopBar from "../../../components/layout/TopBar";
+import { useSelector } from "react-redux";
 
-export default function EditPetugasOwnerPage() {
+export default function EditPetugasPage() {
+  const { user } = useSelector((state) => state.user);
+  useEffect(() => {
+    if (user?.role === 2) {
+      nav("/home");
+    }
+  }, [user]);
   const { id } = useParams();
   const [dataUser, setDataUser] = useState([]);
   useEffect(() => {
@@ -52,7 +59,7 @@ export default function EditPetugasOwnerPage() {
         <Sidebar setSidebar={5} width={open} setWidth={setOpen} />
       </div>
       <div className={`w-11/12 mx-auto`}>
-        <TopBarOwner>{"Edit Petugas Owner"}</TopBarOwner>
+        <TopBar>{"Edit Petugas"}</TopBar>
         <div className="w-[94%] mx-auto">
           <div className="w-full mt-6">
             <h1 className="font-abc font-[500]">Nama</h1>

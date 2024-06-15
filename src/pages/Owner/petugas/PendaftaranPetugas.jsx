@@ -1,11 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../../components/layout/Sidebar";
-import TopBarOwner from "../../../components/layoutowner/TopbarOwner";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { BACKEND_BASE_URL } from "../../../config/base_url";
+import TopBar from "../../../components/layout/TopBar";
+import { useSelector } from "react-redux";
 
 export default function PendaftaranPetugas() {
+  const { user } = useSelector((state) => state.user);
+  useEffect(() => {
+    if (user?.role === 2) {
+      nav("/home");
+    }
+  }, [user]);
   const nav = useNavigate();
   const [open, setOpen] = useState(false);
   const [data, setData] = useState({
@@ -51,7 +58,7 @@ export default function PendaftaranPetugas() {
         <Sidebar setSidebar={5} width={open} setWidth={setOpen} />
       </div>
       <div className={`w-full`}>
-        <TopBarOwner>{"Pendaftaran Petugas"}</TopBarOwner>
+        <TopBar>{"Pendaftaran Petugas"}</TopBar>
         <div className="w-full">
           <div className="w-[95%] h-[80px] justify-between flex mx-auto">
             <div className="w-[80%] mx-auto mt-10">

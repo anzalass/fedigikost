@@ -1,6 +1,6 @@
 import Sidebar from "../../components/layout/Sidebar.jsx";
 import TopBar from "../../components/layout/TopBar.jsx";
-import TableTambahBarang from "../../components/admin/pengadaanbarang/TabelBarang.jsx";
+import TableBarang from "../../components/admin/pengadaanbarang/TabelBarang.jsx";
 import axios, { all } from "axios";
 import { useContext, useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
@@ -12,20 +12,27 @@ import { BASE_URL, BACKEND_BASE_URL } from "../../config/base_url.jsx";
 import { useRender } from "../../context/rendertablepengadaan.jsx";
 import { useSearch } from "../../context/searchContext.jsx";
 import { useSelector } from "react-redux";
+import { useContextNotifikasi } from "../../context/notifikasicontext.jsx";
 
 export default function TambahBarangPage() {
   const { user } = useSelector((state) => state.user);
   const [data, setData] = useState([]);
   const [barang, setBarang] = useState([]);
+  const [ruang, setRuang] = useState([]);
   const [isEdit, setIsEdit] = useState(false);
   const [allKategori, setallKategori] = useState([]);
   const [search, setSearch] = useSearch();
   const [render, setRender] = useRender();
+  const [notif, setNotif] = useContextNotifikasi();
+
   const [kategori, setKategori] = useState({
     idUser: user?.id,
     kodeBarang: "",
     namaBarang: "",
     merekBarang: "",
+    id_pembuat: user?.id,
+    role_pembuat: user?.role,
+    nama_pembuat: user?.name,
   });
 
   const [kategoriErrors, setKategoriErrors] = useState({
@@ -42,6 +49,7 @@ export default function TambahBarangPage() {
 
   const TambahKategori = async (e) => {
     e.preventDefault();
+    setRender(false);
     try {
       const findKategori = await axios.get(
         `${BACKEND_BASE_URL}/api/findKategori/` +
@@ -68,8 +76,8 @@ export default function TambahBarangPage() {
       } catch (err) {
         setKategoriErrors(err.response.data.errors);
         setKategoriErrors({
-          kodeBarang: err.response.data.errors.kodeBarang,
-          namaBarang: err.response.data.errors.namaBarang,
+          kodeBarang: err.response.data.errors?.kodeBarang,
+          namaBarang: err.response.data.errors?.namaBarang,
         });
         console.log(err.response.data.errors);
       }
@@ -116,7 +124,12 @@ export default function TambahBarangPage() {
   const DeleteKategori = async (id) => {
     console.log("ini id nya : ", id);
     const result = await axios.delete(
-      `${BACKEND_BASE_URL}/api/kategoriDelete/` + id
+      `${BACKEND_BASE_URL}/api/kategoriDelete/` + id,
+      {
+        id_pembuat: user?.id,
+        role_pembuat: user?.role,
+        nama_pembuat: user?.name,
+      }
     );
     if (result) {
       window.location.reload();
@@ -131,28 +144,42 @@ export default function TambahBarangPage() {
     // console.log(kategori);
   };
 
+  // const fetchData = async () => {
+  //   try {
+  //     const result = await axios.get(`${BACKEND_BASE_URL}/api/pengadaan`);
+  //     setBarang(result.data.result);
+  //     // console.log(result.data.result);
+  //     const resultKategori = await axios.get(
+  //       `${BACKEND_BASE_URL}/api/getKategori`
+  //     );
+  //     setallKategori(resultKategori.data.results);
+
+  //     // // Add a delay before making the next request
+  //     // await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 milliseconds
+  //   } catch (err) {
+  //     console.log("something went wrong");
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, [render]);
+
   const fetchData = async () => {
     try {
-      const queryParams = {
-        quantity: 1,
-      };
-      const result = await axios.get(`${BACKEND_BASE_URL}/api/pengadaan`);
-      setBarang(result.data.result);
-      // console.log(result.data.result);
-      const resultKategori = await axios.get(
-        `${BACKEND_BASE_URL}/api/getKategori`
-      );
-      setallKategori(resultKategori.data.results);
-
-      // Add a delay before making the next request
-      await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 milliseconds
-    } catch (err) {
-      console.log("something went wrong");
+      const res = await axios.get(`${BACKEND_BASE_URL}/api/pengadaanpage`);
+      setBarang(res.data.pengadaan);
+      setallKategori(res.data.kategori);
+      setRuang(res.data.ruang);
+    } catch (error) {
+      console.log(error);
     }
   };
 
   useEffect(() => {
     fetchData();
+
+    console.log(barang);
   }, [render]);
 
   const [addBarang, setAddBarang] = useState(false);
@@ -215,14 +242,21 @@ export default function TambahBarangPage() {
       kategori: a.kategori,
     });
   });
-
+  const [openNotif, setOpenNotif] = useState(false);
   return (
     <div className="w-full h-[100vh] flex">
       <div className={``}>
         <Sidebar setSidebar={2} width={open} setWidth={setOpen} />
       </div>
       <div className={`w-11/12 mx-auto`}>
-        <TopBar setData={setData}>{"Pengadaan Barang"}</TopBar>
+        <TopBar
+          openNotif={openNotif}
+          setOpenNotif={setOpenNotif}
+          notifikasi={notif.notifikasi}
+          totalnotifikasi={notif.totalnotifikasi}
+        >
+          {user?.role == 1 ? "Dashboard Owner" : "Dashboard Admin"}
+        </TopBar>
         <div className="w-[95%] h-[80px] lg:justify-between justify-center xl:justify-between mx-auto flex">
           <div className="">
             <button
@@ -246,7 +280,9 @@ export default function TambahBarangPage() {
         </div>
         <div className="w-[95%] opacity-25 mx-auto mt-0 h-[1px] bg-slate-600"></div>
 
-        {!addBarang ? <TableTambahBarang data={barang} /> : null}
+        {!addBarang ? (
+          <TableBarang data={barang} ruang={ruang} kategori={allKategori} />
+        ) : null}
 
         {addBarang ? (
           <div className="w-[95%] mx-auto h-[105vh] bg-white rounded-xl">

@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useSearch } from "../../../context/searchContext";
+import { IoQrCodeSharp } from "react-icons/io5";
+import QrCodeModal from "../../../pages/Admin/pengadaanbarang/QrCodeModal";
 
 export default function TabelDataRuangan({
   edit,
@@ -18,6 +20,8 @@ export default function TabelDataRuangan({
   const [search, setSearch] = useSearch();
   const { user } = useSelector((state) => state.user);
   const nav = useNavigate();
+  const [isQr, setIsQR] = useState(false);
+  const [value, setValue] = useState(false);
   const OpenEdit = () => {
     setEdit(1);
   };
@@ -35,10 +39,47 @@ export default function TabelDataRuangan({
   };
 
   const columns = [
-    { field: "id", headerName: "ID", minWidth: 50, flex: 0.2 },
-    { field: "ruangan", headerName: "Ruangan", minWidth: 100, flex: 0.7 },
+    {
+      field: "id",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      headerName: "ID",
+      minWidth: 50,
+      flex: 0.2,
+    },
+    {
+      field: "ruangan",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      headerName: "Ruangan",
+      minWidth: 100,
+      flex: 0.7,
+    },
+    {
+      field: "barcode",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      headerName: "Barcode",
+      flex: 1,
+      minWidth: 150,
+
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <div className="flex">
+            <button
+              className="mr-4"
+              onClick={() => {
+                setIsQR(true);
+                setValue(params.id);
+              }}
+            >
+              <IoQrCodeSharp size={20} />
+            </button>
+          </div>
+        );
+      },
+    },
     {
       field: "aksi",
+      headerClassName: "bg-slate-200 text-center font-abc",
       headerName: "Aksi",
       flex: 1,
       minWidth: 150,
@@ -97,6 +138,9 @@ export default function TabelDataRuangan({
 
   return (
     <div className="bg-white w-[96%] mt-3 mx-auto p-3 rounded-lg">
+      {isQr ? (
+        <QrCodeModal open={isQr} setOpen={setIsQR} value={value}></QrCodeModal>
+      ) : null}
       <DataGrid
         disableRowSelectionOnClick
         autoHeight

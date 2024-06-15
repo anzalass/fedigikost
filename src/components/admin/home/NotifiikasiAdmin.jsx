@@ -1,33 +1,72 @@
 import { useEffect, useState } from "react";
 import car from "../../../assets/img_car.png";
+import PropTypes from "prop-types";
+import axios from "axios";
+import { BACKEND_BASE_URL } from "../../../config/base_url";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+NotifiikasiAdmin.propTypes = {
+  data: PropTypes.array.isRequired,
+};
 
-export default function NotifiikasiAdmin({ data }) {
-  const [getData, setGetData] = useState([]);
-  useEffect(() => {
-    setGetData(data);
-    console.log("parsing data : ", data);
-  }, [data]);
+export default function NotifiikasiAdmin({ data, openNotif, setOpenNotif }) {
+  // const [getData, setGetData] = useState([]);
+  // useEffect(() => {
+  //   setGetData(data);
+  //   console.log("parsing data : ", data);
+  // }, [data]);
+  const { user } = useSelector((state) => state.user);
+  const nav = useNavigate();
+  const ClickNotifikasi = (id, url) => {
+    axios
+      .delete(`${BACKEND_BASE_URL}/api/deletenotifikasibyid/${id}`)
+      .then((response) => {
+        const panjagarray = url.length;
+        // const parts = url.split("/"); // Memisahkan URL berdasarkan karakter "/"
+        // const lastPart = parts[parts.length - 1]; // Mendapatkan bagian terakhir dari array hasil
+        // const secondLastPart = parts[parts.length - 2]; // Output: "/detail-ruangan/RUU11"
+        // console.log(lastPart, secondLastPart);
+        const urli = url.slice(21, panjagarray);
+        // console.log(urli);
+        nav(urli);
+      });
+  };
+
+  console.log(data);
 
   return (
-    <div className="xl:w-[25%] lg:w-[25%] w-full xl:right-44 lg:right-44 xl:top-12 top-12 lg:top-12 right-0 absolute p-2 bg-white shadow-[0_2.8px_2.2px_rgba(0,_0,_0,_0.034),_0_6.7px_5.3px_rgba(0,_0,_0,_0.048),_0_12.5px_10px_rgba(0,_0,_0,_0.06),_0_22.3px_17.9px_rgba(0,_0,_0,_0.072),_0_41.8px_33.4px_rgba(0,_0,_0,_0.086),_0_100px_80px_rgba(0,_0,_0,_0.12)] z-40 rounded-lg">
+    <div className="bg-white  p-2 shadow-xl relative">
+      <h1 className="absolute right-3" onClick={() => setOpenNotif(false)}>
+        X
+      </h1>
       <div className="p-3">
-        <h1 className="font-abc  font-[500] text-2xl">Notifikasi</h1>
+        <h1 className="font-abc  font-[500] text-xl">Notifikasi</h1>
         <hr className="mt-2" />
       </div>
-      <div className="mt-4">
-        {getData.map((item, i) => {
+      <div className="mt-4 h-auto overflow-y-auto">
+        {data?.map((item, i) => {
           return (
-            <div className="flex w-full mb-2" key={i}>
-              <div className="w-[20%] mt-3 ">
-                <img src={car} className="object-cover rounded-full" alt="" />
-              </div>
-              <div className="w-[70%] ml-4">
-                <h1 className="font-abc">{item.keterangan}</h1>
-                <h3 className="font-abc text-[13px] italic">Adil Laksono</h3>
-                <p className="font-abc text-[13px] text-sky-600">
-                  20 Agustus 2023
-                </p>
-              </div>
+            <div
+              onClick={() => ClickNotifikasi(item.id, item.url)}
+              className={`w-[300px] h-[60px] mb-2 cursor-pointer bg-zinc-100 shadow-lg rounded-md p-3 ${
+                item.id_pembuat === user?.id ? "hidden" : "block"
+              }  `}
+              key={i}
+            >
+              <h1 className="text-sm font-[500]">
+                {item.role_pembuat === 1
+                  ? "Owner"
+                  : item.role_pembuat === 2
+                  ? "Admin"
+                  : null}{" "}
+                {item.nama_pembuat}
+              </h1>
+              <p className="text-[10px]">
+                {item.keterangan.length > 30
+                  ? item.keterangan.slice(0, 50) + "..."
+                  : item.keterangan}
+              </p>
+              <p></p>
             </div>
           );
         })}

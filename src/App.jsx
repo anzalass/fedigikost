@@ -7,136 +7,127 @@ import PengeluaranPage from "./pages/Admin/PemeliharaanPage";
 import DataRuanganPage from "./pages/Admin/DataRuanganPage";
 import DetailBarangRuangan from "./pages/Admin/DetailBarangRuanganPage";
 
-import HomePageOwner from "./pages/Owner/HomepageOwner";
-import PengadaanBarangOwner from "./pages/Owner/pengadaanbarang/PengadaanBarangOwner";
-import TambahBarangOwner from "./pages/Owner/pengadaanbarang/TambahBarangOwner";
-import TambahKategoriOwner from "./pages/Owner/pengadaanbarang/TambahKategoriOwner";
-import EditBarangOwner from "./pages/Owner/pengadaanbarang/EditBarangOwner";
-
-import PemeliharaanBarangOwner from "./pages/Owner/Pemeliharaanbarang/PemeliharaanBarangOwner";
-import DataRuanganOwnerPage from "./pages/Owner/dataruangan/DataRuanganOwnerPage";
-import TambahRuanganOwner from "./pages/Owner/dataruangan/TambahRuanganOwner";
-import EditDataRuanganOwner from "./pages/Owner/dataruangan/EditDataRuanganOwner";
-import DetailRuanganOwner from "./pages/Owner/detailruangan.jsx/DetailRuanganOwner";
 import DaftarPetugasPage from "./pages/Owner/petugas/DaftarPetugasPage";
 import PendaftaranPetugas from "./pages/Owner/petugas/PendaftaranPetugas";
-import EditUserPage from "./pages/Admin/editprofileadmin/EditProfileAdminPage";
-import EditProfileAdminPage from "./pages/Admin/editprofileadmin/EditProfileAdminPage";
+import EditProfilePage from "./pages/Admin/editprofileadmin/EditProfilePage";
 import UbahPasswordAdminPage from "./pages/Admin/editprofileadmin/UbahPasswordAdminPage";
-import PengadaanBarangAdminPage from "./pages/Admin/pengadaanbarang/PengadaanBarangAdminPage";
-import EditPengadaanAdminPage from "./pages/Admin/pengadaanbarang/EditPengadaanAdminPage";
-import KategoriAdminPage from "./pages/Admin/pengadaanbarang/KategoriAdminPage";
-import EditPetugasOwnerPage from "./pages/Owner/petugas/EditPetugasOwnerPage";
-import EditProfileOwnerPage from "./pages/Owner/profile/EditProfileOwnerPage";
-import PemeliharaanAdminPage from "./pages/Admin/maintenenceadmin/PemeliharaanAdminPage";
+
+import EditPetugasOwnerPage from "./pages/Owner/petugas/EditPetugasPage";
 import { store } from "./redux/store";
 import { loadUser } from "./redux/actions/user";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import InvoicePage from "./components/InvoicePage";
 import DetailPemeliharaanPage from "./components/DetailPemeliharaanPage";
 import DetailPengadaanPage from "./components/DetailPengadaanPage";
+import PemeliharaanPage from "./pages/Admin/PemeliharaanPage";
+import Spinner from "./components/layout/Spinner";
+import QrCodeModal from "./pages/Admin/pengadaanbarang/QrCodeModal";
+import DetailPengadaan from "./components/admin/pengadaanbarang/DetailPengadaan";
+import PrintQRCodePengadaan from "./components/admin/pengadaanbarang/PrintQRCodePengadaan";
+import PrintQrCodeModal from "./pages/Admin/pengadaanbarang/PrintQrCodeModal";
 
 function App() {
   const [dataCookie, setDataCookie] = useState([]);
-  const { isLogin, user } = useSelector((state) => state.user);
+  const { user, isLogin } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
   useEffect(() => {
-    store.dispatch(loadUser());
-  }, [isLogin === true]);
+    dispatch(loadUser()); // Panggil loadUser ketika komponen di-mount
+  }, []);
 
   return (
     <>
       <BrowserRouter>
         <Routes>
-          {user?.role === undefined ? (
-            <Route path="/" element={<LoginPage />} />
-          ) : user?.role === 1 ? (
-            <>
-              {/* Owner Routes */}
-              <Route
-                path="/owner/"
-                element={<HomePageOwner userSession={dataCookie} />}
-              />
-              <Route
-                path="/owner/pengadaan-barang"
-                element={<PengadaanBarangOwner />}
-              />
-              <Route
-                path="/owner/tambah-barang"
-                element={<TambahBarangOwner />}
-              />
-              <Route path="/owner/kategori" element={<TambahKategoriOwner />} />
-              <Route
-                path="/owner/edit-barang/:id"
-                element={<EditBarangOwner />}
-              />
-              <Route
-                path="/owner/pemeliharaan"
-                element={<PemeliharaanBarangOwner />}
-              />
-
-              <Route
-                path="/owner/data-ruangan"
-                element={<DataRuanganOwnerPage />}
-              />
-              <Route
-                path="/owner/tambah-ruangan"
-                element={<TambahRuanganOwner />}
-              />
-              <Route
-                path="/owner/edit-ruangan"
-                element={<EditDataRuanganOwner />}
-              />
-              <Route
-                path="/owner/detail-ruangan/:id"
-                element={<DetailRuanganOwner />}
-              />
-              <Route path="/daftar-petugas" element={<PendaftaranPetugas />} />
-              <Route path="/petugas" element={<DaftarPetugasPage />} />
-              <Route
-                path="/edit-petugas/:id"
-                element={<EditPetugasOwnerPage />}
-              />
-              <Route path="/owner/profile" element={<EditProfileOwnerPage />} />
-            </>
-          ) : (
-            <>
-              <Route
-                path="/admin/pengadaan"
-                element={<PengadaanBarangAdminPage userSession={dataCookie} />}
-              />
-              <Route
-                path="/admin/edit-pengadaan/:id"
-                element={<EditPengadaanAdminPage userSession={dataCookie} />}
-              />
-              <Route
-                path="/admin/kategori"
-                element={<KategoriAdminPage userSession={dataCookie} />}
-              />
-              <Route
-                path="/admin/pemeliharaan"
-                element={<PemeliharaanAdminPage userSession={dataCookie} />}
-              />
-            </>
-          )}
+          {/* {user?.role === undefined ? ( */}
+          <Route path="/" element={isLogin ? <Spinner /> : <LoginPage />} />
+          {/* ) : ( */}
+          <>
+            {/* Owner Routes */}
+            <Route
+              path="/daftar-petugas"
+              element={isLogin ? <PendaftaranPetugas /> : <LoginPage />}
+            />
+            <Route
+              path="/petugas"
+              element={isLogin ? <DaftarPetugasPage /> : <LoginPage />}
+            />
+            <Route
+              path="/edit-petugas/:id"
+              element={isLogin ? <EditPetugasOwnerPage /> : <LoginPage />}
+            />
+            {/* <Route
+              path="/admin/pengadaan"
+              element={<PengadaanBarangAdminPage userSession={dataCookie} />}
+            />
+            <Route
+              path="/admin/edit-pengadaan/:id"
+              element={<EditPengadaanAdminPage userSession={dataCookie} />}
+            />
+            <Route
+              path="/admin/kategori"
+              element={<KategoriAdminPage userSession={dataCookie} />}
+            /> */}
+            {/* <Route
+              path="/admin/pemeliharaan"
+              element={<PemeliharaanAdminPage userSession={dataCookie} />}
+            /> */}
+          </>
+          {/* )} */}
           {/* UNIVERSAL PAGE */}
           <Route
             path="/detail-pemeliharaan/:id"
-            element={<DetailPemeliharaanPage />}
+            element={isLogin ? <DetailPemeliharaanPage /> : <LoginPage />}
           />
           <Route
             path="/detail-pengadaan/:id"
             element={<DetailPengadaanPage />}
           />
-          <Route path="/invoice/:id" element={<InvoicePage />} />
+          <Route
+            path="/invoice/:id"
+            element={isLogin ? <InvoicePage /> : <LoginPage />}
+          />
           {/* UNIVERSAL PAGE */}
-          <Route path="/home" element={<HomePage />} />
-          <Route path="/" element={<HomePage />} />
-          <Route path="/tambah-barang" element={<PengadaanBarang />} />
-          <Route path="/detail-ruangan/:id" element={<DetailBarangRuangan />} />
-          <Route path="/data-ruangan" element={<DataRuanganPage />} />
-          <Route path="/pengeluaran" element={<PengeluaranPage />} />
-          <Route path="/profile" element={<EditProfileAdminPage />} />
-          <Route path="/reset-password" element={<UbahPasswordAdminPage />} />
+          <Route
+            path="/home"
+            element={isLogin ? <HomePage /> : <LoginPage />}
+          />
+          {/* <Route path="/" element={<HomePage />} /> */}
+          <Route
+            path="/tambah-barang"
+            element={isLogin ? <PengadaanBarang /> : <LoginPage />}
+          />
+          <Route
+            path="/detail-ruangan/:id"
+            element={isLogin ? <DetailBarangRuangan /> : <LoginPage />}
+          />
+          <Route
+            path="/printQRRuangan/:id"
+            element={isLogin ? <PrintQrCodeModal /> : <LoginPage />}
+          />
+          <Route
+            path="/printQRPengadaan/:id"
+            element={isLogin ? <PrintQRCodePengadaan /> : <LoginPage />}
+          />
+          <Route
+            path="/data-ruangan"
+            element={isLogin ? <DataRuanganPage /> : <LoginPage />}
+          />
+          <Route
+            path="/pemeliharaan"
+            element={isLogin ? <PemeliharaanPage /> : <LoginPage />}
+          />
+          <Route
+            path="/profile"
+            element={isLogin ? <EditProfilePage /> : <LoginPage />}
+          />
+          <Route
+            path="/reset-password"
+            element={isLogin ? <UbahPasswordAdminPage /> : <LoginPage />}
+          />
+          <Route
+            path="/detail-pengadaan/:id"
+            element={<DetailPengadaanPage />}
+          />
         </Routes>
       </BrowserRouter>
     </>

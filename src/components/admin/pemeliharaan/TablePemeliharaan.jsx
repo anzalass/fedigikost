@@ -29,6 +29,13 @@ export default function TablePengeluaran() {
     "November",
     "Desember",
   ];
+
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
+
   let tahunSekarang = new Date().getFullYear() + 1;
   const tahun = [];
 
@@ -54,46 +61,59 @@ export default function TablePengeluaran() {
   };
 
   const columns = [
-    { field: "id", headerName: "ID ", minWidth: 50, flex: 0.5 },
+    {
+      field: "id",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      headerName: "ID ",
+      minWidth: 50,
+      flex: 0.5,
+    },
     {
       field: "tgl",
       headerName: "Tanggal",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 150,
       flex: 0.7,
     },
     {
       field: "nama_barang",
       headerName: "Nama Barang",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "keterangan",
       headerName: "Keterangan",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "lokasi_barang",
       headerName: "Ruangan",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "jumlah",
       headerName: "Jumlah",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "biaya",
       headerName: "Biaya",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "status",
       headerName: "Status",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
       renderCell: (params) => {
@@ -114,6 +134,7 @@ export default function TablePengeluaran() {
     },
     {
       field: "aksi",
+      headerClassName: "bg-slate-200 text-center font-abc",
       headerName: "Aksi",
       minWidth: 100,
       flex: 0.7,
@@ -121,10 +142,10 @@ export default function TablePengeluaran() {
       renderCell: (params) => {
         return (
           <div className="flex">
-            <button className="mr-4">
+            {/* <button className="mr-4">
               <BiPrinter size={20} />
-            </button>
-            {user?.role == 1 ? (
+            </button> */}
+            {/* {user?.role == 1 ? (
               <button className="mr-4" onClick={() => deleteBarang()}>
                 <BsTrash3 color="red" size={20} />
               </button>
@@ -132,7 +153,7 @@ export default function TablePengeluaran() {
               <button className="mr-4" onClick={() => deleteBarang()}>
                 <BsTrash3 color="red" size={20} />
               </button>
-            ) : null}
+            ) : null} */}
           </div>
         );
       },
@@ -155,7 +176,7 @@ export default function TablePengeluaran() {
       .forEach((a) => {
         row.push({
           id: a.kodePemeliharaan,
-          tgl: a.created_at,
+          tgl: new Date(a.created_at).toLocaleDateString("id-ID", options),
           nama_barang: a.kodeBarang,
           jumlah: a.jumlah,
           keterangan: a.keterangan,
@@ -177,7 +198,7 @@ export default function TablePengeluaran() {
       .forEach((a) => {
         row.push({
           id: a.kodePemeliharaan,
-          tgl: a.created_at,
+          tgl: new Date(a.created_at).toLocaleDateString("id-ID", options),
           nama_barang: a.kodeBarang,
           jumlah: a.jumlah,
           keterangan: a.keterangan,

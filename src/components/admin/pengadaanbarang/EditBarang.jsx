@@ -14,6 +14,9 @@ export default function EditBarang({ close, setClose, idBarang }) {
 
   const [data, setData] = useState({
     idUser: user?.id,
+    id_pembuat: user?.id,
+    role_pembuat: user?.role,
+    nama_pembuat: user?.name,
     namaBarang: "",
     kodeBarang: "",
     kodeRuang: "",
@@ -105,7 +108,7 @@ export default function EditBarang({ close, setClose, idBarang }) {
         {pengadaan.length !== 0 ? (
           <div className="w-[95%] mx-auto h-[130vh] bg-white rounded-xl">
             <h1 className="font-abc text-xl">Edit Barang</h1>
-            {buktiNota ? (
+            {/* {buktiNota ? (
               <div className="p-2 border-2 rounded-md mx-auto w-[40%] h-[40%]">
                 <img
                   src={URL.createObjectURL(buktiNota)}
@@ -121,7 +124,7 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   className="w-[100%] object-contain   rounded-md mx-auto h-[100%]"
                 />
               </div>
-            )}
+            )} */}
 
             <div action="" className="w-[95%] mx-auto mt-2 p-3">
               <div className="w-full mt-4">
@@ -184,7 +187,7 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
               </div>
-              <div className="w-full mt-4">
+              {/* <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Foto Nota Pembelian</h1>
                 <input
                   type="file"
@@ -192,7 +195,7 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   onChange={(e) => setBuktiNota(e.target.files[0])}
                   className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                 />
-              </div>
+              </div> */}
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2">Spesifikasi Barang</h1>
                 <input

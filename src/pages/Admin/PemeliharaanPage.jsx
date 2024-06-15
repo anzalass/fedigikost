@@ -3,7 +3,7 @@ import Sidebar from "../../components/layout/Sidebar";
 import TopBar from "../../components/layout/TopBar";
 import TabelPemeliharaan from "../../components/admin/pemeliharaan/TablePemeliharaan";
 
-export default function PengeluaranPage() {
+export default function PemeliharaanPage() {
   const [open, setOpen] = useState(false);
 
   return (

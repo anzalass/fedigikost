@@ -23,6 +23,7 @@ export default function DetailBarangRuangan() {
   const [barang, setBarang] = useState([]);
   const [pemeliharaanBarang, setPemeliharaanBarang] = useState([]);
   const [editMaintenence, setEditMaintenence] = useState(false);
+
   const rowBarangRuangan = [];
   const [updateData, setUpdateData] = useState({
     sisa: null,
@@ -74,7 +75,14 @@ export default function DetailBarangRuangan() {
   const hapusPemeliharaan = async (id) => {
     try {
       const response = await axios.delete(
-        `${BACKEND_BASE_URL}/api/deletePemeliharaan/${id}`
+        `${BACKEND_BASE_URL}/api/deletePemeliharaan/${id}`,
+        {
+          data: {
+            id_pembuat: user?.id,
+            role_pembuat: user?.role,
+            nama_pembuat: user?.name,
+          },
+        }
       );
 
       if (response) {
@@ -102,9 +110,16 @@ export default function DetailBarangRuangan() {
   };
 
   const columnsRuangan = [
-    { field: "id", headerName: "ID", minWidth: 50, flex: 0.2 },
+    {
+      field: "id",
+      headerName: "ID",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      minWidth: 50,
+      flex: 0.2,
+    },
     {
       field: "nama_barang",
+      headerClassName: "bg-slate-200 text-center font-abc",
       headerName: "Nama Barang",
       minWidth: 150,
       flex: 0.7,
@@ -112,12 +127,14 @@ export default function DetailBarangRuangan() {
 
     {
       field: "qtybarang",
+      headerClassName: "bg-slate-200 text-center font-abc",
       headerName: "Qty Barang",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "aksi",
+      headerClassName: "bg-slate-200 text-center font-abc",
       headerName: "Aksi",
       flex: 1,
       minWidth: 150,
@@ -154,46 +171,59 @@ export default function DetailBarangRuangan() {
   };
 
   const columnsRuanganPemeliharaan = [
-    { field: "id", headerName: "ID ", minWidth: 50, flex: 0.5 },
+    {
+      field: "id",
+      headerName: "ID ",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      minWidth: 50,
+      flex: 0.5,
+    },
     {
       field: "tgl",
       headerName: "Tanggal",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 150,
       flex: 0.7,
     },
     {
       field: "nama_barang",
       headerName: "Nama Barang",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "jumlah",
       headerName: "Jumlah",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "keterangan",
       headerName: "Keterangan",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "lokasi_barang",
       headerName: "Ruangan",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "biaya",
       headerName: "Biaya",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
     },
     {
       field: "status",
       headerName: "Status",
+      headerClassName: "bg-slate-200 text-center font-abc",
       minWidth: 100,
       flex: 0.7,
       renderCell: (params) => {
@@ -215,6 +245,7 @@ export default function DetailBarangRuangan() {
     {
       field: "aksi",
       headerName: "Aksi",
+      headerClassName: "bg-slate-200 text-center font-abc",
       flex: 1,
       minWidth: 150,
 

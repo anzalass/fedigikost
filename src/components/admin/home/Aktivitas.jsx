@@ -1,9 +1,21 @@
 import { DataGrid } from "@mui/x-data-grid";
 import axios from "axios";
+import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { BACKEND_BASE_URL, BASE_URL } from "../../../config/base_url";
+import { BsEye } from "react-icons/bs";
 
-export default function Aktivitas() {
+Aktivitas.propTypes = {
+  aktivitas: PropTypes.array.isRequired,
+};
+
+const options = {
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
+
+export default function Aktivitas({ aktivitas }) {
   const [data, setData] = useState([]);
   const [allUser, setUser] = useState([]);
 
@@ -12,31 +24,59 @@ export default function Aktivitas() {
   }, []);
 
   const fetchData = async () => {
-    const res = await axios.get(`${BACKEND_BASE_URL}/api/getAllAktivitas`);
+    // const res = await axios.get(`${BACKEND_BASE_URL}/api/getAllAktivitas`);
     const resUser = await axios.get(`${BACKEND_BASE_URL}/api/getUser`);
 
     setUser(resUser.data.results);
-    setData(res.data.results);
+    // setData(res.data.results);
   };
 
   const columns = [
-    { field: "id", headerName: "ID", minWidth: 50, flex: 0.2 },
+    {
+      field: "id",
+      headerName: "ID",
+      className: "hidden",
+      minWidth: 50,
+      flex: 0.2,
+    },
     { field: "pembuat", headerName: "Pembuat", minWidth: 150, flex: 0.7 },
     { field: "tipe", headerName: "Tipe", minWidth: 100, flex: 0.7 },
     { field: "tgl", headerName: "Tanggal", minWidth: 150, flex: 0.7 },
-    { field: "aktivitas", headerName: "Aktivitas", minWidth: 100, flex: 0.7 },
+    {
+      field: "aksi",
+      headerName: "Aksi",
+      headerClassName: "bg-slate-200 text-center font-abc",
+      flex: 0.7,
+      minWidth: 150,
+
+      sortable: false,
+      renderCell: (params) => {
+        return (
+          <div className="flex gap-2">
+            <>
+              <button
+                className=""
+                onClick={() => (window.location.href = params.row.url)}
+              >
+                <BsEye color="blue" size={20} />
+              </button>
+            </>
+          </div>
+        );
+      },
+    },
   ];
 
   const row = [];
 
-  data.forEach((a) => {
-    const pembuat = allUser.filter((result) => result.id === a.IdPembuat);
+  aktivitas.forEach((a) => {
     row.push({
       id: a.id,
-      pembuat: pembuat[0].name,
+      pembuat: a.nama_pembuat,
       tipe: a.tipe,
-      tgl: a.created_at,
+      tgl: new Date(a.created_at).toLocaleDateString("id-ID", options),
       jam: a.jam,
+      url: a.url,
       aktivitas: a.keterangan,
     });
   });
@@ -50,9 +90,9 @@ export default function Aktivitas() {
           </h1>
         </div>
         <div className="">
-          <button className="font-abc px-6 rounded-lg text-white text-[14px] py-1  font-[500] bg-[#7B2CBF] my-3  ">
+          {/* <button className="font-abc px-6 rounded-lg text-white text-[14px] py-1  font-[500] bg-[#7B2CBF] my-3  ">
             Refresh Aktivitas
-          </button>
+          </button> */}
         </div>
       </div>
 

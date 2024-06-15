@@ -9,6 +9,9 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
     jumlah: 1,
   });
   const [dataBarang, setDataBarang] = useState({
+    id_pembuat: user?.id,
+    role_pembuat: user?.role,
+    nama_pembuat: user?.name,
     kodeBarang: "",
     kodeRuang: "",
     keterangan: "",
@@ -28,6 +31,9 @@ export default function ModalMaintenence({ open, setOpen, data, ruang }) {
   useEffect(() => {
     setDataBarang((prevData) => ({
       ...prevData,
+      id_pembuat: user?.id,
+      role_pembuat: user?.role,
+      nama_pembuat: user?.name,
       kodeBarang: data.id,
       kodeRuang: ruang,
       keterangan: "",

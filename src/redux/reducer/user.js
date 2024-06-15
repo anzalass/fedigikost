@@ -9,6 +9,7 @@ const initialState = {
 export const userReducer = createReducer(initialState, {
   LoadUserRequest: (state) => {
     state.loading = true;
+    state.isLogin = false;
   },
   LoadUserSuccess: (state, action) => {
     state.user = action.payload;
@@ -18,6 +19,9 @@ export const userReducer = createReducer(initialState, {
   LoadUserFail: (state, action) => {
     state.loading = false;
     state.error = action.payload;
+    state.isLogin = false;
+  },
+  LogoutUser: (state) => {
     state.isLogin = false;
   },
 });

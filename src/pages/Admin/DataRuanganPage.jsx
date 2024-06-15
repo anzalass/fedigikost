@@ -15,10 +15,16 @@ export default function DataRuanganPage() {
   const [open, setOpen] = useState(false);
   const [dataRuangan, setDataRuangan] = useState([]);
   const [errRuangan, setErrRuangan] = useState({
+    id_pembuat: user?.id,
+    role_pembuat: user?.role,
+    nama_pembuat: user?.name,
     kodeRuang: "",
     ruang: "",
   });
   const [valueEdit, setValueEdit] = useState({
+    id_pembuat: user?.id,
+    role_pembuat: user?.role,
+    nama_pembuat: user?.name,
     idUser: user?.id,
     kodeRuang: "",
     ruang: "",
@@ -41,6 +47,9 @@ export default function DataRuanganPage() {
 
   const [dataRuang, setDataRuang] = useState({
     idUser: user?.id,
+    id_pembuat: user?.id,
+    role_pembuat: user?.role,
+    nama_pembuat: user?.name,
     kodeRuang: "",
     ruang: "",
   });
@@ -48,6 +57,9 @@ export default function DataRuanganPage() {
   const changeEditHandler = (e) => {
     setValueEdit({
       ...valueEdit,
+      id_pembuat: user?.id,
+      role_pembuat: user?.role,
+      nama_pembuat: user?.name,
       [e.target.name]: e.target.value,
     });
   };

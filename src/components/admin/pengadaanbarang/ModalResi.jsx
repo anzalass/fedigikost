@@ -1,8 +1,13 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { BACKEND_BASE_URL } from "../../../config/base_url";
+import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
+import { useRender } from "../../../context/rendertablepengadaan";
 
 export default function ModalResi({ open, setOpen, id }) {
+  const { user } = useSelector((state) => state.user);
+  const [render, setRender] = useRender();
   useEffect(() => {
     console.log("Id Pengadaan : ", id);
   }, [id]);
@@ -27,6 +32,7 @@ export default function ModalResi({ open, setOpen, id }) {
   };
 
   const updateResi = async () => {
+    Swal.showLoading();
     const datas = new FormData();
     datas.append("file", Img);
     datas.append("upload_preset", "digikostDemoApp");
@@ -48,9 +54,13 @@ export default function ModalResi({ open, setOpen, id }) {
       await axios.put(`${BACKEND_BASE_URL}/api/UpdateResi/${id}`, {
         buktiNota: res.data.secure_url,
         NoResi: data.NoResi,
+        id_pembuat: user?.id,
+        nama_pembuat: user?.name,
+        role_pembuat: user?.role,
       });
-      alert("bisa");
-      window.location.reload();
+      setRender(true);
+      Swal.close();
+      setOpen(false);
     } catch (e) {
       alert("rusak");
       console.log(e);

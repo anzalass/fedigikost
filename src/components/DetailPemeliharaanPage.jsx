@@ -4,8 +4,7 @@ import { useEffect } from "react";
 
 import { useSelector } from "react-redux";
 import Sidebar from "./layout/Sidebar";
-import SidebarOwner from "./layoutowner/SidebarOwner";
-import TopBarOwner from "./layoutowner/TopbarOwner";
+import TopBar from "./layout/TopBar";
 
 export default function DetailPemeliharaanPage() {
   const [open, setOpen] = useState(true);
@@ -18,14 +17,11 @@ export default function DetailPemeliharaanPage() {
   return (
     <div className="w-full h-screen flex">
       <div className={` `}>
-        {user?.role === 1 ? (
-          <SidebarOwner setSidebar={3} width={open} setWidth={setOpen} />
-        ) : (
-          <Sidebar setSidebar={3} width={open} setWidth={setOpen} />
-        )}
+        <Sidebar setSidebar={3} width={open} setWidth={setOpen} />
       </div>
       <div className={`w-11/12 mx-auto`}>
-        <TopBarOwner>{"Detail Pemeliharaan - ASW1123"}</TopBarOwner>
+        <TopBar>{"Detail Pemeliharaan - ASW1123"}</TopBar>
+
         <div className="w-[95%] mx-auto mt-2 h-[50px] flex">
           <div className="block w-full font-abc">
             <div className="flex w-full ">

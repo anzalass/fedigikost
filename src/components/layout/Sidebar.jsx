@@ -6,12 +6,16 @@ import { BsPencilSquare } from "react-icons/bs";
 import { PiEnvelopeOpenBold } from "react-icons/pi";
 import { BiSolidUserAccount } from "react-icons/bi";
 import { RxDashboard } from "react-icons/rx";
-
+import { CiLogout } from "react-icons/ci";
+import { MdHome } from "react-icons/md";
+import { FaUser } from "react-icons/fa";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { HiMiniClipboardDocumentList } from "react-icons/hi2";
 import { Link, useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import Swal from "sweetalert2";
+
+import { logoutUser } from "../../redux/actions/user";
 
 export default function Sidebar({ open, setSidebar, width, setWidth }) {
   const { user } = useSelector((state) => state.user);
@@ -20,7 +24,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
     sidebarMenu = [
       {
         title: "Beranda",
-        url: "/",
+        url: "/home",
         icon: <GrHomeRounded className={` fill-white  my-auto`} />,
       },
       {
@@ -30,7 +34,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
       },
       {
         title: "Pemeliharaan Barang",
-        url: "/pengeluaran",
+        url: "/pemeliharaan",
         icon: <ImEnter className="my-auto" />,
       },
       {
@@ -43,7 +47,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
     sidebarMenu = [
       {
         title: "Beranda",
-        url: "/",
+        url: "/home",
         icon: <GrHomeRounded className={` fill-white  my-auto`} />,
       },
       {
@@ -53,67 +57,44 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
       },
       {
         title: "Pemeliharaan Barang",
-        url: "/pengeluaran",
+        url: "/pemeliharaan",
         icon: <ImEnter className="my-auto" />,
       },
       {
         title: "Data Ruangan",
         url: "/data-ruangan",
-        icon: <HiMiniClipboardDocumentList className="my-auto" />,
+        icon: <MdHome className="my-auto" />,
       },
       {
         title: "Data Petugas",
         url: "/petugas",
-        icon: <HiMiniClipboardDocumentList className="my-auto" />,
+        icon: <FaUser className="my-auto" />,
       },
     ];
   }
-
+  const dispatch = useDispatch();
   const logout = async () => {
-    try {
-      Swal.fire({
-        title: "Keluar",
-        text: "Apakah Yakin Ingin Keluar ?",
-        icon: "question",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Ya, Keluar",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          const res = fetch("http://localhost:8000/api/logout", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "include",
-          })
-            .then((res) => {
-              if (res) {
-                localStorage.removeItem("token");
-                window.location.reload();
-              }
-              Swal.fire({
-                title: "Keluar ",
-                text: "Berhasil Keluar",
-                icon: "success",
-              });
-              window.location.href = "/";
-            })
-            .catch((err) => {
-              Swal.fire({
-                title: "Keluar ",
-                text: "Gagal Keluar, " + err.message,
-                icon: "error",
-              });
-            });
-        }
-      });
-    } catch (err) {
-      Swal.fire({
-        title: "Keluar ",
-        text: "Gagal Keluar, " + err.message,
-        icon: "error",
-      });
-    }
+    dispatch(logoutUser());
+    Swal.fire({
+      title: "Keluar",
+      text: "Apakah Yakin Ingin Keluar ?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, Keluar",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("user");
+
+        Swal.fire({
+          title: "Keluar ",
+          text: "Berhasil Keluar",
+          icon: "success",
+        });
+        window.location.href = "/";
+      }
+    });
   };
 
   const navigate = useNavigate();
@@ -171,7 +152,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
               onClick={logout}
               className={`flex mt-2 bg-white text-black cursor-pointer h-[30px] rounded-md p-1 pl-3`}
             >
-              <HiMiniClipboardDocumentList className="my-auto" />,
+              <CiLogout className="my-auto" />,
               <h1 className={`ml-2 font-abc my-auto text-[14px]`}>Logout</h1>
             </div>
           </div>
