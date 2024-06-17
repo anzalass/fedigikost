@@ -5,7 +5,7 @@ import { useSelector } from "react-redux";
 export default function ModalChangeStatus({ open, setOpen, reFetch, id }) {
   const { user } = useSelector((state) => state.user);
   const [data, setData] = useState({
-    status: null,
+    status: "dalam perbaikan",
     id_pembuat: user?.id,
     role_pembuat: user?.role,
     nama_pembuat: user?.name,
@@ -37,6 +37,7 @@ export default function ModalChangeStatus({ open, setOpen, reFetch, id }) {
             <select
               onChange={(e) => (data.status = e.target.value)}
               name=""
+              value={data.status}
               id=""
               className="w-full border-2 border-slate-500"
             >

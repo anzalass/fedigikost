@@ -226,12 +226,18 @@ export default function TabelBarang({ data, ruang, kategori }) {
               "id-ID",
               options
             ),
-            harga: a.hargaBarang,
+            harga: a.hargaBarang.toLocaleString("id-ID", {
+              style: "currency",
+              currency: "IDR",
+            }),
             resi: a.NoResi,
             lokasi_barang: a.ruang,
             foto: a.buktiNota,
             qty_barang: a.quantity,
-            total_harga: a.hargaBarang * a.quantity,
+            total_harga: (a.hargaBarang * a.quantity).toLocaleString("id-ID", {
+              style: "currency",
+              currency: "IDR",
+            }),
             status: a?.status,
           });
         });
@@ -258,11 +264,17 @@ export default function TabelBarang({ data, ruang, kategori }) {
               options
             ),
             resi: a.NoResi,
-            harga: a.hargaBarang,
+            harga: a.hargaBarang.toLocaleString("id-ID", {
+              style: "currency",
+              currency: "IDR",
+            }),
             lokasi_barang: a.ruang,
             foto: a.buktiNota,
             qty_barang: a.quantity,
-            total_harga: a.hargaBarang * a.quantity,
+            total_harga: (a.hargaBarang * a.quantity).toLocaleString("id-ID", {
+              style: "currency",
+              currency: "IDR",
+            }),
             status: a?.status,
           });
         });
