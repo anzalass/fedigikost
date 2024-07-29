@@ -110,7 +110,7 @@ export default function Indikator({
             <h1 className=" text-white font-[500] text-[30px]">
               {allPemeliharaan}
             </h1>
-            <h1 className=" text-white font-[500] text-[16px]">{user.role}</h1>
+            <h1 className=" text-white font-[500] text-[16px]">Pemeliharaan</h1>
             <img
               src={Frame5}
               className=" absolute  right-0 top-5 h-[80px] z-0"
