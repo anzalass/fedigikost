@@ -7,6 +7,7 @@ import Frame4 from "../../../assets/Frame(4).png";
 import Frame5 from "../../../assets/Frame(5).png";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 export default function Indikator({
   allRuang,
@@ -43,15 +44,33 @@ export default function Indikator({
   //     console.log(err);
   //   }
   // };
+
+  const { user, isLogin } = useSelector((state) => state.user);
   return (
     <div className="mt-3 p-3 w-full mx-auto bg-white rounded-lg h-[40vh]">
       <div className=" grid grid-cols-2 gap-4 w-full mx-auto  md:grid-cols-2 lg:grid-cols-4 ">
-        <Link to={"/petugas"}>
-          <div className="h-[100px] pl-3 pt-6 relative z-30 rounded-md w-[100%] bg-[#9556CC]">
-            <h1 className=" text-white font-[500] text-[20px]">{allpetugas}</h1>
-            <h1 className=" text-white font-[500] text-[16px]">Pegawai</h1>
+        <Link to={"/tambah-barang"}>
+          <div className="h-[100px] pl-3 pt-6 relative rounded-md w-[100%] bg-[#36BFFA]">
+            <h1 className=" text-white font-[500] text-[20px]">
+              {allPengadaan}
+            </h1>
+            <h1 className=" text-white font-[500] text-[16px]">Pengadaan</h1>
             <img
-              src={Frame}
+              src={Frame3}
+              className=" absolute  right-0 top-5 h-[80px] z-0"
+              alt=""
+            />
+          </div>
+        </Link>
+
+        <Link to={"/tambah-barang"}>
+          <div className=" pl-8 py-2 h-[100px] relative rounded-md w-[100%] bg-[#F04438]">
+            <h1 className=" text-white font-[500] text-[30px]">
+              {totalbarang}
+            </h1>
+            <h1 className=" text-white font-[500] text-[16px]">Total Barang</h1>
+            <img
+              src={Frame4}
               className=" absolute  right-0 top-5 h-[80px] z-0"
               alt=""
             />
@@ -83,41 +102,15 @@ export default function Indikator({
             />
           </div>
         </Link>
-        <Link to={"/tambah-barang"}>
-          <div className="h-[100px] pl-3 pt-6 relative rounded-md w-[100%] bg-[#36BFFA]">
-            <h1 className=" text-white font-[500] text-[20px]">
-              {allPengadaan}
-            </h1>
-            <h1 className=" text-white font-[500] text-[16px]">Pengadaan</h1>
-            <img
-              src={Frame3}
-              className=" absolute  right-0 top-5 h-[80px] z-0"
-              alt=""
-            />
-          </div>
-        </Link>
       </div>
 
       <div className="grid grid-cols-1 mt-7 gap-3 w-full  md:grid-cols-1 lg:grid-cols-2  ">
-        <Link to={"/tambah-barang"}>
-          <div className=" pl-8 py-2 h-[100px] relative rounded-md w-[100%] bg-[#F04438]">
-            <h1 className=" text-white font-[500] text-[30px]">
-              {totalbarang}
-            </h1>
-            <h1 className=" text-white font-[500] text-[16px]">Total Barang</h1>
-            <img
-              src={Frame4}
-              className=" absolute  right-0 top-5 h-[80px] z-0"
-              alt=""
-            />
-          </div>
-        </Link>
         <Link to={"/pemeliharaan"}>
           <div className="h-[100px] pl-8 py-2 relative rounded-md w-[100%] bg-[#32D583]">
             <h1 className=" text-white font-[500] text-[30px]">
               {allPemeliharaan}
             </h1>
-            <h1 className=" text-white font-[500] text-[16px]">Pemeliharaan</h1>
+            <h1 className=" text-white font-[500] text-[16px]">{user.role}</h1>
             <img
               src={Frame5}
               className=" absolute  right-0 top-5 h-[80px] z-0"
@@ -125,6 +118,21 @@ export default function Indikator({
             />
           </div>
         </Link>
+        {user.role == 2 ? null : (
+          <Link to={"/petugas"}>
+            <div className="h-[100px] pl-3 pt-6 relative z-30 rounded-md w-[100%] bg-[#9556CC]">
+              <h1 className=" text-white font-[500] text-[20px]">
+                {allpetugas}
+              </h1>
+              <h1 className=" text-white font-[500] text-[16px]">Pegawai</h1>
+              <img
+                src={Frame}
+                className=" absolute  right-0 top-5 h-[80px] z-0"
+                alt=""
+              />
+            </div>
+          </Link>
+        )}
       </div>
     </div>
   );

@@ -15,7 +15,7 @@ export default function TopBar({ children }) {
   const HomePage = async () => {
     try {
       const data = await axios.get(
-        `http://localhost:8000/api/homepage/${user?.id}`
+        `${BACKEND_BASE_URL}/api/homepage/${user?.id}`
       );
       const filternotif = data.data.notifikasi.filter(
         (item) => item.id_pembuat === user?.id

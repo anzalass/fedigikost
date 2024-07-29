@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import { BACKEND_BASE_URL } from "../../config/base_url";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -33,10 +34,7 @@ export default function LoginPage() {
   const login = async (e) => {
     // e.preventDefault();
     try {
-      const response = await axios.post(
-        "http://localhost:8000/api/login",
-        data
-      );
+      const response = await axios.post(`${BACKEND_BASE_URL}/api/login`, data);
       localStorage.setItem("user", JSON.stringify(response.data.data));
 
       setRedirect(true);

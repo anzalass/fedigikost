@@ -11,6 +11,7 @@ import Indikator from "../../components/admin/home/Indikator";
 import NotifiikasiAdmin from "../../components/admin/home/NotifiikasiAdmin";
 import axios from "axios";
 import { useContextNotifikasi } from "../../context/notifikasicontext";
+import { BACKEND_BASE_URL } from "../../config/base_url";
 
 export default function HomePage() {
   const [open, setOpen] = useState(false);
@@ -29,7 +30,7 @@ export default function HomePage() {
   const HomePage = async () => {
     try {
       const data = await axios.get(
-        `http://localhost:8000/api/homepage/${user?.id}`
+        `${BACKEND_BASE_URL}/api/homepage/${user?.id}`
       );
       setAllKategori(data.data.totalkategori);
       setAllRuang(data.data.totalruangan);

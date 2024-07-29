@@ -110,8 +110,10 @@ export default function PendaftaranPetugas() {
                   onChange={(e) => changeDataHandler(e)}
                 >
                   <option value="">Pilih Role</option>
-                  <option value="1">Pemilik Kos (beserta keluarganya)</option>
+                  <option value="1">Pemilik Kos</option>
                   <option value="2">Admin</option>
+                  <option value="3">Satpam</option>
+                  <option value="4">Admin</option>
                 </select>
                 {err.role ? <p>{err.role}</p> : null}
               </div>
