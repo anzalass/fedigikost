@@ -27,11 +27,11 @@ export default function Indikator({
 
   // const fetchData = async () => {
   //   try {
-  //     const ruang = await axios.get("http://127.0.0.1:8000/api/getRuang");
-  //     const pengadaan = await axios.get("http://127.0.0.1:8000/api/pengadaan");
-  //     const kategori = await axios.get("http://127.0.0.1:8000/api/getKategori");
+  //     const ruang = await axios.get("${BACKEND_BASE_URL}/api/getRuang");
+  //     const pengadaan = await axios.get("${BACKEND_BASE_URL}/api/pengadaan");
+  //     const kategori = await axios.get("${BACKEND_BASE_URL}/api/getKategori");
   //     const pemeliharaan = await axios.get(
-  //       "http://127.0.0.1:8000/api/getPemeliharaan"
+  //       "${BACKEND_BASE_URL}/api/getPemeliharaan"
   //     );
 
   //     setAllRuang(ruang.data.total);

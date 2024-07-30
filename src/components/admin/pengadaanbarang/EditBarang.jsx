@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useRender } from "../../../context/rendertablepengadaan";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
+import { BACKEND_BASE_URL } from "../../../config/base_url";
 
 export default function EditBarang({ close, setClose, idBarang }) {
   const { user } = useSelector((state) => state.user);
@@ -43,7 +44,7 @@ export default function EditBarang({ close, setClose, idBarang }) {
     setRender(false);
     try {
       const result = await axios.put(
-        "http://127.0.0.1:8000/api/updatePengadaan/" + idBarang,
+        `${BACKEND_BASE_URL}/api/updatePengadaan/` + idBarang,
         data
       );
       if (result) {
@@ -68,8 +69,8 @@ export default function EditBarang({ close, setClose, idBarang }) {
   }, [idBarang]);
 
   const fetchData = async () => {
-    const getRuang = await axios.get("http://127.0.0.1:8000/api/getRuang");
-    const getBarang = await axios.get("http://127.0.0.1:8000/api/getKategori");
+    const getRuang = await axios.get(`${BACKEND_BASE_URL}/api/getRuang`);
+    const getBarang = await axios.get(`${BACKEND_BASE_URL}/api/getKategori`);
 
     if (getRuang) {
       setRuang(getRuang.data.results);
@@ -79,7 +80,7 @@ export default function EditBarang({ close, setClose, idBarang }) {
 
   const getDataByID = async () => {
     const result = await axios.get(
-      "http://127.0.0.1:8000/api/findPengadaan/" + idBarang
+      `${BACKEND_BASE_URL}/api/findPengadaan/` + idBarang
     );
     setPengadaan(result);
     setData((prevData) => ({

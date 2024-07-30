@@ -18,6 +18,7 @@ import { useSearch } from "../../../context/searchContext";
 import { useSelector } from "react-redux";
 import ModalResi from "./ModalResi";
 import PropTypes from "prop-types";
+import { BACKEND_BASE_URL } from "../../../config/base_url";
 
 TabelBarang.propTypes = {
   kategori: PropTypes.array.isRequired,
@@ -106,9 +107,9 @@ export default function TabelBarang({ data, ruang, kategori }) {
 
   // const fetchData = async () => {
   //   const getKategori = await axios.get(
-  //     "http://127.0.0.1:8000/api/getKategori"
+  //     "${BACKEND_BASE_URL}/api/getKategori"
   //   );
-  //   const getRuang = await axios.get("http://127.0.0.1:8000/api/getRuang");
+  //   const getRuang = await axios.get("${BACKEND_BASE_URL}/api/getRuang");
 
   //   // if (getRuang && getKategori) {
   //   setKategori(getKategori.data.results);
@@ -137,7 +138,7 @@ export default function TabelBarang({ data, ruang, kategori }) {
       confirmButtonText: "Ya, Hapus",
     }).then((result) => {
       axios
-        .delete("http://127.0.0.1:8000/api/pengadaanDelete/" + id, {
+        .post(`${BACKEND_BASE_URL}/api/pengadaanDelete/` + id, {
           id_pembuat: user?.id,
           role_pembuat: user?.role,
           nama_pembuat: user?.name,
@@ -182,7 +183,7 @@ export default function TabelBarang({ data, ruang, kategori }) {
     // });
 
     try {
-      await axios.post("http://127.0.0.1:8000/api/tambahPengadaan", pengadaan);
+      await axios.post(`${BACKEND_BASE_URL}/api/tambahPengadaan`, pengadaan);
       setRender(true);
       setPengadaanBarang(!pengadaanBarang);
       Swal.fire({

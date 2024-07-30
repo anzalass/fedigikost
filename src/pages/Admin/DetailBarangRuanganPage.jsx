@@ -40,7 +40,7 @@ export default function DetailBarangRuangan() {
   barang.forEach(async (a) => {
     let jumlahBarang = 0;
     // const getPengadaan = await axios.get(
-    //   "http://127.0.0.1:8000/api/findByKategori/" + a.kodeBarang
+    //   "${BACKEND_BASE_URL}/api/findByKategori/" + a.kodeBarang
     // );
     // // console.log(a.kodeBarang);
     const filterPengadaan = pengadaan.filter(
@@ -161,7 +161,7 @@ export default function DetailBarangRuangan() {
   const getPengadaanByKodeBarang = async (kodeBarang) => {
     try {
       const response = await axios.get(
-        `http://127.0.0.1:8000/api/findByKategori/${kodeBarang}`
+        `${BACKEND_BASE_URL}/api/findByKategori/${kodeBarang}`
       );
       return response.data.results;
     } catch (error) {
