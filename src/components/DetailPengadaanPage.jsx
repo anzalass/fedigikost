@@ -7,6 +7,7 @@ import Sidebar from "./layout/Sidebar";
 import TopBar from "./layout/TopBar";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import { BACKEND_BASE_URL } from "../config/base_url";
 
 export default function DetailPengadaanPage() {
   const [open, setOpen] = useState(false);
@@ -33,7 +34,7 @@ export default function DetailPengadaanPage() {
   const { id } = useParams();
   const getDataByID = async () => {
     const result = await axios.get(
-      "http://127.0.0.1:8000/api/findPengadaan/" + id
+      `${BACKEND_BASE_URL}/api/findPengadaan/` + id
     );
     setPengadaan(result);
     console.log(result);

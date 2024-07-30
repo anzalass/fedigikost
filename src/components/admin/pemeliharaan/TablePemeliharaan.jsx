@@ -5,6 +5,7 @@ import { BsTrash3 } from "react-icons/bs";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { useSelector } from "react-redux";
+import { BACKEND_BASE_URL } from "../../../config/base_url";
 
 // import "sweetalert2/src/sweetalert2.scss";
 
@@ -49,9 +50,7 @@ export default function TablePengeluaran() {
   }, []);
 
   const fetchPemeliharaan = async () => {
-    const response = await axios.get(
-      "http://127.0.0.1:8000/api/getPemeliharaan"
-    );
+    const response = await axios.get(`${BACKEND_BASE_URL}/api/getPemeliharaan`);
 
     setDataPemeliharaan(response.data.results);
   };

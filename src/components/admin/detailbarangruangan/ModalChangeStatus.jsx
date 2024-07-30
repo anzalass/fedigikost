@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import { BACKEND_BASE_URL } from "../../../config/base_url";
 
 export default function ModalChangeStatus({ open, setOpen, reFetch, id }) {
   const { user } = useSelector((state) => state.user);
@@ -14,7 +15,7 @@ export default function ModalChangeStatus({ open, setOpen, reFetch, id }) {
   const updateStatus = async () => {
     try {
       const res = await axios.put(
-        `http://127.0.0.1:8000/api/updatePemeliharaan/` + id,
+        `${BACKEND_BASE_URL}/api/updatePemeliharaan/` + id,
         data
       );
       if (res) {
