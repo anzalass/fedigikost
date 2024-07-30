@@ -209,14 +209,13 @@ export default function TabelBarang({ data, ruang, kategori }) {
         .filter(
           (item) =>
             user?.id == item.idUser &&
-            (filter === "" || item.ruang === filter) &&
-            (filterBulan === "" ||
-              new Date(item.created_at).getMonth() === Number(filterBulan)) &&
-            (filterTahun === "" ||
-              new Date(item.created_at).getFullYear() ===
-                Number(filterTahun)) &&
-            (status === "" || item.status === status) &&
-            (search === "" ||
+            (filter == "" || item.ruang == filter) &&
+            (filterBulan == "" ||
+              new Date(item.created_at).getMonth() == Number(filterBulan)) &&
+            (filterTahun == "" ||
+              new Date(item.created_at).getFullYear() == Number(filterTahun)) &&
+            (status == "" || item.status == status) &&
+            (search == "" ||
               item.namaBarang.toLowerCase().includes(search.toLowerCase()))
         )
         .forEach((a) => {
@@ -246,14 +245,13 @@ export default function TabelBarang({ data, ruang, kategori }) {
       data
         .filter(
           (item) =>
-            (filter === "" || item.ruang === filter) &&
-            (filterBulan === "" ||
-              new Date(item.created_at).getMonth() === Number(filterBulan)) &&
-            (filterTahun === "" ||
-              new Date(item.created_at).getFullYear() ===
-                Number(filterTahun)) &&
-            (status === "" || item.status === status) &&
-            (search === "" ||
+            (filter == "" || item.ruang == filter) &&
+            (filterBulan == "" ||
+              new Date(item.created_at).getMonth() == Number(filterBulan)) &&
+            (filterTahun == "" ||
+              new Date(item.created_at).getFullYear() == Number(filterTahun)) &&
+            (status == "" || item.status == status) &&
+            (search == "" ||
               item.namaBarang.toLowerCase().includes(search.toLowerCase()))
         )
         .forEach((a) => {
@@ -374,39 +372,46 @@ export default function TabelBarang({ data, ruang, kategori }) {
       renderCell: (params) => {
         return (
           <>
-            {user?.role === 1 ? (
+            {user?.role == 1 ? (
               <div
                 onClick={() => {
                   setEditStatus(true);
+                  console.log(editStatus);
                   setIdBarang(params.id);
                   console.log(params.id);
                 }}
                 className={`${
-                  params.row.status === "pending"
+                  params.row.status == "pending"
                     ? "bg-yellow-400"
-                    : params.row.status === "selesai"
+                    : params.row.status == "selesai"
                     ? "bg-blue-500"
-                    : params.row.status === "disetujui"
+                    : params.row.status == "disetujui"
                     ? "bg-green-500"
                     : "bg-red-500"
                 } ${
-                  user?.role === 2
+                  user?.role == 2
                 } h-full text-center pt-3 cursor-pointer text-white font-abc w-full `}
               >
                 {params.row.status}
               </div>
             ) : (
               <div
+                // onClick={() => {
+                //   setEditStatus(true);
+                //   console.log(editStatus);
+                //   setIdBarang(params.id);
+                //   console.log(params.id);
+                // }}
                 className={`${
-                  params.row.status === "pending"
+                  params.row.status == "pending"
                     ? "bg-yellow-400"
-                    : params.row.status === "selesai"
+                    : params.row.status == "selesai"
                     ? "bg-blue-500"
-                    : params.row.status === "disetujui"
+                    : params.row.status == "disetujui"
                     ? "bg-green-500"
                     : "bg-red-500"
                 } ${
-                  user?.role === 2
+                  user?.role == 2
                 } h-full text-center pt-3 cursor-pointer text-white font-abc w-full `}
               >
                 {params.row.status}
@@ -449,7 +454,7 @@ export default function TabelBarang({ data, ruang, kategori }) {
                 >
                   <BsTrash3 color="red" size={20} />
                 </button>
-                {params.row.status === "selesai" ? (
+                {params.row.status == "selesai" ? (
                   <button
                     className="mr-4"
                     onClick={() => {
@@ -469,9 +474,9 @@ export default function TabelBarang({ data, ruang, kategori }) {
                   <BsEye size={20} />
                 </button>
               </>
-            ) : params.row.status === "disetujui" ? (
+            ) : params.row.status == "disetujui" ? (
               <>
-                {params.row.foto === null ? (
+                {params.row.foto == null ? (
                   <button
                     className="mr-4"
                     onClick={() => ModalResiBarang(params.id)}
@@ -497,7 +502,7 @@ export default function TabelBarang({ data, ruang, kategori }) {
                   <BsEye size={20} />
                 </button>
               </>
-            ) : params.row.status === "ditolak" ? (
+            ) : params.row.status == "ditolak" ? (
               <>
                 {/* <button
                   className="mr-4"
@@ -517,7 +522,7 @@ export default function TabelBarang({ data, ruang, kategori }) {
                   <BsEye size={20} />
                 </button>
               </>
-            ) : params.row.status === "selesai" ? (
+            ) : params.row.status == "selesai" ? (
               <>
                 <button
                   className="mr-4"
@@ -643,7 +648,7 @@ export default function TabelBarang({ data, ruang, kategori }) {
                   name="kodeBarang"
                   onChange={(e) => {
                     const selectedBarang = kategori.find(
-                      (item) => item.kodeBarang === e.target.value
+                      (item) => item.kodeBarang == e.target.value
                     );
 
                     setPengadaan({
@@ -740,7 +745,7 @@ export default function TabelBarang({ data, ruang, kategori }) {
                   name="kodeRuang"
                   onChange={(e) => {
                     const selectedRuang = ruang.find(
-                      (item) => item.kodeRuang === e.target.value
+                      (item) => item.kodeRuang == e.target.value
                     );
 
                     setPengadaan({

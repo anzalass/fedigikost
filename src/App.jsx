@@ -38,7 +38,7 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
-          {/* {user?.role === undefined ? ( */}
+          {/* {user?.role == undefined ? ( */}
           <Route path="/" element={isLogin ? <Spinner /> : <LoginPage />} />
           {/* ) : ( */}
           <>

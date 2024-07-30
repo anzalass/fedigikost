@@ -15,7 +15,7 @@ export default function UbahPasswordAdminPage() {
     <div className="w-full h-[100vh] flex">
       <div className={`${!open ? "w-[16%]" : "w-[5%]"} `}>
         {/* <button onClick={(e) => setOpen(1)}>buka</button> */}
-        {/* {open === 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null} */}
+        {/* {open == 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null} */}
         {/* <Sidebar setSidebar={1} width={open} setWidth={setOpen} /> */}
       </div>
       <div className={`${!open ? "w-[84%]" : "w-[95%]"} `}>
@@ -32,7 +32,7 @@ export default function UbahPasswordAdminPage() {
               onChange={(e) => setPass1(e.target.value)}
               className="w-full h-[35px] border-2 pl-2 border-slate-500 rounded-md"
             />
-            {hiddenPass1 === false ? (
+            {hiddenPass1 == false ? (
               <AiOutlineEye
                 onClick={() => setHiddenPass1(true)}
                 size={25}
@@ -55,7 +55,7 @@ export default function UbahPasswordAdminPage() {
               className="w-full h-[35px] border-2 pl-2 border-slate-500 rounded-md"
             />
 
-            {hiddenPass2 === false ? (
+            {hiddenPass2 == false ? (
               <AiOutlineEye
                 onClick={() => setHiddenPass2(true)}
                 size={25}

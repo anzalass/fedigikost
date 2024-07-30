@@ -10,7 +10,7 @@ export default function EditProfilePage() {
     <div className="w-11/12 mx-auto h-[160vh] ">
       <div className={` `}>
         {/* <button onClick={(e) => setOpen(1)}>buka</button> */}
-        {/* {open === 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null} */}
+        {/* {open == 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null} */}
         <Sidebar setSidebar={1} width={open} setWidth={setOpen} />
       </div>
       <div className={` `}>

@@ -44,7 +44,7 @@ export default function LoginPage() {
         // text: "Something went wrong!",
         // footer: '<a href="#">Why do I have this issue?</a>',
       });
-      if (response.status === 200) {
+      if (response.status == 200) {
         window.location.href = "/home";
       }
     } catch (e) {

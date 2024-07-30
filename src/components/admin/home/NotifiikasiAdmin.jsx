@@ -49,14 +49,14 @@ export default function NotifiikasiAdmin({ data, openNotif, setOpenNotif }) {
             <div
               onClick={() => ClickNotifikasi(item.id, item.url)}
               className={`w-[300px] h-[60px] mb-2 cursor-pointer bg-zinc-100 shadow-lg rounded-md p-3 ${
-                item.id_pembuat === user?.id ? "hidden" : "block"
+                item.id_pembuat == user?.id ? "hidden" : "block"
               }  `}
               key={i}
             >
               <h1 className="text-sm font-[500]">
-                {item.role_pembuat === 1
+                {item.role_pembuat == 1
                   ? "Owner"
-                  : item.role_pembuat === 2
+                  : item.role_pembuat == 2
                   ? "Admin"
                   : null}{" "}
                 {item.nama_pembuat}

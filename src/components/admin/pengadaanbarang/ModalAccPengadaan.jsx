@@ -15,7 +15,7 @@ export default function ModalAccPengadaan({ open, setOpen, id }) {
   const getDataOnChangeId = async () => {
     const res = await axios.get(`${BACKEND_BASE_URL}/api/findPengadaan/${id}`);
 
-    if (res.status === 200) {
+    if (res.status == 200) {
       setStatus(res.data.results.status);
     }
   };

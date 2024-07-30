@@ -119,9 +119,9 @@ export default function TablePengeluaran() {
         return (
           <div
             className={`${
-              params.row.status === "dalam perbaikan"
+              params.row.status == "dalam perbaikan"
                 ? "bg-yellow-400"
-                : params.row.status === "selesai"
+                : params.row.status == "selesai"
                 ? "bg-green-500"
                 : "bg-red-600"
             } h-full text-center pt-3 text-white font-abc w-full `}
@@ -166,11 +166,11 @@ export default function TablePengeluaran() {
       .filter(
         (item) =>
           user?.id == item.idUser &&
-          (filterBulan === "" ||
-            new Date(item.created_at).getMonth() === Number(filterBulan)) &&
-          (filterTahun === "" ||
-            new Date(item.created_at).getFullYear() === Number(filterTahun)) &&
-          (filterStatus === "" || filterStatus === item.status)
+          (filterBulan == "" ||
+            new Date(item.created_at).getMonth() == Number(filterBulan)) &&
+          (filterTahun == "" ||
+            new Date(item.created_at).getFullYear() == Number(filterTahun)) &&
+          (filterStatus == "" || filterStatus == item.status)
       )
       .forEach((a) => {
         row.push({
@@ -188,11 +188,11 @@ export default function TablePengeluaran() {
     dataPemeliharaan
       .filter(
         (item) =>
-          (filterBulan === "" ||
-            new Date(item.created_at).getMonth() === Number(filterBulan)) &&
-          (filterTahun === "" ||
-            new Date(item.created_at).getFullYear() === Number(filterTahun)) &&
-          (filterStatus === "" || filterStatus === item.status)
+          (filterBulan == "" ||
+            new Date(item.created_at).getMonth() == Number(filterBulan)) &&
+          (filterTahun == "" ||
+            new Date(item.created_at).getFullYear() == Number(filterTahun)) &&
+          (filterStatus == "" || filterStatus == item.status)
       )
       .forEach((a) => {
         row.push({

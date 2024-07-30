@@ -78,7 +78,7 @@ export default function DataRuanganPage() {
         dataRuang
       );
 
-      if (add.status === 200) {
+      if (add.status == 200) {
         window.location.reload();
       }
     } catch (err) {
@@ -97,7 +97,7 @@ export default function DataRuanganPage() {
         valueEdit
       );
 
-      if (res.status === 200) {
+      if (res.status == 200) {
         window.location.reload();
       }
     } catch (err) {
@@ -137,7 +137,7 @@ export default function DataRuanganPage() {
             </div>
           </div>
 
-          {addRuangan === 1 && editRuangan === 0 ? (
+          {addRuangan == 1 && editRuangan == 0 ? (
             <div className="w-[95%] mx-auto h-[90vh] bg-white rounded-xl">
               <div action="" className="w-[95%] mx-auto mt-6 p-3">
                 <div className="w-full mt-4">
@@ -177,7 +177,7 @@ export default function DataRuanganPage() {
               </div>
             </div>
           ) : null}
-          {addRuangan === 0 && editRuangan === 1 ? (
+          {addRuangan == 0 && editRuangan == 1 ? (
             <div className="w-[95%] mx-auto h-[50vh] bg-white rounded-xl">
               <div className="w-[95%] mx-auto mt-6 p-3">
                 <h1 className="font-abc">Edit Ruangan</h1>
@@ -221,7 +221,7 @@ export default function DataRuanganPage() {
               </div>
             </div>
           ) : null}
-          {addRuangan === 0 || editRuangan === 1 ? (
+          {addRuangan == 0 || editRuangan == 1 ? (
             <TabelDataRuangan
               setEdit={setEditRuangan}
               setErrRuangan={setErrRuangan}

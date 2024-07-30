@@ -18,7 +18,7 @@ export default function TopBar({ children }) {
         `${BACKEND_BASE_URL}/api/homepage/${user?.id}`
       );
       const filternotif = data.data.notifikasi.filter(
-        (item) => item.id_pembuat === user?.id
+        (item) => item.id_pembuat == user?.id
       );
 
       setNotifikasi(data.data.notifikasi);

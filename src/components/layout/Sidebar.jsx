@@ -135,7 +135,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
                     setMenuClick(1);
                   }}
                   className={`flex mt-2 ${
-                    setSidebar === index + 1
+                    setSidebar == index + 1
                       ? "bg-[#9556CC] text-white"
                       : "bg-white text-black"
                   }  h-[30px] rounded-md p-1 pl-3`}
