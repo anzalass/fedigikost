@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { useSearch } from "../../../context/searchContext";
 import { IoQrCodeSharp } from "react-icons/io5";
 import QrCodeModal from "../../../pages/Admin/pengadaanbarang/QrCodeModal";
+import { BACKEND_BASE_URL } from "../../../config/base_url";
 
 export default function TabelDataRuangan({
   edit,
@@ -29,8 +30,16 @@ export default function TabelDataRuangan({
   console.log("data : ", data);
 
   const DeleteRuang = async (kodeRuang) => {
-    const res = await axios.delete(
-      `http://127.0.0.1:8000/api/deleteRuang/${kodeRuang}`
+    const res = await axios.post(
+      `${BACKEND_BASE_URL}/api/deleteRuang/${kodeRuang}`,
+      {
+        id_pembuat: user.id,
+        role_pembuat: user.role,
+        nama_pembuat: user?.name,
+        tipe: "menghapus ruangan",
+        status: "belumdibaca",
+        keterangan: `${user.name} menghapus ruangan ${kodeRuang}`,
+      }
     );
 
     if (res.status == 200) {
