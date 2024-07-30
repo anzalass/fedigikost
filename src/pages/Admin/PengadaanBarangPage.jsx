@@ -123,7 +123,7 @@ export default function TambahBarangPage() {
 
   const DeleteKategori = async (id) => {
     console.log("ini id nya : ", id);
-    const result = await axios.delete(
+    const result = await axios.post(
       `${BACKEND_BASE_URL}/api/kategoriDelete/` + id,
       {
         id_pembuat: user?.id,
