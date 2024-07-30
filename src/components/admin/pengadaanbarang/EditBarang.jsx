@@ -145,7 +145,7 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   id=""
                   onChange={(e) => {
                     const selectedBarang = barang.find(
-                      (item) => item.kodeBarang === e.target.value
+                      (item) => item.kodeBarang == e.target.value
                     );
 
                     setData({
@@ -224,7 +224,7 @@ export default function EditBarang({ close, setClose, idBarang }) {
                   name="ruang"
                   onChange={(e) => {
                     const selectedRuang = ruang.find(
-                      (item) => item.kodeRuang === e.target.value
+                      (item) => item.kodeRuang == e.target.value
                     );
 
                     setData({

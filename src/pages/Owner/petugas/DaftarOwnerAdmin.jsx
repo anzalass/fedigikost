@@ -18,7 +18,7 @@ export default function DaftarPetugasPage() {
   const [allUser, setAllUser] = useState([]);
   const { user } = useSelector((state) => state.user);
   useEffect(() => {
-    if (user?.role === 2) {
+    if (user?.role == 2) {
       nav("/home");
     }
   }, [user]);
@@ -35,7 +35,7 @@ export default function DaftarPetugasPage() {
   const deletePetugas = async (id) => {
     const res = await axios.delete(`${BACKEND_BASE_URL}/api/deleteUser/${id}`);
 
-    if (res.status === 200) {
+    if (res.status == 200) {
       window.location.reload();
     }
   };
@@ -107,7 +107,7 @@ export default function DaftarPetugasPage() {
   allUser
     .filter(
       (item) =>
-        search === "" ||
+        search == "" ||
         item.name.toLowerCase().includes(search.toLowerCase()) ||
         item.email.toLowerCase().includes(search.toLowerCase()) ||
         item.noHP.toLowerCase().includes(search.toLowerCase())
@@ -125,7 +125,7 @@ export default function DaftarPetugasPage() {
 
   return (
     <>
-      {user.role === 2 ? (
+      {user.role == 2 ? (
         <Spinner />
       ) : (
         <div className="w-full h-[160vh] flex">

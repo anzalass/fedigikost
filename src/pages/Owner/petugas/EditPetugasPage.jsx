@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 export default function EditPetugasPage() {
   const { user } = useSelector((state) => state.user);
   useEffect(() => {
-    if (user?.role === 2) {
+    if (user?.role == 2) {
       nav("/home");
     }
   }, [user]);
@@ -55,7 +55,7 @@ export default function EditPetugasPage() {
     <div className="w-11/12 mx-auto min-h-screen">
       <div className={``}>
         {/* <button onClick={(e) => setOpen(1)}>buka</button> */}
-        {/* {open === 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null} */}
+        {/* {open == 1 ? <Sidebar setSidebar={1} open={setOpen} /> : null} */}
         <Sidebar setSidebar={5} width={open} setWidth={setOpen} />
       </div>
       <div className={`w-11/12 mx-auto`}>

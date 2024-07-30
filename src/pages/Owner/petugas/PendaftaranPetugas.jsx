@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 export default function PendaftaranPetugas() {
   const { user } = useSelector((state) => state.user);
   useEffect(() => {
-    if (user?.role === 2) {
+    if (user?.role == 2) {
       nav("/home");
     }
   }, [user]);
@@ -35,7 +35,7 @@ export default function PendaftaranPetugas() {
     try {
       const res = await axios.post(`${BACKEND_BASE_URL}/api/Register`, data);
 
-      if (res.status === 200) {
+      if (res.status == 200) {
         nav("/petugas");
       }
     } catch (err) {

@@ -58,7 +58,7 @@ export default function TambahBarangPage() {
           kategori.namaBarang
       );
 
-      if (findKategori.status === 200) {
+      if (findKategori.status == 200) {
         window.alert("dah ada");
       }
     } catch (error) {
@@ -69,7 +69,7 @@ export default function TambahBarangPage() {
             kategori
           );
 
-          if (tambah.status === 200) {
+          if (tambah.status == 200) {
             window.location.reload();
           }
         }

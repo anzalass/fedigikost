@@ -133,7 +133,7 @@ export default function TabelDataRuangan({
   data
     .filter(
       (item) =>
-        search === "" ||
+        search == "" ||
         item.kodeRuang.toLowerCase().includes(search.toLowerCase()) ||
         item.ruang.toLowerCase().includes(search.toLowerCase())
     )
