@@ -127,6 +127,7 @@ export default function Indikator({
       </div>
 
       <div className="grid grid-cols-1 mt-7 gap-3 w-full  md:grid-cols-1 lg:grid-cols-2  ">
+
         {user.role == 1 ? (
           <Link to={"/pemeliharaan"}>
             <div className="h-[100px] pl-8 py-2 relative rounded-md w-[100%] bg-[#32D583]">
@@ -144,6 +145,8 @@ export default function Indikator({
             </div>
           </Link>
         ) : null}
+
+     
         {user.role == 2 ? null : (
           <Link to={"/petugas"}>
             <div className="h-[100px] pl-3 pt-6 relative z-30 rounded-md w-[100%] bg-[#9556CC]">
