@@ -43,7 +43,7 @@ export default function TopBar({ children }) {
         <div className="w-[50%] flex justify-end  ">
           <div className="mr-5">
             <div className="relative mr-3 -top-2 -right-5 ">
-              <div className="relative inline-flex w-fit">
+              {/* <div className="relative inline-flex w-fit">
                 <div className="absolute bottom-auto left-auto right-5 top-3 z-10 inline-block -translate-y-1/2 translate-x-2/4 rotate-0 skew-x-0 skew-y-0 scale-x-100 scale-y-100 whitespace-nowrap rounded-full bg-indigo-700 px-2.5 py-1 text-center align-baseline text-xs font-bold leading-none text-white">
                   {notifikasibyid > 99 ? "99+" : notifikasibyid}
                 </div>
@@ -58,7 +58,7 @@ export default function TopBar({ children }) {
                     onClick={() => setOpenNotif(true)}
                   />
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
           <div className="flex">
