@@ -19,9 +19,11 @@ export default function HomePage() {
   const { user } = useSelector((state) => state.user);
   const [allRuang, setAllRuang] = useState(0);
   const [allPengadaan, setAllPengadaan] = useState(0);
+  const [allPengadaanowner, setAllPengadaanowner] = useState(0);
   const [allKategori, setAllKategori] = useState(0);
   const [totalbarang, settotalbarang] = useState(0);
-  const [allPemeliharaan, setAllPemeliharaan] = useState();
+  const [allPemeliharaan, setAllPemeliharaan] = useState(0);
+  const [allPemeliharaanowner, setAllPemeliharaanowner] = useState(0);
   const [aktivitas, setAllAktivitas] = useState([]);
   const [petugas, setAllpetugas] = useState(0);
 
@@ -39,6 +41,8 @@ export default function HomePage() {
       setAllAktivitas(data.data.aktivitas);
       setAllpetugas(data.data.totaluser);
       settotalbarang(data.data.totalbarang);
+      setAllPemeliharaanowner(data.data.totalpemeliharaanowner);
+      setAllPengadaanowner(data.data.totalpengadaanowner);
     } catch (error) {
       console.log(error);
     }
@@ -73,11 +77,13 @@ export default function HomePage() {
               allKategori={allKategori}
               allPemeliharaan={allPemeliharaan}
               allPengadaan={allPengadaan}
+              allPemeliharaanowner={allPemeliharaanowner}
+              allPengadaanowner={allPengadaanowner}
               allRuang={allRuang}
               allpetugas={petugas}
               totalbarang={totalbarang}
             />
-            <div className="block  md:block lg:flex  w-[97%] justify-center gap-3 mx-auto   mt-[200px] xl:-mt-[10px] lg:-mt-[10px] ">
+            <div className="block  md:block lg:flex  w-[97%] justify-center gap-3 mx-auto    xl:-mt-[10px] lg:-mt-[10px] ">
               <div className="lg:w-[55%] xl:w-[55%] ">
                 <Aktivitas aktivitas={aktivitas} />
               </div>

@@ -73,7 +73,8 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
     ];
   }
   const dispatch = useDispatch();
-  const logout = async () => {
+  const logout = async (e) => {
+    e.preventDefault();
     dispatch(logoutUser());
     Swal.fire({
       title: "Keluar",
@@ -93,6 +94,10 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
           icon: "success",
         });
         window.location.href = "/";
+      }
+      if (result.dismiss) {
+        Swal.close();
+        window.location.reload();
       }
     });
   };
@@ -152,7 +157,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
               onClick={logout}
               className={`flex mt-2 bg-white text-black cursor-pointer h-[30px] rounded-md p-1 pl-3`}
             >
-              <CiLogout className="my-auto" />,
+              <CiLogout className="my-auto" />
               <h1 className={`ml-2 font-abc my-auto text-[14px]`}>Logout</h1>
             </div>
           </div>

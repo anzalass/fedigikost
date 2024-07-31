@@ -118,14 +118,16 @@ export default function DataRuanganPage() {
         <TopBar>{"Data Ruangan"}</TopBar>
         <div className="w-full mt-2 h-[50px] mx-auto ">
           <div className="w-[95%] h-[80px] justify-between flex mx-auto">
-            <div className="">
-              <button
-                onClick={() => setaddRuangan(1)}
-                className="bg-[#7B2CBF] mt-5 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
-              >
-                Tambah Ruangan
-              </button>
-            </div>
+            {user.role == 2 ? null : (
+              <div className="">
+                <button
+                  onClick={() => setaddRuangan(1)}
+                  className="bg-[#7B2CBF] mt-5 px-3 text-center py-1 w-[200px] rounded-md text-[#E5D5F2] font-abc"
+                >
+                  Tambah Ruangan
+                </button>
+              </div>
+            )}
             <div className=" mt-5 px-3 py-1 w-[200px] h-[40px] rounded-md  font-abc">
               <input
                 type="text"

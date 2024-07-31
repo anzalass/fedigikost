@@ -5,9 +5,11 @@ import axios from "axios";
 import { BACKEND_BASE_URL } from "../../../config/base_url";
 import TopBar from "../../../components/layout/TopBar";
 import { useSelector } from "react-redux";
+import Swal from "sweetalert2";
 
 export default function PendaftaranPetugas() {
   const { user } = useSelector((state) => state.user);
+  const [img, setImg] = useState(null);
   useEffect(() => {
     if (user?.role == 2) {
       nav("/home");
@@ -21,6 +23,7 @@ export default function PendaftaranPetugas() {
     password: "",
     role: "",
     noHP: "",
+    foto: "",
   });
 
   const [err, setErr] = useState({
@@ -29,17 +32,57 @@ export default function PendaftaranPetugas() {
     password: "",
     role: "",
     noHP: "",
+    foto: "",
   });
 
-  const tambahPetugas = async () => {
+  const tambahPetugas = async (e) => {
+    e.preventDefault();
+    const datas = new FormData();
+    datas.append("file", img);
+    datas.append("upload_preset", "digikostDemoApp");
+    datas.append("cloud_name", "dkt6ysk5c");
     try {
-      const res = await axios.post(`${BACKEND_BASE_URL}/api/Register`, data);
-
-      if (res.status == 200) {
-        nav("/petugas");
+      if (
+        data.name.length > 0 &&
+        data.email.length > 0 &&
+        data.password.length > 0 &&
+        data.noHP.length > 0 &&
+        data.role.length
+      ) {
+        const res1 = await axios.post(
+          "https://api.cloudinary.com/v1_1/dkt6ysk5c/image/upload",
+          datas,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        const res = await axios.post(`${BACKEND_BASE_URL}/api/Register`, {
+          name: data.name,
+          email: data.email,
+          password: data.password,
+          role: data.role,
+          noHP: data.noHP,
+          foto: res1.data.secure_url,
+        });
+        if (res.status == 200) {
+          Swal.fire({
+            title: "Berhasil Membuat Petugas",
+            timer: 1000,
+            showConfirmButton: false,
+          });
+          nav("/petugas");
+        }
       }
     } catch (err) {
       console.log("error : ", err.response.data.error);
+      Swal.fire({
+        title: "Gagal Membuat Petugas",
+        timer: 1000,
+        showConfirmButton: false,
+      });
+      window.location.reload();
       setErr(err.response.data.error);
     }
   };
@@ -102,6 +145,32 @@ export default function PendaftaranPetugas() {
                 />
                 {err.noHP ? <p>{err.noHP}</p> : null}
               </div>
+              {img ? (
+                <div className="w-full ">
+                  <img
+                    className="w-[200px] h-[200px] rounded-full object-contain mt-4"
+                    src={URL.createObjectURL(img)}
+                    alt=""
+                  />
+                </div>
+              ) : null}
+              <div className="w-full mt-4">
+                <label
+                  htmlFor="fotopetugas"
+                  className="border-2 border-slate-500 px-2 py-1 text-sm font-abc rounded-md"
+                >
+                  Pilih Foto
+                </label>
+                <input
+                  id="fotopetugas"
+                  name="fotopetugas"
+                  type="file"
+                  onChange={(e) => {
+                    setImg(e.target.files[0]);
+                  }}
+                  className="hidden border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
+                />
+              </div>
               <div className="w-full mt-4">
                 <h1 className="font-abc pb-2 ">Role</h1>
                 <select
@@ -112,8 +181,6 @@ export default function PendaftaranPetugas() {
                   <option value="">Pilih Role</option>
                   <option value="1">Pemilik Kos</option>
                   <option value="2">Admin</option>
-                  <option value="3">Satpam</option>
-                  <option value="4">Admin</option>
                 </select>
                 {err.role ? <p>{err.role}</p> : null}
               </div>

@@ -55,6 +55,10 @@ function App() {
               path="/edit-petugas/:id"
               element={isLogin ? <EditPetugasOwnerPage /> : <LoginPage />}
             />
+            <Route
+              path="/edit-password/:id"
+              element={isLogin ? <UbahPasswordAdminPage /> : <LoginPage />}
+            />
             {/* <Route
               path="/admin/pengadaan"
               element={<PengadaanBarangAdminPage userSession={dataCookie} />}
