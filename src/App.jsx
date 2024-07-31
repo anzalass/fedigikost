@@ -84,7 +84,7 @@ function App() {
           />
           <Route
             path="/detail-pengadaan/:id"
-            element={<DetailPengadaanPage />}
+            element={isLogin ? <DetailPengadaanPage /> : <LoginPage />}
           />
           <Route
             path="/invoice/:id"
