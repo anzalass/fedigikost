@@ -13,6 +13,8 @@ import { useRender } from "../../context/rendertablepengadaan.jsx";
 import { useSearch } from "../../context/searchContext.jsx";
 import { useSelector } from "react-redux";
 import { useContextNotifikasi } from "../../context/notifikasicontext.jsx";
+import { useRenderkategori } from "../../context/rendertablekategori.jsx";
+import Swal from "sweetalert2";
 
 export default function TambahBarangPage() {
   const { user } = useSelector((state) => state.user);
@@ -23,6 +25,7 @@ export default function TambahBarangPage() {
   const [allKategori, setallKategori] = useState([]);
   const [search, setSearch] = useSearch();
   const [render, setRender] = useRender();
+  const [renderkategori, setRenderKategori] = useRenderkategori();
   const [notif, setNotif] = useContextNotifikasi();
 
   const [kategori, setKategori] = useState({
@@ -49,7 +52,7 @@ export default function TambahBarangPage() {
 
   const TambahKategori = async (e) => {
     e.preventDefault();
-    setRender(false);
+    setRenderKategori(false);
     try {
       const findKategori = await axios.get(
         `${BACKEND_BASE_URL}/api/findKategori/` +
@@ -59,7 +62,12 @@ export default function TambahBarangPage() {
       );
 
       if (findKategori.status == 200) {
-        window.alert("dah ada");
+        Swal.fire({
+          title: "Kategori Sudah Ada",
+          icon: "warning",
+          showConfirmButton: false,
+          timer: 1000,
+        });
       }
     } catch (error) {
       try {
@@ -70,7 +78,21 @@ export default function TambahBarangPage() {
           );
 
           if (tambah.status == 200) {
-            window.location.reload();
+            // window.location.reload();
+            setAddBarang(true);
+            setRenderKategori(true);
+            setKategori((prev) => ({
+              ...prev,
+              kodeBarang: "",
+              namaBarang: "",
+              merekBarang: "",
+            }));
+            Swal.fire({
+              title: "Berhasil Menambah Kategori",
+              icon: "success",
+              showConfirmButton: false,
+              timer: 1000,
+            });
           }
         }
       } catch (err) {
@@ -108,12 +130,28 @@ export default function TambahBarangPage() {
 
   const UpdateKategori = async (id) => {
     try {
+      setRenderKategori(false);
       const result = await axios.put(
         `${BACKEND_BASE_URL}/api/updateKategori/` + id,
         kategori
       );
       if (result) {
-        window.location.reload();
+        // window.location.reload();
+        setAddBarang(true);
+        setRenderKategori(true);
+        setKategori((prev) => ({
+          ...prev,
+          kodeBarang: "",
+          namaBarang: "",
+          merekBarang: "",
+        }));
+        setIsEdit(false);
+        Swal.fire({
+          title: "Berhasil Mengupdate Kategori",
+          icon: "success",
+          showConfirmButton: false,
+          timer: 1000,
+        });
       }
     } catch (err) {
       console.log("error : ", err.response.data.errors);
@@ -123,6 +161,7 @@ export default function TambahBarangPage() {
 
   const DeleteKategori = async (id) => {
     console.log("ini id nya : ", id);
+    setRenderKategori(false);
     const result = await axios.post(
       `${BACKEND_BASE_URL}/api/kategoriDelete/` + id,
       {
@@ -132,7 +171,21 @@ export default function TambahBarangPage() {
       }
     );
     if (result) {
-      window.location.reload();
+      // window.location.reload();
+      setAddBarang(true);
+      setRenderKategori(true);
+      setKategori((prev) => ({
+        ...prev,
+        kodeBarang: "",
+        namaBarang: "",
+        merekBarang: "",
+      }));
+      Swal.fire({
+        title: "Berhasil Menghapus Kategori",
+        icon: "success",
+        showConfirmButton: false,
+        timer: 1000,
+      });
     }
   };
 
@@ -180,7 +233,7 @@ export default function TambahBarangPage() {
     fetchData();
 
     console.log(barang);
-  }, [render]);
+  }, [render || renderkategori]);
 
   const [addBarang, setAddBarang] = useState(false);
   const [open, setOpen] = useState(false);

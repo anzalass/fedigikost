@@ -16,7 +16,15 @@ export default function AdminDetailCard() {
   return (
     <div className="w-[100%] border-2 border-slate-400 h-[500px] rounded-lg mt-4 bg-white justify-center items-center flex-col">
       <div className="w-full mx-auto flex-col pt-[70px]">
-        <FaUserCircle size={100} className="mx-auto" />
+        {user.foto ? (
+          <img
+            src={user.foto}
+            className="w-[200px] h-[200px] rounded-full mx-auto"
+          />
+        ) : (
+          <FaUserCircle size={100} className="mx-auto" />
+        )}
+
         <div className="text-center  font-abc w-full">
           <h1 className="">{user?.name}</h1>
           <h3 className="text-[13px] font-[300]  ">{user?.email}</h3>

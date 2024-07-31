@@ -25,8 +25,10 @@ export default function NotifiikasiAdmin({ data, openNotif, setOpenNotif }) {
         // const parts = url.split("/"); // Memisahkan URL berdasarkan karakter "/"
         // const lastPart = parts[parts.length - 1]; // Mendapatkan bagian terakhir dari array hasil
         // const secondLastPart = parts[parts.length - 2]; // Output: "/detail-ruangan/RUU11"
+        //http://localhost:5173/home
+        //https://digikostskripsi.vercel.app/home
         // console.log(lastPart, secondLastPart);
-        const urli = url.slice(21, panjagarray);
+        const urli = url.slice(34, panjagarray);
         // console.log(urli);
         nav(urli);
       });
@@ -35,7 +37,7 @@ export default function NotifiikasiAdmin({ data, openNotif, setOpenNotif }) {
   console.log(data);
 
   return (
-    <div className="bg-white  p-2 shadow-xl relative">
+    <div className="bg-white  p-2 shadow-xl relative h-[600px] overflow-y-auto">
       <h1 className="absolute right-3" onClick={() => setOpenNotif(false)}>
         X
       </h1>

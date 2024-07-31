@@ -13,6 +13,11 @@ export default function DetailPengadaanPage() {
   const [open, setOpen] = useState(false);
   const [pengadaan, setPengadaan] = useState([]);
   // const [loading, setLoading] = useState(true);
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
   const { user } = useSelector((state) => state.user);
   const [data, setData] = useState({
     id: 0,
@@ -113,7 +118,10 @@ export default function DetailPengadaanPage() {
                   id="repeat-password"
                   className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                   disabled
-                  value={data.tanggalPembelian}
+                  value={new Date(data.tanggalPembelian).toLocaleDateString(
+                    "id-ID",
+                    options
+                  )}
                 />
               </div>
               <div className="w-[50%]">
@@ -181,7 +189,13 @@ export default function DetailPengadaanPage() {
                   id="repeat-password"
                   className="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  dark:border-gray-600 dark:placeholder-gray-400  dark:focus:ring-blue-500 dark:focus:border-blue-500 dark:shadow-sm-light"
                   disabled
-                  value={"Rp." + data.quantity * data.hargaBarang}
+                  value={(data.quantity * data.hargaBarang).toLocaleString(
+                    "id-ID",
+                    {
+                      style: "currency",
+                      currency: "IDR",
+                    }
+                  )}
                 />
               </div>
               <div className="h-[100px]"></div>

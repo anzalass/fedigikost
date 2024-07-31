@@ -434,27 +434,222 @@ export default function TabelBarang({ data, ruang, kategori }) {
       renderCell: (params) => {
         console.log("BKTI", params.row);
         return (
+          // <div className="flex gap-2">
+          //   {params.row.status !== "disetujui" &&
+          //   params.row.status !== "ditolak" &&
+          //   params.row.status !== "selesai" &&
+          //   user.role == 1 ? (
+          //     <>
+          //       <button
+          //         className=""
+          //         onClick={() => {
+          //           editBarangFunc(params.id);
+          //           setIdBarang(params.id);
+          //         }}
+          //       >
+          //         <BiEditAlt color="blue" size={20} />
+          //       </button>
+          //       <button
+          //         className="mr-4"
+          //         onClick={() => DeletePengadaan(params.id)}
+          //       >
+          //         <BsTrash3 color="red" size={20} />
+          //       </button>
+          //       {params.row.status == "selesai" ? (
+          //         <>
+          //           <button
+          //             className="mr-4"
+          //             onClick={() => {
+          //               setValuePengadaan(params.id);
+          //               setDetailPengadaan(true);
+          //             }}
+          //           >
+          //             <IoQrCodeSharp size={20} />
+          //           </button>
+          //           <button
+          //         className="mr-4"
+          //         onClick={() => DeletePengadaan(params.id)}
+          //       >
+          //         <BsTrash3 color="red" size={20} />
+          //       </button>
+          //         </>
+          //       ) : null}
+          //       <button
+          //         className="mr-4"
+          //         onClick={() => {
+          //           nav(`/detail-pengadaan/${params.id}`);
+          //         }}
+          //       >
+          //         <BsEye size={20} />
+          //       </button>
+          //     </>
+          //   ) : params.row.status == "disetujui" ? (
+          //     <>
+          //       {params.row.foto == null ? (
+          //         <button
+          //           className="mr-4"
+          //           onClick={() => ModalResiBarang(params.id)}
+          //         >
+          //           <BiSolidImageAdd color="" size={20} />
+          //         </button>
+          //       ) : null}
+          //       {/* <button
+          //         className="mr-4"
+          //         onClick={() => {
+          //           setValuePengadaan(params.id);
+          //           setDetailPengadaan(true);
+          //         }}
+          //       >
+          //         <IoQrCodeSharp size={20} />
+          //       </button> */}
+          //       <button
+          //         className="mr-4"
+          //         onClick={() => {
+          //           nav(`/detail-pengadaan/${params.id}`);
+          //         }}
+          //       >
+          //         <BsEye size={20} />
+          //       </button>
+          //     </>
+          //   ) : params.row.status == "ditolak" ? (
+          //     <>
+          //       {/* <button
+          //         className="mr-4"
+          //         onClick={() => {
+          //           setValuePengadaan(params.id);
+          //           setDetailPengadaan(true);
+          //         }}
+          //       >
+          //         <IoQrCodeSharp size={20} />
+          //       </button> */}
+          //       <button
+          //         className="mr-4"
+          //         onClick={() => {
+          //           nav(`/detail-pengadaan/${params.id}`);
+          //         }}
+          //       >
+          //         <BsEye size={20} />
+          //       </button>
+          //     </>
+          //   ) : params.row.status == "selesai" ? (
+          //     <>
+          //       <button
+          //         className="mr-4"
+          //         onClick={() => {
+          //           setValuePengadaan(params.id);
+          //           setDetailPengadaan(true);
+          //         }}
+          //       >
+          //         <IoQrCodeSharp size={20} />
+          //       </button>
+          //       <button
+          //         className="mr-4"
+          //         onClick={() => {
+          //           nav(`/detail-pengadaan/${params.id}`);
+          //         }}
+          //       >
+          //         <BsEye size={20} />
+          //       </button>
+          //     </>
+          //   ) : null}
+          //   {/* {user?.role == 1 ? (
+          //     <>
+          //       <button
+          //         className="mr-4"
+          //         onClick={() => DeletePengadaan(params.id)}
+          //       >
+          //         <BsTrash3 color="red" size={20} />
+          //       </button>
+          //       <button
+          //         className="mr-4"
+          //         onClick={() => ModalResiBarang(params.id)}
+          //       >
+          //         <BiSolidImageAdd color="" size={20} />
+          //       </button>
+          //     </>
+          //   ) : params.row.status == "pending" ? (
+          //     <button
+          //       className="mr-4"
+          //       onClick={() => DeletePengadaan(params.id)}
+          //     >
+          //       <BsTrash3 color="red" size={20} />
+          //     </button>
+          //   ) : params.row.status == "disetujui" ? (
+          //     <button
+          //       className="mr-4"
+          //       onClick={() => ModalResiBarang(params.id)}
+          //     >
+          //       <BiSolidImageAdd color="" size={20} />
+          //     </button>
+          //   ) : null}
+          //   <button
+          //     className="mr-4"
+          //     onClick={() => {
+          //       setValuePengadaan(params.id);
+          //       setDetailPengadaan(true);
+          //     }}
+          //   >
+          //     <BsEye size={20} />
+          //   </button>
+          //   {user?.role == 1 ? (
+          //     <button
+          //       className=""
+          //       onClick={() => {
+          //         editBarangFunc(params.id);
+          //         setIdBarang(params.id);
+          //       }}
+          //     >
+          //       <BiEditAlt color="blue" size={20} />
+          //     </button>
+          //   ) : params.row.status == "pending" ? (
+          //     <button
+          //       className=""
+          //       onClick={() => {
+          //         editBarangFunc(params.id);
+          //         setIdBarang(params.id);
+          //       }}
+          //     >
+          //       <BiEditAlt color="blue" size={20} />
+          //     </button>
+          //   ) : null} */}
+          // </div>
           <div className="flex gap-2">
-            {params.row.status !== "disetujui" &&
-            params.row.status !== "ditolak" &&
-            params.row.status !== "selesai" ? (
+            {user.role == 1 ? (
               <>
-                <button
-                  className=""
-                  onClick={() => {
-                    editBarangFunc(params.id);
-                    setIdBarang(params.id);
-                  }}
-                >
-                  <BiEditAlt color="blue" size={20} />
-                </button>
                 <button
                   className="mr-4"
                   onClick={() => DeletePengadaan(params.id)}
                 >
                   <BsTrash3 color="red" size={20} />
                 </button>
-                {params.row.status == "selesai" ? (
+                <button
+                  className="mr-4"
+                  onClick={() => {
+                    nav(`/detail-pengadaan/${params.id}`);
+                  }}
+                >
+                  <BsEye size={20} />
+                </button>
+                {params.row.status == "disetujui" ? (
+                  <>
+                    <button
+                      className="mr-4"
+                      onClick={() => ModalResiBarang(params.id)}
+                    >
+                      <BiSolidImageAdd color="" size={20} />
+                    </button>
+                  </>
+                ) : params.row.status == "pending" ? (
+                  <button
+                    className=""
+                    onClick={() => {
+                      editBarangFunc(params.id);
+                      setIdBarang(params.id);
+                    }}
+                  >
+                    <BiEditAlt color="blue" size={20} />
+                  </button>
+                ) : params.row.status == "selesai" ? (
                   <button
                     className="mr-4"
                     onClick={() => {
@@ -465,144 +660,67 @@ export default function TabelBarang({ data, ruang, kategori }) {
                     <IoQrCodeSharp size={20} />
                   </button>
                 ) : null}
-                <button
-                  className="mr-4"
-                  onClick={() => {
-                    nav(`/detail-pengadaan/${params.id}`);
-                  }}
-                >
-                  <BsEye size={20} />
-                </button>
               </>
-            ) : params.row.status == "disetujui" ? (
+            ) : user.role == 2 ? (
               <>
-                {params.row.foto == null ? (
-                  <button
-                    className="mr-4"
-                    onClick={() => ModalResiBarang(params.id)}
-                  >
-                    <BiSolidImageAdd color="" size={20} />
-                  </button>
+                {params.row.status == "pending" ? (
+                  <>
+                    <button
+                      className="mr-4"
+                      onClick={() => DeletePengadaan(params.id)}
+                    >
+                      <BsTrash3 color="red" size={20} />
+                    </button>
+                    <button
+                      className="mr-4"
+                      onClick={() => {
+                        editBarangFunc(params.id);
+                        setIdBarang(params.id);
+                      }}
+                    >
+                      <BiEditAlt color="blue" size={20} />
+                    </button>
+                    <button
+                      className="mr-4"
+                      onClick={() => {
+                        nav(`/detail-pengadaan/${params.id}`);
+                      }}
+                    >
+                      <BsEye size={20} />
+                    </button>
+                  </>
+                ) : params.row.status == "disetujui" ? (
+                  <>
+                    <button
+                      className="mr-4"
+                      onClick={() => {
+                        nav(`/detail-pengadaan/${params.id}`);
+                      }}
+                    >
+                      <BsEye size={20} />
+                    </button>
+                    <button
+                      className="mr-4"
+                      onClick={() => ModalResiBarang(params.id)}
+                    >
+                      <BiSolidImageAdd color="" size={20} />
+                    </button>
+                  </>
+                ) : params.row.status == "selesai" ||
+                  params.row.status == "ditolak" ? (
+                  <>
+                    <button
+                      className="mr-4"
+                      onClick={() => {
+                        nav(`/detail-pengadaan/${params.id}`);
+                      }}
+                    >
+                      <BsEye size={20} />
+                    </button>
+                  </>
                 ) : null}
-                {/* <button
-                  className="mr-4"
-                  onClick={() => {
-                    setValuePengadaan(params.id);
-                    setDetailPengadaan(true);
-                  }}
-                >
-                  <IoQrCodeSharp size={20} />
-                </button> */}
-                <button
-                  className="mr-4"
-                  onClick={() => {
-                    nav(`/detail-pengadaan/${params.id}`);
-                  }}
-                >
-                  <BsEye size={20} />
-                </button>
-              </>
-            ) : params.row.status == "ditolak" ? (
-              <>
-                {/* <button
-                  className="mr-4"
-                  onClick={() => {
-                    setValuePengadaan(params.id);
-                    setDetailPengadaan(true);
-                  }}
-                >
-                  <IoQrCodeSharp size={20} />
-                </button> */}
-                <button
-                  className="mr-4"
-                  onClick={() => {
-                    nav(`/detail-pengadaan/${params.id}`);
-                  }}
-                >
-                  <BsEye size={20} />
-                </button>
-              </>
-            ) : params.row.status == "selesai" ? (
-              <>
-                <button
-                  className="mr-4"
-                  onClick={() => {
-                    setValuePengadaan(params.id);
-                    setDetailPengadaan(true);
-                  }}
-                >
-                  <IoQrCodeSharp size={20} />
-                </button>
-                <button
-                  className="mr-4"
-                  onClick={() => {
-                    nav(`/detail-pengadaan/${params.id}`);
-                  }}
-                >
-                  <BsEye size={20} />
-                </button>
               </>
             ) : null}
-            {/* {user?.role == 1 ? (
-              <>
-                <button
-                  className="mr-4"
-                  onClick={() => DeletePengadaan(params.id)}
-                >
-                  <BsTrash3 color="red" size={20} />
-                </button>
-                <button
-                  className="mr-4"
-                  onClick={() => ModalResiBarang(params.id)}
-                >
-                  <BiSolidImageAdd color="" size={20} />
-                </button>
-              </>
-            ) : params.row.status == "pending" ? (
-              <button
-                className="mr-4"
-                onClick={() => DeletePengadaan(params.id)}
-              >
-                <BsTrash3 color="red" size={20} />
-              </button>
-            ) : params.row.status == "disetujui" ? (
-              <button
-                className="mr-4"
-                onClick={() => ModalResiBarang(params.id)}
-              >
-                <BiSolidImageAdd color="" size={20} />
-              </button>
-            ) : null}
-            <button
-              className="mr-4"
-              onClick={() => {
-                setValuePengadaan(params.id);
-                setDetailPengadaan(true);
-              }}
-            >
-              <BsEye size={20} />
-            </button>
-            {user?.role == 1 ? (
-              <button
-                className=""
-                onClick={() => {
-                  editBarangFunc(params.id);
-                  setIdBarang(params.id);
-                }}
-              >
-                <BiEditAlt color="blue" size={20} />
-              </button>
-            ) : params.row.status == "pending" ? (
-              <button
-                className=""
-                onClick={() => {
-                  editBarangFunc(params.id);
-                  setIdBarang(params.id);
-                }}
-              >
-                <BiEditAlt color="blue" size={20} />
-              </button>
-            ) : null} */}
           </div>
         );
       },

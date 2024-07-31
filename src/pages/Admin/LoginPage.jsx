@@ -35,6 +35,7 @@ export default function LoginPage() {
     // e.preventDefault();
     try {
       const response = await axios.post(`${BACKEND_BASE_URL}/api/login`, data);
+      console.log("login", response);
       localStorage.setItem("user", JSON.stringify(response.data.data));
 
       setRedirect(true);

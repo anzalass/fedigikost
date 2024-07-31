@@ -7,6 +7,7 @@ import { store } from "./redux/store.js";
 import { RenderTablePengadaanContext } from "./context/rendertablepengadaan.jsx";
 import { SearchContext } from "./context/searchContext.jsx";
 import { RenderNotifikasiContext } from "./context/notifikasicontext.jsx";
+import { RenderTableKategoriContext } from "./context/rendertablekategori.jsx";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
@@ -14,7 +15,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
       <SearchContext>
         <RenderNotifikasiContext>
           <RenderTablePengadaanContext>
-            <App />
+            <RenderTableKategoriContext>
+              <App />
+            </RenderTableKategoriContext>
           </RenderTablePengadaanContext>
         </RenderNotifikasiContext>
       </SearchContext>

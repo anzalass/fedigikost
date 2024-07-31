@@ -131,32 +131,32 @@ export default function TablePengeluaran() {
         );
       },
     },
-    {
-      field: "aksi",
-      headerClassName: "bg-slate-200 text-center font-abc",
-      headerName: "Aksi",
-      minWidth: 100,
-      flex: 0.7,
-      sortable: false,
-      renderCell: (params) => {
-        return (
-          <div className="flex">
-            {/* <button className="mr-4">
-              <BiPrinter size={20} />
-            </button> */}
-            {/* {user?.role == 1 ? (
-              <button className="mr-4" onClick={() => deleteBarang()}>
-                <BsTrash3 color="red" size={20} />
-              </button>
-            ) : params.row.status == "pending" ? (
-              <button className="mr-4" onClick={() => deleteBarang()}>
-                <BsTrash3 color="red" size={20} />
-              </button>
-            ) : null} */}
-          </div>
-        );
-      },
-    },
+    // {
+    //   field: "aksi",
+    //   headerClassName: "bg-slate-200 text-center font-abc",
+    //   headerName: "Aksi",
+    //   minWidth: 100,
+    //   flex: 0.7,
+    //   sortable: false,
+    //   renderCell: (params) => {
+    //     return (
+    //       <div className="flex">
+    //         {/* <button className="mr-4">
+    //           <BiPrinter size={20} />
+    //         </button> */}
+    //         {/* {user?.role == 1 ? (
+    //           <button className="mr-4" onClick={() => deleteBarang()}>
+    //             <BsTrash3 color="red" size={20} />
+    //           </button>
+    //         ) : params.row.status == "pending" ? (
+    //           <button className="mr-4" onClick={() => deleteBarang()}>
+    //             <BsTrash3 color="red" size={20} />
+    //           </button>
+    //         ) : null} */}
+    //       </div>
+    //     );
+    //   },
+    // },
   ];
 
   const row = [];

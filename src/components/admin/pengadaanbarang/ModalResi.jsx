@@ -32,37 +32,39 @@ export default function ModalResi({ open, setOpen, id }) {
   };
 
   const updateResi = async () => {
-    Swal.showLoading();
     const datas = new FormData();
     datas.append("file", Img);
     datas.append("upload_preset", "digikostDemoApp");
     datas.append("cloud_name", "dkt6ysk5c");
 
     try {
-      const res = await axios.post(
-        "https://api.cloudinary.com/v1_1/dkt6ysk5c/image/upload",
-        datas,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
+      if (data.NoResi.length > 0) {
+        Swal.showLoading();
+        const res = await axios.post(
+          "https://api.cloudinary.com/v1_1/dkt6ysk5c/image/upload",
+          datas,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
-      data.buktiNota = res.data.secure_url;
-      console.log("url", res.data.secure_url);
-      await axios.put(`${BACKEND_BASE_URL}/api/UpdateResi/${id}`, {
-        buktiNota: res.data.secure_url,
-        NoResi: data.NoResi,
-        id_pembuat: user?.id,
-        nama_pembuat: user?.name,
-        role_pembuat: user?.role,
-      });
-      setRender(true);
-      Swal.close();
-      setOpen(false);
+        data.buktiNota = res.data.secure_url;
+        console.log("url", res.data.secure_url);
+        await axios.put(`${BACKEND_BASE_URL}/api/UpdateResi/${id}`, {
+          buktiNota: res.data.secure_url,
+          NoResi: data.NoResi,
+          id_pembuat: user?.id,
+          nama_pembuat: user?.name,
+          role_pembuat: user?.role,
+        });
+        setRender(true);
+        Swal.close();
+        setOpen(false);
+      }
     } catch (e) {
-      alert("rusak");
+      alert("Error");
       console.log(e);
     }
     console.log(Img);

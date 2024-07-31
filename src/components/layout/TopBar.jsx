@@ -62,7 +62,7 @@ export default function TopBar({ children }) {
             </div>
           </div>
           <div className="flex">
-            <FaUserCircle size={25} />
+            {/* <FaUserCircle size={25} /> */}
             <h1
               // onClick={() => nav("/profile")}
               className="ml-2 font-abc font-[500] cursor-pointer"
