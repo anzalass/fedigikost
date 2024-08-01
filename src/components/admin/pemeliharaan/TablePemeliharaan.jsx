@@ -119,11 +119,13 @@ export default function TablePengeluaran() {
         return (
           <div
             className={`${
-              params.row.status == "dalam perbaikan"
+              params.row.status == "pending"
                 ? "bg-yellow-400"
                 : params.row.status == "selesai"
                 ? "bg-green-500"
-                : "bg-red-600"
+                : params.row.status == "dalam perbaikan"
+                ? "bg-blue-600"
+                : "bg-red-500"
             } h-full text-center pt-3 text-white font-abc w-full `}
           >
             {params.row.status}

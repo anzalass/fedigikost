@@ -307,7 +307,11 @@ export default function DetailBarangRuangan() {
       },
     },
   ];
-
+  const options = {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
   const rowBarangRuanganPemeliharaan = [];
   pemeliharaanBarang
     .filter((item) => item.kodeRuang == id)
@@ -315,7 +319,7 @@ export default function DetailBarangRuangan() {
       rowBarangRuanganPemeliharaan.push({
         id: a.kodePemeliharaan,
         idUser: a.idUser,
-        tgl: a.created_at,
+        tgl: new Date(a.created_at).toLocaleDateString("id-ID", options),
         nama_barang: a.kodeBarang,
         jumlah: a.jumlah,
         keterangan: a.keterangan,

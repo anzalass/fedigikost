@@ -73,10 +73,14 @@ export default function DataRuanganPage() {
 
   const tambahRuang = async () => {
     try {
-      const add = await axios.post(
-        `${BACKEND_BASE_URL}/api/tambahRuang`,
-        dataRuang
-      );
+      const add = await axios.post(`${BACKEND_BASE_URL}/api/tambahRuang`, {
+        idUser: user?.id,
+        id_pembuat: user?.id,
+        role_pembuat: user?.role,
+        nama_pembuat: user?.name,
+        kodeRuang: dataRuang.kodeRuang,
+        ruang: dataRuang.kodeRuang,
+      });
 
       if (add.status == 200) {
         window.location.reload();
@@ -152,7 +156,7 @@ export default function DataRuanganPage() {
                   />
                   {errRuangan.kodeRuang ? <p>{errRuangan.kodeRuang}</p> : null}
                 </div>
-                <div className="w-full mt-4">
+                {/* <div className="w-full mt-4">
                   <h1 className="font-abc pb-2">Nama Ruangan</h1>
                   <input
                     type="text"
@@ -161,7 +165,7 @@ export default function DataRuanganPage() {
                     className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
                   />
                   {errRuangan.ruang ? <p>{errRuangan.ruang}</p> : null}
-                </div>
+                </div> */}
                 <div className="w-full justify-center mt-12 flex items-center">
                   <button
                     onClick={() => tambahRuang()}
