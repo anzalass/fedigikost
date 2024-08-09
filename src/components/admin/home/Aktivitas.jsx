@@ -3,7 +3,9 @@ import axios from "axios";
 import PropTypes from "prop-types";
 import React, { useEffect, useState } from "react";
 import { BACKEND_BASE_URL, BASE_URL } from "../../../config/base_url";
-import { BsEye } from "react-icons/bs";
+import { BsEye, BsTrash } from "react-icons/bs";
+import { useRender } from "../../../context/rendertablepengadaan";
+import { useSelector } from "react-redux";
 
 Aktivitas.propTypes = {
   aktivitas: PropTypes.array.isRequired,
@@ -18,6 +20,8 @@ const options = {
 export default function Aktivitas({ aktivitas }) {
   const [data, setData] = useState([]);
   const [allUser, setUser] = useState([]);
+  const [render, setRender] = useRender();
+  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
     fetchData();
@@ -29,6 +33,15 @@ export default function Aktivitas({ aktivitas }) {
 
     setUser(resUser.data.results);
     // setData(res.data.results);
+  };
+
+  const DeleteAktivitasById = async (idaktivitas) => {
+    setRender(false);
+    await axios
+      .delete(`${BACKEND_BASE_URL}/api/deleteaktivitasbyid/${idaktivitas}`)
+      .then((response) => {
+        setRender(true);
+      });
   };
 
   const columns = [
@@ -60,6 +73,14 @@ export default function Aktivitas({ aktivitas }) {
               >
                 <BsEye color="blue" size={20} />
               </button>
+              {user.role == 1 ? (
+                <button
+                  className=""
+                  onClick={() => DeleteAktivitasById(params.row.id)}
+                >
+                  <BsTrash color="red" size={20} />
+                </button>
+              ) : null}
             </>
           </div>
         );

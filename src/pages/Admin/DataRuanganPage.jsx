@@ -156,16 +156,7 @@ export default function DataRuanganPage() {
                   />
                   {errRuangan.kodeRuang ? <p>{errRuangan.kodeRuang}</p> : null}
                 </div>
-                {/* <div className="w-full mt-4">
-                  <h1 className="font-abc pb-2">Nama Ruangan</h1>
-                  <input
-                    type="text"
-                    name="ruang"
-                    onChange={(e) => changeRuangHandler(e)}
-                    className=" border-2 border-slate-500 rounded-xl pl-3 w-full h-[30px]"
-                  />
-                  {errRuangan.ruang ? <p>{errRuangan.ruang}</p> : null}
-                </div> */}
+        
                 <div className="w-full justify-center mt-12 flex items-center">
                   <button
                     onClick={() => tambahRuang()}
