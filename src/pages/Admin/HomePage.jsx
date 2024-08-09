@@ -12,6 +12,7 @@ import NotifiikasiAdmin from "../../components/admin/home/NotifiikasiAdmin";
 import axios from "axios";
 import { useContextNotifikasi } from "../../context/notifikasicontext";
 import { BACKEND_BASE_URL } from "../../config/base_url";
+import { useRender } from "../../context/rendertablepengadaan";
 
 export default function HomePage() {
   const [open, setOpen] = useState(false);
@@ -26,7 +27,7 @@ export default function HomePage() {
   const [allPemeliharaanowner, setAllPemeliharaanowner] = useState(0);
   const [aktivitas, setAllAktivitas] = useState([]);
   const [petugas, setAllpetugas] = useState(0);
-
+  const [render, setRender] = useRender();
   const [notif, setNotif] = useContextNotifikasi();
 
   const HomePage = async () => {
@@ -50,7 +51,7 @@ export default function HomePage() {
 
   useEffect(() => {
     HomePage();
-  }, [user?.id]);
+  }, [user?.id, render]);
   const [data, setData] = useState([]);
   return (
     <div>
