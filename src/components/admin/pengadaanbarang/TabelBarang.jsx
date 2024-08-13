@@ -128,6 +128,7 @@ export default function TabelBarang({ data, ruang, kategori }) {
   };
 
   const DeletePengadaan = async (id) => {
+    setRender(false);
     Swal.fire({
       title: "Hapus",
       text: "Apakah Yakin Ingin Keluar ?",
@@ -138,7 +139,7 @@ export default function TabelBarang({ data, ruang, kategori }) {
       confirmButtonText: "Ya, Hapus",
     }).then((result) => {
       axios
-        .post(`${BACKEND_BASE_URL}/api/pengadaanDelete/` + id, {
+        .post(`${BACKEND_BASE_URL}/api/pengadaanDelete/${id}`, {
           id_pembuat: user?.id,
           role_pembuat: user?.role,
           nama_pembuat: user?.name,
@@ -149,6 +150,8 @@ export default function TabelBarang({ data, ruang, kategori }) {
             text: "Berhasil Menghapus",
             icon: "success",
           });
+          setRender(true);
+          window.location.reload();
         })
         .catch((error) => {
           Swal.fire({
@@ -157,7 +160,6 @@ export default function TabelBarang({ data, ruang, kategori }) {
             icon: "error",
           });
         });
-      window.location.reload();
     });
   };
 
@@ -183,18 +185,23 @@ export default function TabelBarang({ data, ruang, kategori }) {
     // });
 
     try {
-      await axios.post(`${BACKEND_BASE_URL}/api/tambahPengadaan`, pengadaan);
-      setRender(true);
-      setPengadaanBarang(!pengadaanBarang);
-      Swal.fire({
-        position: "top-end",
-        icon: "success",
-        title: "Data Pengajuan Sedang Diajukan",
-        showConfirmButton: false,
-        timer: 1500,
-      });
-      console.log(pengadaan);
-      Swal.close();
+      await axios
+        .post(`${BACKEND_BASE_URL}/api/tambahPengadaan`, pengadaan)
+        .then((res) => {
+          setPengadaanBarang(!pengadaanBarang);
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Data Pengajuan Sedang Diajukan",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setRender(true);
+          window.location.reload();
+        })
+        .catch((err) => {
+          Swal.close();
+        });
     } catch (err) {
       console.log("errors ", err);
 
