@@ -1,5 +1,10 @@
 import { useState } from "react";
 import digiKosLogo from "../../assets/Digikos.svg";
+import sb1 from "../../assets/sb1.svg";
+import sb2 from "../../assets/sb2.svg";
+import sb3 from "../../assets/sb3.svg";
+import sb4 from "../../assets/sb4.svg";
+import homesb from "../../assets/homesb.svg";
 import { GrHomeRounded, GrLogout } from "react-icons/gr";
 import { ImEnter } from "react-icons/im";
 import { BsPencilSquare } from "react-icons/bs";
@@ -24,25 +29,25 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
     sidebarMenu = [
       {
         title: "Beranda",
-        sb: "/public/homesb.svg",
+        sb: homesb,
         url: "/home",
         icon: <GrHomeRounded className={` fill-white  my-auto`} />,
       },
       {
         title: "Pengadaan Barang",
-        sb: "/public/sb4.svg",
+        sb: sb4,
         url: "/tambah-barang",
         icon: <BsPencilSquare className="my-auto" />,
       },
       {
         title: "Pemeliharaan Barang",
-        sb: "/public/sb3.svg",
+        sb: sb3,
         url: "/pemeliharaan",
         icon: <ImEnter className="my-auto" />,
       },
       {
         title: "Data Ruangan",
-        sb: "/public/sb2.svg",
+        sb: sb2,
         url: "/data-ruangan",
         icon: <HiMiniClipboardDocumentList className="my-auto" />,
       },
@@ -52,36 +57,31 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
       {
         title: "Beranda",
         url: "/home",
-        sb: "/public/homesb.svg",
-
+        sb: homesb,
         icon: <GrHomeRounded className={` fill-white  my-auto`} />,
       },
       {
         title: "Pengadaan Barang",
         url: "/tambah-barang",
-        sb: "/public/sb4.svg",
-
+        sb: sb4,
         icon: <BsPencilSquare className="my-auto" />,
       },
       {
         title: "Pemeliharaan Barang",
         url: "/pemeliharaan",
-        sb: "/public/sb3.svg",
-
+        sb: sb3,
         icon: <ImEnter className="my-auto" />,
       },
       {
         title: "Data Ruangan",
         url: "/data-ruangan",
-        sb: "/public/sb2.svg",
-
+        sb: sb2,
         icon: <MdHome className="my-auto" />,
       },
       {
         title: "Data Petugas",
         url: "/petugas",
-        sb: "/public/sb1.svg",
-
+        sb: sb1,
         icon: <FaUser className="my-auto" />,
       },
     ];
