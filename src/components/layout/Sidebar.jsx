@@ -24,21 +24,25 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
     sidebarMenu = [
       {
         title: "Beranda",
+        sb: "/src/assets/homesb.svg",
         url: "/home",
         icon: <GrHomeRounded className={` fill-white  my-auto`} />,
       },
       {
         title: "Pengadaan Barang",
+        sb: "/src/assets/sb4.svg",
         url: "/tambah-barang",
         icon: <BsPencilSquare className="my-auto" />,
       },
       {
         title: "Pemeliharaan Barang",
+        sb: "/src/assets/sb3.svg",
         url: "/pemeliharaan",
         icon: <ImEnter className="my-auto" />,
       },
       {
         title: "Data Ruangan",
+        sb: "/src/assets/sb2.svg",
         url: "/data-ruangan",
         icon: <HiMiniClipboardDocumentList className="my-auto" />,
       },
@@ -48,26 +52,36 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
       {
         title: "Beranda",
         url: "/home",
+        sb: "/src/assets/homesb.svg",
+
         icon: <GrHomeRounded className={` fill-white  my-auto`} />,
       },
       {
         title: "Pengadaan Barang",
         url: "/tambah-barang",
+        sb: "/src/assets/sb4.svg",
+
         icon: <BsPencilSquare className="my-auto" />,
       },
       {
         title: "Pemeliharaan Barang",
         url: "/pemeliharaan",
+        sb: "/src/assets/sb3.svg",
+
         icon: <ImEnter className="my-auto" />,
       },
       {
         title: "Data Ruangan",
         url: "/data-ruangan",
+        sb: "/src/assets/sb2.svg",
+
         icon: <MdHome className="my-auto" />,
       },
       {
         title: "Data Petugas",
         url: "/petugas",
+        sb: "/src/assets/sb1.svg",
+
         icon: <FaUser className="my-auto" />,
       },
     ];
@@ -145,7 +159,7 @@ export default function Sidebar({ open, setSidebar, width, setWidth }) {
                       : "bg-white text-black"
                   }  h-[30px] rounded-md p-1 pl-3`}
                 >
-                  {sm.icon}
+                  <img src={sm?.sb} className="w-5 h-5" alt="" />
                   <h1 className={` ml-2 font-abc my-auto text-[14px]`}>
                     {sm.title.length > 16
                       ? sm.title.slice(0, 15) + ".."
